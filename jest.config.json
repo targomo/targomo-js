@@ -8,7 +8,7 @@
     "jsx",
     "json"
   ],
-  "testMatch": ["**/?(*.)(spec|test).(ts|js)?(x)"],
+  "testMatch": ["**/?(fleets.)(spec|test).(ts|js)?(x)"],
   "transform": {
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
   },
@@ -19,5 +19,7 @@
       "lines": 50,
       "statements": 50
     }
-  }
+  },
+  "reporters": ["default", "<rootDir>/test-reporter.js"]
+
 }
