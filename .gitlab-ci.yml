@@ -1,0 +1,60 @@
+image: code.route360.net:4567/docker/general-image/image:basic_node8
+
+variables:
+  NODE_ENV: gitlab-ci
+
+before_script:
+  - echo "email=developers@targomo.com" > ~/.npmrc
+  - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> ~/.npmrc
+  - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> ~/.npmrc
+  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+  - npm config set loglevel warn
+  - npm install
+  - echo "always-auth=true" >> ~/.npmrc
+  - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> ~/.npmrc
+
+lint:
+  stage: lint
+  script:
+    - npm run lint
+
+test_and_coverage:
+  stage: test
+  script:
+    - npm run test:coverage
+    
+build_lib:
+  stage: build
+  script:
+    - apt-get install --yes jq
+    - export VERSION=$(cat package.json | jq -r .version)
+    - export CURRENT_TAG=$(git tag -l --contains HEAD)
+    - |
+      if [ "$CURRENT_TAG" != "v$VERSION" ]; then
+        echo "Current tag $CURRENT_TAG does not match version $VERSION"
+        exit 1
+      fi
+    - npm run build
+    - cd dist
+    - npm publish --registry https://repository.route360.net/repository/targomo/
+    - npm publish
+  only:
+    - tags
+
+build_pre_release:
+  stage: build
+  script:
+    - npm run build
+    - export CURRENT_VERSION=$(git rev-parse HEAD --short)
+    - cd dist
+    - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
+    - mv package.json.new package.json
+    - npm publish --registry https://repository.route360.net/repository/targomo/
+  when: manual
+  only: 
+    - branches
+
+stages:
+  - lint
+  - test
+  - build

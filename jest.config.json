@@ -1,0 +1,23 @@
+{
+  "verbose": false,
+  "setupTestFrameworkScriptFile": "<rootDir>/setupJest.ts",
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json"
+  ],
+  "testMatch": ["**/?(*.)(spec|test).(ts|js)?(x)"],
+  "transform": {
+    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+  },
+  "coverageThreshold": {
+    "global": {
+      "branches": 50,
+      "functions": 50,
+      "lines": 50,
+      "statements": 50
+    }
+  }
+}

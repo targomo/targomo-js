@@ -1,0 +1,47 @@
+{
+  "name": "@targomo/core",
+  "version": "0.1.2",
+  "license": "MIT",
+  "description": "Targomo core lib. Contains API functions and support for mapboxgl, leaflet and google maps.",
+  "scripts": {
+    "dev": "npm run clean && webpack --watch",
+    "build": "npm run clean && node build.js",
+    "lint": "tslint -p tsconfig.json",
+    "clean": "shx rm -rf dist",
+    "test": "npm run test:browser && npm run test:node",
+    "test:browser": "jest --config=jest.config.json --env=jsdom",
+    "test:node": "jest --config=jest.config.json --env=node",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --config=jest.config.json",
+    "test:coverage": "npm run test:browser && npm run test:node --coverage"
+  },
+  "main": "targomo-core.js",
+  "module": "targomo-core.js",
+  "browser": "targomo-core.umd.min.js",
+  "typings": "./typings/index.d.ts",
+  "devDependencies": {
+    "@types/jest": "^21.1.5",
+    "@types/node": "^6.0.60",
+    "copy-webpack-plugin": "^4.2.0",
+    "gulp": "^3.9.1",
+    "jest": "^21.2.1",
+    "rollup": "^0.51.8",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-resolve": "0.0.1-predev.1",
+    "rollup-plugin-typescript2": "^0.8.2",
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-plugin-copy": "^0.2.3",
+    "shx": "^0.2.2",
+    "ts-jest": "^21.1.4",
+    "ts-loader": "^3.1.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.5.0",
+    "webpack": "^3.8.1",
+    "webpack-node-externals": "1.6.0"
+  },
+  "author": "Targomo",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "whatwg-fetch": "^2.0.3"
+  }
+}
