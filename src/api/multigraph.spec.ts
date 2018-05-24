@@ -6,7 +6,7 @@ import { StatisticsSet } from '../index'
 describe('Multigraph', () => {
   const testClient = new TargomoClient(
     'https://dev.route360.net/tests/',
-    'uhWrWpUhyZQy8rPfiC7X',
+    process.env.TGM_TEST_API_KEY,
     {statisticsUrl: 'https://dev.route360.net/statistics/'
   })
 

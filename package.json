@@ -1,8 +1,26 @@
 {
   "name": "@targomo/core",
-  "version": "0.1.2",
+  "description": "The JavaScript (& TypeScript) API for Targomo's time-based access mapping services.",
+  "author": "Targomo",
+  "version": "0.1.3",
   "license": "MIT",
-  "description": "Targomo core lib. Contains API functions and support for mapboxgl, leaflet and google maps.",
+  "repository": "github:targomo/targomo-js",
+  "homepage": "https://targomo.com/developers",
+  "bugs": {
+    "url": "https://github.com/targomo/targomo-js/issues"
+  },
+  "keywords": [
+    "map",
+    "gis",
+    "api",
+    "rest",
+    "isochrone",
+    "reachability"
+  ],
+  "main": "targomo-core.js",
+  "module": "targomo-core.js",
+  "browser": "targomo-core.umd.min.js",
+  "typings": "./typings/index.d.ts",
   "scripts": {
     "dev": "npm run clean && webpack --watch",
     "build": "npm run clean && node build.js",
@@ -14,10 +32,6 @@
     "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --config=jest.config.json",
     "test:coverage": "npm run test:browser && npm run test:node --coverage"
   },
-  "main": "targomo-core.js",
-  "module": "targomo-core.js",
-  "browser": "targomo-core.umd.min.js",
-  "typings": "./typings/index.d.ts",
   "devDependencies": {
     "@types/jest": "^21.1.5",
     "@types/node": "^6.0.60",
@@ -39,7 +53,6 @@
     "webpack": "^3.8.1",
     "webpack-node-externals": "1.6.0"
   },
-  "author": "Targomo",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "whatwg-fetch": "^2.0.3"
