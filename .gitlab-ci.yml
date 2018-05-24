@@ -3,7 +3,7 @@ image: code.route360.net:4567/docker/general-image/image:basic_node8
 variables:
   NODE_ENV: gitlab-ci
 
-  
+
 before_script:
   - npm config set loglevel warn
   - npm install
@@ -46,7 +46,6 @@ build_pre_release:
     - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
     - mv package.json.new package.json
   when: manual
-  allow_failure: false
   only: 
     - branches
 
