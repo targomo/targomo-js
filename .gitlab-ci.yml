@@ -3,6 +3,7 @@ image: code.route360.net:4567/docker/general-image/image:basic_node8
 variables:
   NODE_ENV: gitlab-ci
 
+  
 before_script:
   - npm config set loglevel warn
   - npm install
