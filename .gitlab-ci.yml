@@ -7,6 +7,10 @@ before_script:
   - npm config set loglevel warn
   - npm install
 
+cache:
+  paths: 
+  - dist/ 
+
 lint:
   stage: lint
   script:
@@ -29,9 +33,6 @@ build_release:
         exit 1
       fi
     - npm run build
-  cache:
-    paths: 
-    - dist/ 
   only:
     - tags
 
