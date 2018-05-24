@@ -44,22 +44,15 @@ build_pre_release:
     - cd dist
     - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
     - mv package.json.new package.json
-  when: manual
-  only: 
-    - branches
-
-publish_lib_internal:
-  stage: publish
-  script:
-    - cd dist
     - echo "email=developers@targomo.com" > .npmrc
     - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> .npmrc
     - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
-  when: on_success
-
+  when: manual
+  only: 
+    - branches
 
 publish_lib:
   stage: publish
