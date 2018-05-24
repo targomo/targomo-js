@@ -30,6 +30,7 @@ build_release:
         exit 1
       fi
     - npm run build
+    - cp LICENSE README.md dist/
     - cd dist
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
     - npm publish --access=public
