@@ -1,8 +1,5 @@
 # targomo-js
 
-![coverage report](https://code.route360.net/targomo/github/targomo-js/badges/master/coverage.svg)
-![pipeline status](https://code.route360.net/targomo/github/targomo-js/badges/master/pipeline.svg)
-
 > Note: This library is not yet finished and may be subject to breaking changes. Feel free to use it, though. If you are looking for our stable JS library please go [this way](https://github.com/route360/r360-js). 
 
 The Targomo Typescript API is a modern, open-source, isomorphic TypeScript library designed to consume the Targomo services. The project is maintained by [Targomo](https://www.targomo.com/). The lib can also be used in non-typescript environments.
