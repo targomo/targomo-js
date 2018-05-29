@@ -2,7 +2,6 @@ import { FleetRequestOptions } from './../types/options/fleetRequestOptions';
 import { TargomoClient } from './index';
 import { LatLngIdTravelMode, LatLngId, Order, Store, Transport, Address, Vehicle, TransportMetadata} from '../index';
 import 'whatwg-fetch'
-import { TravelSpeedValues } from '../../dist/typings';
 import { FleetsRequestPayload } from './payload/fleetsRequestPayload';
 import { throws } from 'assert';
 import * as TestReporter from '../../test-reporter';
@@ -89,7 +88,7 @@ class FleetRequestOptionsImplementation implements FleetRequestOptions {
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
-const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY);
+const testClient = new TargomoClient('westcentraleurope', process.env.TGM_TEST_API_KEY);
 
 // Super basic request information which is cloned an slightly altered in each test case
 const ordersBase: Order[] = [
@@ -286,6 +285,23 @@ describe('TargomoClient fleet service', () => {
     }
   }
 
+// base test
+test('base test', async () => {
+  
+  try {
+    const result = await testClient.fleets.fetch(storesBase, ordersBase, transportsBase, optionsBase);
+        expect(result.tours).toBeDefined();
+        expect(result.tours.length).toBe(2);
+  }catch (error) {
+    expect(error).toBeUndefined();
+  }
+});
+
+
+
+
+  const allTestOptions: TestOptions[] = [];
+
   // Each field in the request is subject to a TestOptions object and a DoTest call
 
   const testOptionsOptimizationTime = new TestOptions(
@@ -304,7 +320,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOptionsOptimizationTime);
+  allTestOptions.push(testOptionsOptimizationTime);
 
   const testOptionsOptimizationAlgorithm = new TestOptions(
     'Options optimizationAlgorithm',
@@ -332,7 +348,7 @@ describe('TargomoClient fleet service', () => {
       new CustomTestCase(3, ExpectedResponse.ERROR_VALIDATION)
     ]
   );
-  DoTests(testOptionsOptimizationAlgorithm);
+  allTestOptions.push(testOptionsOptimizationAlgorithm);
 
   const testOptionsUnimprovedWaitingTime = new TestOptions(
     'Options unimprovedWaitingTime',
@@ -349,8 +365,8 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
-    ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOptionsUnimprovedWaitingTime);
+  ExpectedResponse.TOURS_LENGTH_2);
+  allTestOptions.push(testOptionsUnimprovedWaitingTime);
 
   const testOptionsCostMatrixSource = new TestOptions(
     'Options costMatrixSource',
@@ -373,7 +389,7 @@ describe('TargomoClient fleet service', () => {
       new CustomTestCase('AIR_DISTANCE', ExpectedResponse.TOURS_LENGTH_2),
       new CustomTestCase('AIR_DISTANC', ExpectedResponse.ERROR_VALIDATION)
     ]);
-  DoTests(testOptionsCostMatrixSource);
+  allTestOptions.push(testOptionsCostMatrixSource);
 
   const testOptionsGeojsonCreation = new TestOptions(
     'Options geojsonCreation',
@@ -398,7 +414,7 @@ describe('TargomoClient fleet service', () => {
       new CustomTestCase('ROUTE_36', ExpectedResponse.ERROR_VALIDATION),
       new CustomTestCase(2, ExpectedResponse.ERROR_VALIDATION)
     ]);
-  DoTests(testOptionsGeojsonCreation);
+  allTestOptions.push(testOptionsGeojsonCreation);
 
   const testOptionsTravelType = new TestOptions(
     'Options travelType',
@@ -423,7 +439,7 @@ describe('TargomoClient fleet service', () => {
       new CustomTestCase('ca', ExpectedResponse.ERROR_VALIDATION),
       new CustomTestCase(2, ExpectedResponse.ERROR_VALIDATION),
     ]);
-  DoTests(testOptionsTravelType);
+  allTestOptions.push(testOptionsTravelType);
 
   const testOptionsEdgeWeight = new TestOptions(
     'Options edgeWeight',
@@ -446,7 +462,7 @@ describe('TargomoClient fleet service', () => {
       new CustomTestCase('distance', ExpectedResponse.TOURS_LENGTH_2),
       new CustomTestCase('distanc', ExpectedResponse.ERROR_VALIDATION)
     ]);
-  DoTests(testOptionsEdgeWeight);
+  allTestOptions.push(testOptionsEdgeWeight);
 
   const testOptionsMaxEdgeWeight = new TestOptions(
     'Options maxEdgeWeight',
@@ -464,7 +480,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOptionsMaxEdgeWeight);
+  allTestOptions.push(testOptionsMaxEdgeWeight);
 
   const testOptionsElevation = new TestOptions(
     'Options elevation',
@@ -482,7 +498,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOptionsElevation);
+  allTestOptions.push(testOptionsElevation);
 
   const testOptionsRushHour = new TestOptions(
     'Options rushHour',
@@ -500,7 +516,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOptionsRushHour);
+  allTestOptions.push(testOptionsRushHour);
 
 
   const testStoresName = new TestOptions(
@@ -529,7 +545,7 @@ describe('TargomoClient fleet service', () => {
       'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' +
       'aaaaaaaaaaaaaaaaaaaaaaaaaaaa', ExpectedResponse.ERROR_VALIDATION),
     ]);
-  DoTests(testStoresName);
+  allTestOptions.push(testStoresName);
 
   const testStoresAddressUuid = new TestOptions(
     'Stores Address uuid',
@@ -547,7 +563,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressUuid);
+  allTestOptions.push(testStoresAddressUuid);
 
 
   const testStoresAddressAvgHandlingTime = new TestOptions(
@@ -566,7 +582,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressAvgHandlingTime);
+  allTestOptions.push(testStoresAddressAvgHandlingTime);
 
   const testStoresAddressLat = new TestOptions(
     'Stores Address lat',
@@ -587,7 +603,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(13.30, ExpectedResponse.TOURS_LENGTH_2)
     ]);
-  DoTests(testStoresAddressLat);
+  allTestOptions.push(testStoresAddressLat);
 
   const testStoresAddressLng = new TestOptions(
     'Stores Address lng',
@@ -608,7 +624,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(52.50, ExpectedResponse.TOURS_LENGTH_2)
     ]);
-  DoTests(testStoresAddressLng);
+  allTestOptions.push(testStoresAddressLng);
 
   const testStoresAddressName = new TestOptions(
     'Stores Address name',
@@ -626,7 +642,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressName);
+  allTestOptions.push(testStoresAddressName);
 
   const testStoresAddressStreet = new TestOptions(
     'Stores Address street',
@@ -644,7 +660,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressStreet);
+  allTestOptions.push(testStoresAddressStreet);
 
   const testStoresAddressStreetDetails = new TestOptions(
     'Stores Address streetDetails',
@@ -662,7 +678,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressStreetDetails);
+  allTestOptions.push(testStoresAddressStreetDetails);
 
   const testStoresAddressPostalCode = new TestOptions(
     'Stores Address postalCode',
@@ -680,7 +696,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressPostalCode);
+  allTestOptions.push(testStoresAddressPostalCode);
 
   const testStoresAddressCity = new TestOptions(
     'Stores Address city',
@@ -698,7 +714,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressCity);
+  allTestOptions.push(testStoresAddressCity);
 
   const testStoresAddressCountry = new TestOptions(
     'Stores Address country',
@@ -716,7 +732,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressCountry);
+  allTestOptions.push(testStoresAddressCountry);
 
   const testStoresAddressPhone = new TestOptions(
     'Stores Address phone',
@@ -734,7 +750,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testStoresAddressPhone);
+  allTestOptions.push(testStoresAddressPhone);
 
   const testOrdersUuid = new TestOptions(
     'Orders uuid',
@@ -752,7 +768,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersUuid);
+  allTestOptions.push(testOrdersUuid);
 
   const testOrdersStoreUuid = new TestOptions(
     'Orders storeUuid',
@@ -773,7 +789,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase('s1', ExpectedResponse.TOURS_LENGTH_2),
     ]);
-  DoTests(testOrdersStoreUuid);
+  allTestOptions.push(testOrdersStoreUuid);
 
   const testOrdersDeadline = new TestOptions(
     'Orders deadline',
@@ -794,7 +810,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(new Date().toISOString(), ExpectedResponse.TOURS_LENGTH_2),
     ]);
-  DoTests(testOrdersDeadline);
+  allTestOptions.push(testOrdersDeadline);
 
   const testOrdersPriority = new TestOptions(
     'Orders priority',
@@ -812,7 +828,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersPriority);
+  allTestOptions.push(testOrdersPriority);
 
   const testOrdersVolume = new TestOptions(
     'Orders volume',
@@ -830,7 +846,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersVolume);
+  allTestOptions.push(testOrdersVolume);
 
   const testOrdersWeight = new TestOptions(
     'Orders weight',
@@ -848,7 +864,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersWeight);
+  allTestOptions.push(testOrdersWeight);
 
   const testOrdersComments = new TestOptions(
     'Orders comments',
@@ -967,7 +983,7 @@ describe('TargomoClient fleet service', () => {
     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' +
     'aaaaaaaaaaaaaaaaaaaaaaa', ExpectedResponse.ERROR_VALIDATION)
   ]);
-  DoTests(testOrdersComments);
+  allTestOptions.push(testOrdersComments);
 
   const testOrdersAddressUuid = new TestOptions(
     'Orders Address uuid',
@@ -985,7 +1001,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressUuid);
+  allTestOptions.push(testOrdersAddressUuid);
 
   const testOrdersAddressAvgHandlingTime = new TestOptions(
     'Orders Address avgHandlingTime',
@@ -1003,7 +1019,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressAvgHandlingTime);
+  allTestOptions.push(testOrdersAddressAvgHandlingTime);
 
   const testOrdersAddressLat = new TestOptions(
     'Orders Address lat',
@@ -1024,7 +1040,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(13.30, ExpectedResponse.TOURS_LENGTH_2)
     ]);
-  DoTests(testOrdersAddressLat);
+  allTestOptions.push(testOrdersAddressLat);
 
   const testOrdersAddressLng = new TestOptions(
     'Orders Address lng',
@@ -1045,7 +1061,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(52.50, ExpectedResponse.TOURS_LENGTH_2)
     ]);
-  DoTests(testOrdersAddressLng);
+  allTestOptions.push(testOrdersAddressLng);
 
   const testOrdersAddressName = new TestOptions(
     'Orders Address name',
@@ -1063,7 +1079,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressName);
+  allTestOptions.push(testOrdersAddressName);
 
   const testOrdersAddressStreet = new TestOptions(
     'Orders Address street',
@@ -1081,7 +1097,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressStreet);
+  allTestOptions.push(testOrdersAddressStreet);
 
   const testOrdersAddressStreetDetails = new TestOptions(
     'Orders Address streetDetails',
@@ -1099,7 +1115,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressStreetDetails);
+  allTestOptions.push(testOrdersAddressStreetDetails);
 
   const testOrdersAddressPostalCode = new TestOptions(
     'Orders Address postalCode',
@@ -1117,7 +1133,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressPostalCode);
+  allTestOptions.push(testOrdersAddressPostalCode);
 
   const testOrdersAddressCity = new TestOptions(
     'Orders Address city',
@@ -1135,7 +1151,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressCity);
+  allTestOptions.push(testOrdersAddressCity);
 
   const testOrdersAddressCountry = new TestOptions(
     'Orders Address country',
@@ -1153,7 +1169,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressCountry);
+  allTestOptions.push(testOrdersAddressCountry);
 
   const testOrdersAddressPhone = new TestOptions(
     'Orders Address phone',
@@ -1171,7 +1187,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testOrdersAddressPhone);
+  allTestOptions.push(testOrdersAddressPhone);
 
   const testTransportsVehicleUuid = new TestOptions(
     'Transports Vehicle uuid',
@@ -1189,7 +1205,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsVehicleUuid);
+  allTestOptions.push(testTransportsVehicleUuid);
 
   const testTransportsVehicleStoreUuid = new TestOptions(
     'Transports Vehicle storeUuid',
@@ -1210,7 +1226,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase('s1', ExpectedResponse.TOURS_LENGTH_2),
     ]);
-  DoTests(testTransportsVehicleStoreUuid);
+  allTestOptions.push(testTransportsVehicleStoreUuid);
 
   const testTransportsVehicleMaxVolume = new TestOptions(
     'Transports Vehicle maxVolume',
@@ -1228,7 +1244,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION);
-  DoTests(testTransportsVehicleMaxVolume);
+  allTestOptions.push(testTransportsVehicleMaxVolume);
 
   const testTransportsVehicleMaxWeight = new TestOptions(
     'Transports Vehicle maxWeight',
@@ -1246,7 +1262,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION);
-  DoTests(testTransportsVehicleMaxWeight);
+  allTestOptions.push(testTransportsVehicleMaxWeight);
 
   const testTransportsVehicleName = new TestOptions(
     'Transports Vehicle Name',
@@ -1264,7 +1280,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsVehicleName);
+  allTestOptions.push(testTransportsVehicleName);
 
   const testTransportsVehiclePlate = new TestOptions(
     'Transports Vehicle Plate',
@@ -1282,7 +1298,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsVehiclePlate);
+  allTestOptions.push(testTransportsVehiclePlate);
 
   const testTransportsVehicleAvgFuelConsumption = new TestOptions(
     'Transports Vehicle AvgFuelConsumption',
@@ -1300,7 +1316,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsVehicleAvgFuelConsumption);
+  allTestOptions.push(testTransportsVehicleAvgFuelConsumption);
 
   const testTransportsVehicleFuelType = new TestOptions(
     'Transports Vehicle FuelType',
@@ -1318,7 +1334,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsVehicleFuelType);
+  allTestOptions.push(testTransportsVehicleFuelType);
 
   const testTransportsMetadataEarliestDepartureTime = new TestOptions(
     'Transports Metadata EarliestDepartureTime',
@@ -1339,7 +1355,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(new Date().toISOString(), ExpectedResponse.TOURS_LENGTH_2),
     ]);
-  DoTests(testTransportsMetadataEarliestDepartureTime);
+  allTestOptions.push(testTransportsMetadataEarliestDepartureTime);
 
   const testTransportsMetadataStartAddressUuid = new TestOptions(
     'Transports Start Address uuid',
@@ -1357,7 +1373,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressUuid);
+  allTestOptions.push(testTransportsMetadataStartAddressUuid);
 
   const testTransportsMetadataStartAddressAvgHandlingTime = new TestOptions(
     'Transports Start Address avgHandlingTime',
@@ -1375,7 +1391,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressAvgHandlingTime);
+  allTestOptions.push(testTransportsMetadataStartAddressAvgHandlingTime);
 
   const testTransportsMetadataStartAddressLat = new TestOptions(
     'Transports Start Address lat',
@@ -1396,7 +1412,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(13.30, ExpectedResponse.TOURS_LENGTH_2)
     ]);
-  DoTests(testTransportsMetadataStartAddressLat);
+  allTestOptions.push(testTransportsMetadataStartAddressLat);
 
   const testTransportsMetadataStartAddressLng = new TestOptions(
     'Transports Start Address lng',
@@ -1417,7 +1433,7 @@ describe('TargomoClient fleet service', () => {
     [
       new CustomTestCase(52.50, ExpectedResponse.TOURS_LENGTH_2)
     ]);
-  DoTests(testTransportsMetadataStartAddressLng);
+  allTestOptions.push(testTransportsMetadataStartAddressLng);
 
   const testTransportsMetadataStartAddressName = new TestOptions(
     'Transports Start Address name',
@@ -1435,7 +1451,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressName);
+  allTestOptions.push(testTransportsMetadataStartAddressName);
 
   const testTransportsMetadataStartAddressStreet = new TestOptions(
     'Transports Start Address street',
@@ -1453,7 +1469,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressStreet);
+  allTestOptions.push(testTransportsMetadataStartAddressStreet);
 
   const testTransportsMetadataStartAddressStreetDetails = new TestOptions(
     'Transports Start Address streetDetails',
@@ -1471,7 +1487,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressStreetDetails);
+  allTestOptions.push(testTransportsMetadataStartAddressStreetDetails);
 
   const testTransportsMetadataStartAddressPostalCode = new TestOptions(
     'Transports Start Address postalCode',
@@ -1489,7 +1505,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressPostalCode);
+  allTestOptions.push(testTransportsMetadataStartAddressPostalCode);
 
   const testTransportsMetadataStartAddressCity = new TestOptions(
     'Transports Start Address city',
@@ -1507,7 +1523,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressCity);
+  allTestOptions.push(testTransportsMetadataStartAddressCity);
 
   const testTransportsMetadataStartAddressCountry = new TestOptions(
     'Transports Start Address country',
@@ -1525,7 +1541,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressCountry);
+  allTestOptions.push(testTransportsMetadataStartAddressCountry);
 
   const testTransportsMetadataStartAddressPhone = new TestOptions(
     'Transports Start Address phone',
@@ -1543,7 +1559,7 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2,
     ExpectedResponse.TOURS_LENGTH_2);
-  DoTests(testTransportsMetadataStartAddressPhone);
+  allTestOptions.push(testTransportsMetadataStartAddressPhone);
 
   // TODO test the same uuid on multiple stores for error on unique-ness
   // TODO test uuid in general, this method of testing doesnt work for the uuid since
@@ -1564,8 +1580,8 @@ describe('TargomoClient fleet service', () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION);
-  DoTests(testStoresUuid);
-  */
+  allTestOptions.push(testStoresUuid);
+  
 
   // Actually execute the test
   test('Stores UUID', async () => {
@@ -1615,5 +1631,11 @@ describe('TargomoClient fleet service', () => {
           break;
       }
     }
-  });
+  });*/
+
+
+  // Disabled the detailed tests for now
+  /*allTestOptions.forEach(testOptions => {
+    DoTests(testOptions);
+  })*/
 });

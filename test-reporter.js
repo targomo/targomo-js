@@ -32,36 +32,41 @@ class TestReporter {
     onRunComplete(contexts, results) {
         // Add the last ']' so the JSON is valid and can be parsed
         fs.writeFileSync('testsToReport.txt',']', { flag: 'a+' });
-        var testsToReport = JSON.parse(fs.readFileSync('testsToReport.txt', 'utf8'));
+        var testsToReport;
+        try {
+            testsToReport = JSON.parse(fs.readFileSync('testsToReport.txt', 'utf8'));
+        } catch (e) {
+            console.error(e);
+        }
         fs.unlinkSync('testsToReport.txt');
-        
-        // Look at all the results, if a result has the status 'failed', then all the information will be gathered and written to a file
-        results.testResults.forEach(testResult => {
-            testResult.testResults.forEach(result => {
-                if(result.status === 'failed'){
-                    var title = result.title;
-                    var error = result.failureMessages[0];
-                    var request, expected;
-                    var found = false;
-                    testsToReport.forEach(test => {
-                        if(!found){
-                            if(test.name === title){
-                                found = true;
-                                request = test.request;
-                                expected = test.expected;
+        if(testsToReport){
+            // Look at all the results, if a result has the status 'failed', then all the information will be gathered and written to a file
+            results.testResults.forEach(testResult => {
+                testResult.testResults.forEach(result => {
+                    if(result.status === 'failed'){
+                        var title = result.title;
+                        var error = result.failureMessages[0];
+                        var request, expected;
+                        var found = false;
+                        testsToReport.forEach(test => {
+                            if(!found){
+                                if(test.name === title){
+                                    found = true;
+                                    request = test.request;
+                                    expected = test.expected;
+                                }
                             }
+                        });
+                        if(found){
+                            this.writeToErrorLog(title, error, request, expected);
+                        }else {
+                            console.log('problem in the onTestResult handling code');
                         }
-                    });
-                    if(found){
-                        this.writeToErrorLog(title, error, request, expected);
-                    }else {
-                        console.log('problem in the onTestResult handling code');
-                    }
 
-                }
+                    }
+                });
             });
-        });
-        
+        }
     }
 
       writeToErrorLog(title, error, request, expected){
@@ -87,7 +92,8 @@ class TestReporter {
             let value = split[1];
             try {
             value = JSON.stringify(JSON.parse(value), null, 4);
-            } catch (e) {                console.log(value);
+            } catch (e) {                
+                console.log("not json");
             }
             message = split[0] + 'instead received\n\n' + value;
         }
@@ -96,7 +102,6 @@ class TestReporter {
 
       var requestText = JSON.stringify(request, null, 4);
     
-      console.log(requestText);
 
       fs.writeFileSync('testResults.txt',
         '==========================\n|           ID:          |\n==========================\n' + title + '\n' +
