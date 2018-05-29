@@ -4,14 +4,8 @@ variables:
   NODE_ENV: gitlab-ci
 
 before_script:
-  - echo "email=developers@targomo.com" > ~/.npmrc
-  - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> ~/.npmrc
-  - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> ~/.npmrc
-  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
   - npm config set loglevel warn
   - npm install
-  - echo "always-auth=true" >> ~/.npmrc
-  - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> ~/.npmrc
 
 lint:
   stage: lint
@@ -21,9 +15,10 @@ lint:
 test_and_coverage:
   stage: test
   script:
+    - ls
     - npm run test:coverage
     
-build_lib:
+build_release:
   stage: build
   script:
     - apt-get install --yes jq
@@ -35,9 +30,16 @@ build_lib:
         exit 1
       fi
     - npm run build
+    - cp LICENSE README.md dist/
     - cd dist
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+    - npm publish --access=public
+    - echo "email=developers@targomo.com" > .npmrc
+    - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> .npmrc
+    - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
+    - echo "always-auth=true" >> .npmrc
+    - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
-    - npm publish
   only:
     - tags
 
@@ -49,6 +51,11 @@ build_pre_release:
     - cd dist
     - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
     - mv package.json.new package.json
+    - echo "email=developers@targomo.com" > .npmrc
+    - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> .npmrc
+    - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
+    - echo "always-auth=true" >> .npmrc
+    - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
   when: manual
   only: 
