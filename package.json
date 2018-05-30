@@ -51,10 +51,10 @@
     "tslint": "^5.8.0",
     "typescript": "^2.5.0",
     "webpack": "^3.8.1",
-    "webpack-node-externals": "1.6.0"
+    "webpack-node-externals": "1.6.0",
+    "@types/geojson": "^7946.0.1"
   },
   "dependencies": {
-    "@types/geojson": "^7946.0.1",
     "isomorphic-fetch": "^2.2.1",
     "whatwg-fetch": "^2.0.3"
   }
