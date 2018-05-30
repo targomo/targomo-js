@@ -8,7 +8,7 @@
     "jsx",
     "json"
   ],
-  "testMatch": ["**/?(.)(spec|test).(ts|js)?(x)"],
+  "testMatch": ["**/?(*.)(spec|test).(ts|js)?(x)"],
   "transform": {
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
   },
