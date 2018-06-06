@@ -93,8 +93,10 @@ export class TravelRequestPayload implements TravelRequestOptions {
           case 'transit':
             source.tm = {
               transit: {
-                date: this.transitFrameDate,
-                time: this.transitFrameTime,
+                frame: {
+                  date: this.transitFrameDate,
+                  time: this.transitFrameTime,
+                },
                 duration: this.transitFrameDuration
               }
             }

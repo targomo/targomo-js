@@ -81,9 +81,11 @@ export class Route {
   }
 
   private calculateElevationGain() {
-    let distance = 0
+    let distance = undefined
     for (let i = 0; i < this.routeSegments.length; i++) {
-      distance += this.routeSegments[i].elevationGain
+      if (isFinite(this.routeSegments[i].elevationGain)) {
+        distance = (distance || 0) + this.routeSegments[i].elevationGain
+      }
     }
     return distance
   }
