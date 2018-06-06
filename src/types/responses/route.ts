@@ -1,6 +1,5 @@
 import { RouteSegment } from './routeSegment'
 import { LatLng } from '../index';
-import * as geometry from '../../geometry'
 import { TargomoClient } from '../../api/targomoClient';
 
 /**
