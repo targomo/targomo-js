@@ -67,6 +67,9 @@ export class Route {
     this.downhillMeter = elevationDifferences.downhillMeter
 
     this.totalElevationDifference =  Math.abs(this.sourceHeight - this.targetHeight)
+
+    this.departureTime = this.calculateDepartureTime()
+    this.arrivalTime = this.calculateArrivalTime()
   }
 
   // equals(route: Route) {
@@ -86,20 +89,6 @@ export class Route {
   //   })
 
   //   return key + points
-  // }
-
-  /*
-    *
-    */
-  // addRouteSegment(routeSegment: RouteSegment) {
-  //   this.routeSegments.push(routeSegment)
-  // }
-
-  /*
-    *
-    */
-  // setTravelTime(travelTime: number) {
-  //   this.travelTime = travelTime
   // }
 
   /*
@@ -199,4 +188,36 @@ export class Route {
 
     return {targetHeight, sourceHeight, uphillMeter, downhillMeter}
   } // check why this was like this in original
+
+  private calculateDepartureTime() {
+    let travelTime = 0
+
+    for (let i = 0; i < this.routeSegments.length; i++) {
+      let segment = this.routeSegments[i]
+
+      if (segment.departureTime != null) {
+        return (segment.departureTime - travelTime)
+      } else {
+        travelTime += (segment.travelTime || 0)
+      }
+    }
+
+    return undefined
+  }
+
+  private calculateArrivalTime() {
+    let travelTime = 0
+
+    for (let i = this.routeSegments.length - 1; i >= 0; i--) {
+      let segment = this.routeSegments[i]
+
+      if (segment.arrivalTime != null) {
+        return (segment.arrivalTime - travelTime)
+      } else {
+        travelTime += (segment.travelTime || 0)
+      }
+    }
+
+    return undefined
+  }
 }
