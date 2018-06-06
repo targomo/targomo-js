@@ -2,9 +2,8 @@ import * as geometry from '../../geometry'
 import { TargomoClient } from '../../api/targomoClient';
 import { LatLng } from '../types';
 
-/*
- * NOTE: just copied from r360-js without much thought...
- * NOTE: do we want to keep the java like getter/setter stuff?
+/**
+ * Represents a continuous segment of a route using one travel mode
  */
 export class RouteSegment {
   readonly type: string
@@ -24,7 +23,6 @@ export class RouteSegment {
   readonly arrivalTime: number
   readonly tripHeadSign: string
 
-  // TODO: figure ou the propert types for all these
   constructor(client: TargomoClient, segment: any) {
     this.points          = []
     this.type            = segment.type
@@ -34,11 +32,9 @@ export class RouteSegment {
     * TODO don't call it length! in route length refers to the array length.
     * Call it distance instead
     */
-
     this.distance        = segment.length / 1000
     this.warning         = segment.warning
     this.elevationGain   = segment.elevationGain
-    // this.errorMessage
     this.transitSegment  = false
     this.startName       = segment.startname
     this.endName         = segment.endname
@@ -48,9 +44,7 @@ export class RouteSegment {
       this.points.push(geometry.webMercatorToLatLng({x: point[1], y: point[0]}, point[2]))
     })
 
-    // in case we have a transit route, we set a color depending
-    //  on the route type (bus, subway, tram etc.)
-    // and we set information which are only available
+    // in case we have a transit route, we set information which are only available
     // for transit segments like depature station and route short sign
     if ( segment.isTransit ) {
       this.transitSegment = true
