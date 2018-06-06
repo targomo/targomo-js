@@ -7,44 +7,51 @@ import { TargomoClient } from '../../api/targomoClient';
 // need to go through everything again and check
 export class Route {
   // NOTE: made public for now...need to go thought this again in the future
-  travelTime: number
-  routeSegments: RouteSegment[]
-  points: LatLng[]
-  uphillMeter: number
-  downhillMeter: number
-  targetHeight: number
-  sourceHeight: number
-  sourceId: any
-  targetId: any
-  length: number
-  transfers: any
+  readonly travelTime: number
+  readonly routeSegments: RouteSegment[]
+  readonly points: LatLng[]
+  readonly uphillMeter: number
+  readonly downhillMeter: number
+  readonly targetHeight: number
+  readonly sourceHeight: number
+  readonly sourceId: any
+  readonly targetId: any
+  readonly length: number
+  readonly transfers: any
+
+  readonly departureTime: number
+  readonly arrivalTime: number
+
+  readonly totalElevationDifference: number
 
   // TODO: consider making the costructor not couped with return values from service
   constructor(client: TargomoClient, travelTime: number, segments: any[], meta: any) {
     this.travelTime      = travelTime
     this.routeSegments   = []
-    this.points          = []
-    this.uphillMeter     = 0
-    this.downhillMeter   = 0
+    // this.uphillMeter     = 0
+    // this.downhillMeter   = 0
     this.targetHeight    = undefined
     this.sourceHeight    = undefined
     this.sourceId        = undefined
     this.targetId        = undefined
     this.length          = undefined
-    this.transfers       = 0
 
+    let transfers = 0
+    let points: LatLng[] = []
     // the server delivers the route from target to source
     segments.reverse().forEach((segment) => {
       let routeSegment = new RouteSegment(client, segment)
       this.routeSegments.push(routeSegment)
 
       if (routeSegment.type === 'TRANSFER') {
-        this.transfers++
+        transfers++
       }
 
-      this.points = this.points.concat(routeSegment.getPoints().reverse())
+      points = points.concat(routeSegment.points.reverse())
     })
 
+    this.points          = points
+    this.transfers       = transfers
 
     if (typeof meta !== 'undefined') {
         this.sourceId = meta.source_id
@@ -52,41 +59,48 @@ export class Route {
         this.length   = meta.length
     }
 
-    this.setElevationDifferences() // TODO: should this be called here?
+    const elevationDifferences = this.calculateElevationDifferences(this.points)
+
+    this.targetHeight = elevationDifferences.targetHeight
+    this.sourceHeight = elevationDifferences.sourceHeight
+    this.uphillMeter = elevationDifferences.uphillMeter
+    this.downhillMeter = elevationDifferences.downhillMeter
+
+    this.totalElevationDifference =  Math.abs(this.sourceHeight - this.targetHeight)
   }
 
-  equals(route: Route) {
-    return this.getKey() === route.getKey()
-  }
+  // equals(route: Route) {
+  //   return this.getKey() === route.getKey()
+  // }
 
-  getKey() {
-    let key: string = '' + this.travelTime
-    let points = ''
+  // getKey() {
+  //   let key: string = '' + this.travelTime
+  //   let points = ''
 
-    this.getSegments().forEach((segment: RouteSegment) => {
-      key += ' ' + segment.getRouteShortName() + ' ' + segment.getDepartureTime() + ' ' + segment.getArrivalTime()
+  //   this.getSegments().forEach((segment: RouteSegment) => {
+  //     key += ' ' + segment.getRouteShortName() + ' ' + segment.getDepartureTime() + ' ' + segment.getArrivalTime()
 
-      segment.getPoints().forEach((point: LatLng) => {
-        points += ' ' + point.lat + '' + point.lng
-      })
-    })
+  //     segment.getPoints().forEach((point: LatLng) => {
+  //       points += ' ' + point.lat + '' + point.lng
+  //     })
+  //   })
 
-    return key + points
-  }
+  //   return key + points
+  // }
 
   /*
     *
     */
-  addRouteSegment(routeSegment: RouteSegment) {
-    this.routeSegments.push(routeSegment)
-  }
+  // addRouteSegment(routeSegment: RouteSegment) {
+  //   this.routeSegments.push(routeSegment)
+  // }
 
   /*
     *
     */
-  setTravelTime(travelTime: number) {
-    this.travelTime = travelTime
-  }
+  // setTravelTime(travelTime: number) {
+  //   this.travelTime = travelTime
+  // }
 
   /*
     *
@@ -95,7 +109,7 @@ export class Route {
   getDistance() {
     let distance = 0
     for (let i = 0; i < this.routeSegments.length; i++) {
-      distance += this.routeSegments[i].getDistance()
+      distance += this.routeSegments[i].distance
     }
     return distance
   }
@@ -107,7 +121,7 @@ export class Route {
   getElevationGain() {
     let distance = 0
     for (let i = 0; i < this.routeSegments.length; i++) {
-      distance += this.routeSegments[i].getElevationGain()
+      distance += this.routeSegments[i].elevationGain
     }
     return distance
   }
@@ -150,56 +164,39 @@ export class Route {
     }
   }
 
-  /*
-    *
-    */
-  getSegments() {
-    return this.routeSegments
-  }
-
-  getUphillElevation() {
-    return this.uphillMeter
-  }
-
-  getDownhillElevation() {
-    return this.downhillMeter
-  }
-
-  getTotalElevationDifference() {
-    return Math.abs(this.sourceHeight - this.targetHeight)
-  }
 
   // TODO: check again what this does
-  setElevationDifferences() {
+  private calculateElevationDifferences(points: LatLng[]) {
     let previousHeight = undefined
+
+    let targetHeight = undefined
+    let sourceHeight = undefined
+
+    let uphillMeter     = 0
+    let downhillMeter   = 0
 
     for (let i = this.points.length - 1; i >= 0 ; i--) {
       if (i == 0) {
-        this.targetHeight = this.points[i].elevation
+        targetHeight = this.points[i].elevation
       }
 
       if (i == this.points.length - 1) {
-        this.sourceHeight = this.points[i].elevation
+        sourceHeight = this.points[i].elevation
       }
 
       if (typeof previousHeight != 'undefined') {
         // we go up
         if (previousHeight > this.points[i].elevation) {
-          this.uphillMeter += (previousHeight - this.points[i].elevation)
+          uphillMeter += (previousHeight - this.points[i].elevation)
         } else if ( previousHeight < this.points[i].elevation ) {
           // and down
-          this.downhillMeter += (this.points[i].elevation - previousHeight)
+          downhillMeter += (this.points[i].elevation - previousHeight)
         }
       }
 
       previousHeight = this.points[i].elevation
     }
-  } // check why this was like this in original
 
-  /*
-    *
-    */
-  getTravelTime() {
-    return this.travelTime
-  }
+    return {targetHeight, sourceHeight, uphillMeter, downhillMeter}
+  } // check why this was like this in original
 }
