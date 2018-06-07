@@ -287,12 +287,12 @@ describe('TargomoClient fleet service', () => {
 
 // base test
 test('base test', async () => {
-  
+
   try {
     const result = await testClient.fleets.fetch(storesBase, ordersBase, transportsBase, optionsBase);
         expect(result.tours).toBeDefined();
         expect(result.tours.length).toBe(2);
-  }catch (error) {
+  } catch (error) {
     expect(error).toBeUndefined();
   }
 });
@@ -1561,6 +1561,7 @@ test('base test', async () => {
     ExpectedResponse.TOURS_LENGTH_2);
   allTestOptions.push(testTransportsMetadataStartAddressPhone);
 
+
   // TODO test the same uuid on multiple stores for error on unique-ness
   // TODO test uuid in general, this method of testing doesnt work for the uuid since
   // the storeuuid in other parts of the request also need to change
@@ -1581,7 +1582,7 @@ test('base test', async () => {
     ExpectedResponse.ERROR_VALIDATION,
     ExpectedResponse.ERROR_VALIDATION);
   allTestOptions.push(testStoresUuid);
-  
+
 
   // Actually execute the test
   test('Stores UUID', async () => {
@@ -1635,7 +1636,7 @@ test('base test', async () => {
 
 
   // Disabled the detailed tests for now
-  /*allTestOptions.forEach(testOptions => {
-    DoTests(testOptions);
-  })*/
+  // allTestOptions.forEach(testOptions => {
+  //  DoTests(testOptions);
+  // });
 });
