@@ -34,7 +34,10 @@ class TestReporter {
         fs.writeFileSync('testsToReport.txt',']', { flag: 'a+' });
         var testsToReport;
         try {
-            testsToReport = JSON.parse(fs.readFileSync('testsToReport.txt', 'utf8'));
+            var contents = fs.readFileSync('testsToReport.txt', 'utf8');
+            if (contents.length > 1 ) {
+                testsToReport = JSON.parse(contents);
+            }
         } catch (e) {
             console.error(e);
         }
