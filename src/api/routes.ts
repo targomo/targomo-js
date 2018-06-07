@@ -4,7 +4,7 @@ import { RouteRequestOptions } from '../types/options/routeRequestOptions';
 import { Route } from '../types/responses/route';
 import { requests} from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
-import { TimeRequestPayload } from './payload/timeRequestPayload';
+import { RouteRequestPayload } from './payload/routeRequestPayload';
 
 export class RoutesClient {
   constructor(private client: TargomoClient) {
@@ -17,7 +17,7 @@ export class RoutesClient {
    * @param options
    */
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions): Promise<Route[]> {
-    const cfg = new TimeRequestPayload(this.client, sources, targets, options)
+    const cfg = new RouteRequestPayload(this.client, sources, targets, options)
     const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'route',
                                         this.client.serviceKey) + '&cb=cb&cfg=' + encodeURIComponent(JSON.stringify(cfg))
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'JSONP')
