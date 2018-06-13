@@ -41,6 +41,11 @@ export interface TravelMoreRequestOptions {
   transitFrameDate?: number
   transitFrameTime?: number
 
+  /**
+   * Accepts either a javascript date object or a timestamp number
+   */
+  transitFrameDateTime?: Date | number
+
   // date = this.transitFrameDate // deprecated
   // time = this.transitFrameTime // deprecated
 
