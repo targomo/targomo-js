@@ -1,6 +1,7 @@
 import { TargomoClient } from './targomoClient'
 import { LatLngId, StatisticsGroup, ReachableTile, StatisticsSetMeta, StatisticsSet, StatisticsKey, StatisticsKeyMeta } from '../index';
-import { StatisticsRequestOptions, StatisticsTravelRequestOptions, StatisticsGeometryRequestOptions } from '../types/options/statisticsRequestOptions';
+import { StatisticsRequestOptions, StatisticsTravelRequestOptions,
+         StatisticsGeometryRequestOptions } from '../types/options/statisticsRequestOptions';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
 import { requests} from '../util/requestUtil';

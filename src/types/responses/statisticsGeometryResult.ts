@@ -1,4 +1,4 @@
-import {StatisticsKey, StatisticsGroup, Statistics} from '../types'
+import {StatisticsKey} from '../types'
 
 export interface StatisticsGeometryResultItem {
   value: number
