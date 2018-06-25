@@ -13,3 +13,10 @@ export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions
   // statistics: (StatisticsKey | number)[]
   statistics: StatisticsKey[]
 }
+
+export interface StatisticsGeometryRequestOptions {
+  statisticsGroup: StatisticsSet
+  statistics: StatisticsKey[]
+  useCache?: boolean
+  requestTimeout?: number
+}

@@ -1,10 +1,12 @@
 import { TargomoClient } from './targomoClient'
 import { LatLngId, StatisticsGroup, ReachableTile, StatisticsSetMeta, StatisticsSet, StatisticsKey, StatisticsKeyMeta } from '../index';
-import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../types/options/statisticsRequestOptions';
+import { StatisticsRequestOptions, StatisticsTravelRequestOptions, StatisticsGeometryRequestOptions } from '../types/options/statisticsRequestOptions';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
 import { requests} from '../util/requestUtil';
 import { SimpleLRU } from '../util/cache';
+import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload';
+import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult';
 
 export class StatisticsClient {
   private statisticsMetadataCache = new SimpleLRU<StatisticsSetMeta>(200)
@@ -64,6 +66,22 @@ export class StatisticsClient {
     return new StatisticsResult(result, options.statistics)
   }
 
+
+  /**
+   *
+   * @param sources
+   * @param options
+   */
+  async geometry(geometry: any, options: StatisticsGeometryRequestOptions): Promise<StatisticsGeometryResult> {
+    if (!geometry) {
+      return null
+    }
+
+    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const result = await requests(this.client, options)
+                         .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
+    return new StatisticsGeometryResult(result, options.statistics)
+  }
 
   /**
    *
