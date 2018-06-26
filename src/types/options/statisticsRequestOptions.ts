@@ -20,4 +20,5 @@ export interface StatisticsGeometryRequestOptions {
   statistics: StatisticsKey[]
   useCache?: boolean
   requestTimeout?: number
+  crs?: number
 }

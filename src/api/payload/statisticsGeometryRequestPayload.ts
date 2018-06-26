@@ -29,7 +29,8 @@ export class StatisticsGeometryRequestPayload {
     this.serviceUrl = client.serviceUrl
 
     this.intersectionGeometry = {
-      data: geometry
+      data: geometry,
+      crs: options.crs || 4326
     }
   }
 }
