@@ -22,7 +22,7 @@ export class StatisticsClient {
    */
   async combined(sources: LatLngId[], // sources: LatLng[],
                  options: StatisticsRequestOptions): Promise<StatisticsGroup> {
-    const result = await this.dependent(sources, options)
+    const result = await this.dependent(sources, {...options, omitIndividualStatistics: true})
     return result && result.statistics
   }
 

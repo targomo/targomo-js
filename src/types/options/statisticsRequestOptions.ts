@@ -12,6 +12,7 @@ export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
 export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions {
   // statistics: (StatisticsKey | number)[]
   statistics: StatisticsKey[]
+  omitIndividualStatistics?: boolean
 }
 
 export interface StatisticsGeometryRequestOptions {
