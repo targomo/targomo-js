@@ -236,7 +236,7 @@ export function webMercatorToLatLng(point: { x: number, y: number }, elevation: 
  */
 export function latLngToWebMercator(latlng: LatLng) {
   const point = projection.sphericalMercator.project(latlng)
-  point.x *= 6378137
-  point.y *= 6378137
+  // point.x *= 6378137
+  // point.y *= 6378137
   return point
 }
