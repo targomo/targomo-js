@@ -226,9 +226,29 @@ export interface StatisticsKeyMeta {
   max: number
   avg: number
   type: string
-  names: { [index: string]: string }
-  descriptions: { [index: string]: string }
-  breakpoints: any
+  names: { [lang_code: string]: string }
+  descriptions: { [lang_code: string]: string }
+  breakpoints: {
+    equal_interval?: {
+      c9: number[],
+      c7: number[],
+      c5: number[],
+      [n: string]: number[]
+    },
+    kmeans?: {
+      c9: number[],
+      c7: number[],
+      c5: number[],
+      [n: string]: number[]
+    },
+    [method: string]: {
+      c9: number[],
+      c7: number[],
+      c5: number[],
+      [n: string]: number[]
+    },
+
+  }
 }
 
 /**
@@ -236,10 +256,27 @@ export interface StatisticsKeyMeta {
  */
 export interface StatisticsSetMeta {
   id: number
+  min_zoom: number,
   table: string
   srid: SRID
   type: string
   source: string
+  created: Date,
+  license: string,
+  modified: Date,
+  numberofpoints: number,
+  version: string,
+  bounding_box: {
+    top_right: LatLng,
+    bottom_left: LatLng
+  },
+  names: {
+    [lang_code: string]: string
+  },
+  descriptions: {
+    [lang_code: string]: string
+  },
+  ignorevalues: number[],
   stats: StatisticsKeyMeta[]
 }
 
