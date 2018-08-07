@@ -1,9 +1,9 @@
-import { StatisticsSet,  StatisticsKey, TravelRequestOptions} from '../index'
+import { StatisticsGroupId,  StatisticsItem, TravelRequestOptions} from '../index'
 
 export interface OptimizationRequestOptions extends TravelRequestOptions {
   pointsPerSolution: number
-  statistic: StatisticsKey | number
-  statisticGroup: StatisticsSet
+  statistic: StatisticsItem | number
+  statisticGroup: StatisticsGroupId
   maxSolutions?: number
   name?: string
   description?: string

@@ -1,23 +1,23 @@
-import {StatisticsKey, StatisticsGroup, Statistics} from '../types'
+import {StatisticsItem, StatisticsList, StatisticValues} from '../types'
 
 export class StatisticsResult {
-  readonly statistics: StatisticsGroup
-  readonly individualStatistics: {[id: string]: StatisticsGroup}
+  readonly statistics: StatisticsList
+  readonly individualStatistics: {[id: string]: StatisticsList}
   readonly raw: any
 
-  constructor(result: any, statistics: StatisticsKey[]) {
+  constructor(result: any, statistics: StatisticsItem[]) {
     function dataToStatisticgroup(values: any) {
-      const statisticsGroup: StatisticsGroup = {}
+      const statisticsGroup: StatisticsList = {}
 
       // Convert to map of named statistics, instead of index based ones
       for (let statistic of statistics) {
-        statisticsGroup[statistic.name] = new Statistics(values[statistic.id])
+        statisticsGroup[statistic.name] = new StatisticValues(values[statistic.id])
       }
 
       return statisticsGroup
     }
 
-    const individualStatistics: {[id: string]: StatisticsGroup} = {}
+    const individualStatistics: {[id: string]: StatisticsList} = {}
     if (result.individualStatistics) {
       for (let key in result.individualStatistics) {
         if (result.individualStatistics[key] && result.individualStatistics[key].statistics) {

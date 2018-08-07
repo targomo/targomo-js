@@ -1,5 +1,5 @@
 import { TargomoClient } from './targomoClient'
-import { StatisticsSet, BenchmarkCriteria, BoundingBox } from '../index';
+import { StatisticsGroupId, BenchmarkCriteria, BoundingBox } from '../index';
 import { requests} from '../util/requestUtil';
 
 export class BenchmarksClient {
@@ -10,7 +10,7 @@ export class BenchmarksClient {
   /**
    *
    */
-  async fetch(group: StatisticsSet, conditions: BenchmarkCriteria[], bounds: BoundingBox): Promise<any> {
+  async fetch(group: StatisticsGroupId, conditions: BenchmarkCriteria[], bounds: BoundingBox): Promise<any> {
     // TODO: have a "Payload" object
     const boundsData = {
       'west': bounds.southWest.lng,
@@ -36,7 +36,7 @@ export class BenchmarksClient {
   /**
    *
    */
-  async metadata(key: StatisticsSet): Promise<any[]> {
+  async metadata(key: StatisticsGroupId): Promise<any[]> {
     const url = `${this.client.config.tilesUrl}/benchmarks/meta/v1/${encodeURIComponent('' + key)}`
     return await requests(this.client).fetch(url)
   }
