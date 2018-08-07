@@ -1,8 +1,8 @@
-import {BoundingBox, LatLngProperties, LatLngId, LatLngIdProperties} from '../types'
-import { TargomoClient } from './targomoClient'
-import { requests} from '../util/requestUtil';
+import { BoundingBox, LatLngId, LatLngIdProperties, LatLngProperties } from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
+import { requests } from '../util/requestUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
+import { TargomoClient } from './targomoClient';
 
 /**
  * An object representing a point (poi/marker) which is returned from overpass queries in this module
