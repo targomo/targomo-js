@@ -6,7 +6,7 @@ import {
   StatisticsGroupMeta,
   StatisticsGroupId,
   StatisticsItem,
-  StatisticsKeyMeta
+  StatisticsItemMeta
 } from '../index';
 import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../types/options/statisticsRequestOptions';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
@@ -103,7 +103,7 @@ export class StatisticsClient {
   /**
    *
    */
-  async metadataKey(group: StatisticsGroupMeta | StatisticsGroupId, statistic: StatisticsItem): Promise<StatisticsKeyMeta> {
+  async metadataKey(group: StatisticsGroupMeta | StatisticsGroupId, statistic: StatisticsItem): Promise<StatisticsItemMeta> {
     const endpoint = await this.metadata(group)
 
     for (let attribute of endpoint.stats) {

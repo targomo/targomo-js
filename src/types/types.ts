@@ -119,6 +119,7 @@ export interface StatisticsItem {
   label?: string,
   chart?: boolean,
   type?: 'value' | 'percent' | 'average',
+  meta?: StatisticsItemMeta
   groupId?: StatisticsGroupId
   groupMeta?: StatisticsGroupMeta
 }
@@ -126,14 +127,14 @@ export interface StatisticsItem {
 /**
  *
  */
-export interface LabelStatisticsKey extends StatisticsItem {
+export interface LabelStatisticsItem extends StatisticsItem {
   label: string
 }
 
 /**
  *
  */
-export interface ExtendedStatisticsKey extends LabelStatisticsKey {
+export interface ExtendedStatisticsItem extends LabelStatisticsItem {
   /**
    * Can this statistic be displayed as a chart
    */
@@ -227,7 +228,7 @@ export interface LatLngIdTravelTime extends LatLngId {
 /**
  * Describes metadata about a single statistic in a StatisticsGroup
  */
-export interface StatisticsKeyMeta {
+export interface StatisticsItemMeta {
   statistic_id: number
   min: number
   max: number
@@ -284,7 +285,7 @@ export interface StatisticsGroupMeta {
     [langCode: string]: string
   },
   ignorevalues: number[],
-  stats: StatisticsKeyMeta[]
+  stats: StatisticsItemMeta[]
 }
 
 /**
