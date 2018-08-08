@@ -2,7 +2,7 @@ import { TargomoClient } from './targomoClient'
 import { LatLngIdTravelMode, LatLngId } from '../index';
 import { RouteRequestOptions } from '../types/options/routeRequestOptions';
 import { Route } from '../types/responses/route';
-import { requests} from '../util/requestUtil';
+import { requests } from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
 import { RouteRequestPayload } from './payload/routeRequestPayload';
 
@@ -19,7 +19,8 @@ export class RoutesClient {
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions): Promise<Route[]> {
     const cfg = new RouteRequestPayload(this.client, sources, targets, options)
     const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'route',
-                                        this.client.serviceKey) + '&cb=cb&cfg=' + encodeURIComponent(JSON.stringify(cfg))
+      this.client.serviceKey) + '&cfg=' + encodeURIComponent(JSON.stringify(cfg))
+    console.log(url)
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'JSONP')
 
     return result.routes.map((meta: any) => {
