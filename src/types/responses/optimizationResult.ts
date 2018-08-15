@@ -1,5 +1,3 @@
-import {LatLngId} from '../types'
-
 export interface OptimizationResultSolution {
   id: number
   startTime: number
