@@ -1,14 +1,15 @@
 import { TargomoClient } from './targomoClient'
-import { LatLngId} from '../index';
+import { UrlUtil} from '../util';
 import { requests} from '../util/requestUtil';
 import { OptimizationRequestOptions } from '../types/options/optimizationRequestOptions';
+import { LatLngId } from '../types/types';
+import { OptimizationRequestPayload } from './payload/optimizationRequestPayload';
+import { OptimizationResult } from '../types/responses/optimizationResult';
 
 export class OptimizationsClient {
   constructor(private client: TargomoClient) {
   }
 
-  // TODO optimization....methods below may go into a separate class and be accesssed
-  //  as api.optimization.create / api.optimization.ready / api.optimization.get
   /**
    *
    * @param sources
@@ -21,25 +22,22 @@ export class OptimizationsClient {
       return null
     }
 
-    // const url = this.statisticsUrl + '/simulation'
-    // const cfg = options.toCfgObject(sources, matrixOptions) // TODO: instead have OPtimizationPayload  or SimulationPayload
-    // const result = await requests().fetchApiRequestData(url, 'POST', cfg)
+    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/start', this.client.serviceKey, false)
+                + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const cfg = new OptimizationRequestPayload(this.client.serviceUrl, this.client.serviceKey, sources, options)
 
-    // return result
-
-
-    // return null
-    throw new Error('not implemented yet')
+    const result = await requests(this.client, options).fetch(url, 'POST', cfg)
+    return result && +result.id
   }
 
-  async ready(optimizationId: number | number[]) {
+  async ready(optimizationId: number | number[]): Promise<{[id: string]: boolean}> {
     if (!(optimizationId instanceof Array)) {
       optimizationId = [optimizationId]
     }
 
-    const url = this.client.config.statisticsUrl + '/simulation/ready?'
-                + optimizationId.map(id => `simulationId=${encodeURIComponent('' + +id)}`).join('&')
+    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/ready', this.client.serviceKey, false)
                 + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+                + optimizationId.map(id => `&simulationId=${encodeURIComponent('' + +id)}`)
 
     return requests(this.client).fetch(url)
   }
@@ -49,12 +47,9 @@ export class OptimizationsClient {
    * @param optimizationId
    */
   async fetch(optimizationId: number) {
-    const url = this.client.config.statisticsUrl + '/simulation/'
-                + encodeURIComponent('' + +optimizationId)
-                + '?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, `simulation/${optimizationId}`, this.client.serviceKey, false)
+                + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
 
-    console.log('URL', url)
-    // TODO: from GH...get optimization results
-    return requests(this.client).fetch(url)
+    return new OptimizationResult(await requests(this.client).fetch(url))
   }
 }
