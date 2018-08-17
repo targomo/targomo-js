@@ -11,9 +11,10 @@ export class OptimizationsClient {
   }
 
   /**
+   * Initiates a an optimimization simulation. Given a list of locations and simulation parameters it tries to
+   * derive a subset of these locations that are optimal.
    *
    * @param sources
-   * @param matrixOptions
    * @param options
    */
   // NOTE: we can't have unit tests for this....
@@ -30,6 +31,11 @@ export class OptimizationsClient {
     return result && +result.id
   }
 
+  /**
+   * Checks if the given optimization simulation have completed and have results ready for retrieval
+   *
+   * @param optimizationId
+   */
   async ready(optimizationId: number | number[]): Promise<{[id: string]: boolean}> {
     if (!(optimizationId instanceof Array)) {
       optimizationId = [optimizationId]
@@ -43,6 +49,7 @@ export class OptimizationsClient {
   }
 
   /**
+   * Retrieve the results of an optimization simulation
    *
    * @param optimizationId
    */
