@@ -54,6 +54,16 @@ export class StatisticsRequestPayload {
     // FIXME: ... should be done in superclass
     this.date = options.transitFrameDate || 20170801
     this.time = options.transitFrameTime || 39600
+
+    if (options.transitFrameDateTime != null) {
+      const date = new Date(<any>options.transitFrameDateTime)
+      const transitFrameDate = date ? ((date.getFullYear() * 10000) + (date.getMonth() + 1) * 100 + date.getDate()) : undefined
+      const transitFrameTime = date ? ((date.getHours() * 3600) + (date.getMinutes() * 60)) : undefined
+
+      this.date = this.date = transitFrameDate || this.date
+      this.time = this.time = transitFrameTime || this.time
+    }
+
     this.edgeWeight = options.edgeWeight == undefined ? 'time' : options.edgeWeight
     this.useCache = options.useCache == undefined ? true : options.useCache
     this.travelType = options.travelType

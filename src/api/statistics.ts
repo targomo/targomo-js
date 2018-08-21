@@ -114,7 +114,7 @@ export class StatisticsClient {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
-    const includeParam = encodeURIComponent(include.map(row => `"${row.id}"`).join(','))
+    const includeParam = encodeURIComponent(include.map(row => +row.id).join(','))
     return `${server}/statistics/tiles/v1/${key}/{z}/{x}/{y}.mvt?columns=${includeParam}&key=${encodeURIComponent(this.client.serviceKey)}`
   }
 }
