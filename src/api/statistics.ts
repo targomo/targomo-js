@@ -72,10 +72,11 @@ export class StatisticsClient {
   async metadata(group: StatisticsSetMeta | StatisticsSet) {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
-    const cacheKey = server + '-' + key
+    const cacheKey = server + '-' + key + '@' + this.client.serviceKey
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
-      const result = await requests(this.client).fetch(`${server}/statistics/meta/v1/${key}`)
+      const result = await requests(this.client)
+                          .fetch(`${server}/statistics/meta/v1/${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
       }
