@@ -40,8 +40,7 @@ export class RequestsUtil {
     if (response.status >= 400) {
 
       const responseBody =
-        response.headers.get('content-type') === await response.text();
-
+        response.headers.get('content-type') === 'application/json' ? JSON.stringify(await response.text(), null, 2) : await response.text()
 
       // VERBOSE LOGGING:
       //       console.error(`
