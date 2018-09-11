@@ -42,6 +42,7 @@ export class RequestsUtil {
       const responseBody =
         response.headers.get('content-type') === await response.text();
 
+
       // VERBOSE LOGGING:
       //       console.error(`
       //                 FETCH ERROR
