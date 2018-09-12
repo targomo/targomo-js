@@ -283,7 +283,7 @@ export interface StatisticsItemMeta {
       c9: number[],
       c7: number[],
       c5: number[],
-      [n: string]: number[]statsitcal
+      [n: string]: number[]
     },
     kmeans?: {
       c9: number[],
