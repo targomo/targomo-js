@@ -3,7 +3,7 @@ import { LatLngIdTravelMode, LatLngId } from '../index';
 import 'whatwg-fetch'
 
 describe('TargomoClient route service', () => {
-  const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
+  const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
 
   test('route service request', async () => {
     const sources: LatLngIdTravelMode[] = [
@@ -16,7 +16,7 @@ describe('TargomoClient route service', () => {
     ]
     const result = await testClient.routes.fetch(sources, targets, {
       travelType: 'car',
-      maxEdgeWeight: 600,
+      maxEdgeWeight: 1800,
     })
 
     expect(result).toBeDefined()
