@@ -58,4 +58,4 @@ const polygons = await tgmClient.polygons.fetch(sources, {
 
 # Docs
 
-Documentation is available at [https://targomo.com/developers/guide/](https://targomo.com/developers/guide/)
+Documentation is available at [https://targomo.com/developers/guide/](https://targomo.com/developers/guide/), although this still contains the documentation for the r360-js lib, until the docs are finished for this lib.
