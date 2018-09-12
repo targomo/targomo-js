@@ -260,7 +260,7 @@ export interface StatisticsItemMeta {
   /**
    * Indicates if the cell values are to be seen as absolute or relative values
    */
-  type: 'ABSOLUTE' | 'RELATIVE'
+  type: 'ABSOLUTE' | 'PERCENT'
 
   /**
    * Names of the StatisticsItem in different languages
