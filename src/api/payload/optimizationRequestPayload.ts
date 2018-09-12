@@ -1,67 +1,83 @@
 import { OptimizationRequestOptions } from '../../types/options/optimizationRequestOptions'
-import {TravelRequestPayload} from './travelRequestPayload'
+import { LatLngId, TravelType } from '../../types/types';
+import { TravelTypeEdgeWeightOptions } from '../../types/travelOptions';
 
-export class OptimizationRequestPayload extends TravelRequestPayload implements OptimizationRequestOptions {
+export class OptimizationRequestPayload implements TravelTypeEdgeWeightOptions {
+  description: string
+  statisticGroupId: number
+  serviceUrl: string
+  serviceKey: string
+  email: string
+  sendMail: boolean
+  callbackUrl: string
+  useCache: boolean
   pointsPerSolution: number
-  statistic: number
-  statisticGroup: number
-  maxSolutions: number = 1
-  name: string = ''
-  description: string = ''
-  email: string = ''
-  callbackUrl: string = null
-  useCache: boolean = true
+  maxSolutions: number
+  statisticId: number
+  sources: {
+    [id: string]: {
+      id: string
+      x: number
+      y: number
+    }
+  } = {}
 
-  constructor(options: OptimizationRequestOptions) {
-    super(options)
-/*
-    name = optimizationOptions.name
-    description = 'Description'
-    statisticGroupId = optimizationOptions.statisticsGroup
-    // travelType = travelOptions.travelType
-    // time = travelOptions.time
-    // date = travelOptions.date
-    // maxEdgeWeight = travelOptions.travelTimeDistance
-    // edgeWeight = 'time'
-    serviceUrl = /
-    serviceKey = route360.key,//travelOptions.serviceKey,// + 'N'
-    email = "tomis@motionintelligence.net"
-    sendMail = false
-    callbackUrl = "https://thisisacallback.net/"
-    useCache = true
-    pointsPerSolution = optimizationOptions.pointsPerSolution
-    maxSolutions = optimizationOptions.maxSolutions
-    statisticId = optimizationOptions.statistic.id
-    sources = sources
-    forcedPointIds = forceIds*/
+  travelType: TravelType
+  maxEdgeWeight: number
+  edgeWeight: 'time' | 'distance'
+
+
+  transitFrameDuration: number = undefined
+  transitFrameDate: number = 20170801
+  transitFrameTime: number = 39600
+  time: number = this.transitFrameDate
+  date: number = this.transitFrameTime
+
+  constructor(serviceUrl: string, serviceKey: string, sources: LatLngId[], options: OptimizationRequestOptions) {
+    this.travelType = options.travelType
+    this.maxEdgeWeight = options.maxEdgeWeight
+    this.edgeWeight = options.edgeWeight
+
+    this.date = this.transitFrameDate = options.transitFrameDate
+    this.time = this.transitFrameTime = options.transitFrameTime
+    this.transitFrameDuration = options.transitFrameDuration
+
+    if (options.transitFrameDateTime != null) {
+      const date = new Date(<any>options.transitFrameDateTime)
+      const transitFrameDate = date ? ((date.getFullYear() * 10000) + (date.getMonth() + 1) * 100 + date.getDate()) : undefined
+      const transitFrameTime = date ? ((date.getHours() * 3600) + (date.getMinutes() * 60)) : undefined
+
+      this.date = (this.transitFrameDate = transitFrameDate || this.transitFrameDate)
+      this.time = (this.transitFrameTime = transitFrameTime || this.transitFrameTime)
+    }
+
+    this.description = options.description || ''
+    this.maxEdgeWeight = options.maxEdgeWeight
+    this.serviceUrl = serviceUrl
+    this.serviceKey = serviceKey
+    this.email = options.email || 'developers@targomo.com'
+    this.sendMail = false
+    this.callbackUrl = options.callbackUrl || 'https://localhost/' // TODO: was this donig anything?
+    this.useCache = options.useCache
+    this.pointsPerSolution = options.pointsPerSolution
+    this.maxSolutions = options.maxSolutions || 1
+
+    this.statisticGroupId = options.statisticGroup
+
+    if (options.statistic instanceof Number || typeof options.statistic === 'number') {
+      this.statisticId = +options.statistic
+    } else {
+      this.statisticId = options.statistic.id
+    }
+
+    sources.forEach(source => {
+      this.sources[source.id] = {
+        id: source.id,
+        x: source.lng,
+        y: source.lat
+      }
+    })
   }
-
-
-    // toCfgObject(sources: LatLngId[]) {
-      // const cfg: any = this
-
-      // cfg.name = optimizationOptions.name,
-      // cfg.description = "Description",
-      // cfg.statisticGroupId = optimizationOptions.statisticsGroup,
-      // cfg.travelType = travelOptions.travelType,
-      // cfg.time = travelOptions.time,
-      // cfg.date = travelOptions.date,
-      // cfg.maxEdgeWeight = travelOptions.travelTimeDistance,
-      // cfg.edgeWeight = "time",
-      // cfg.serviceUrl = //
-      // cfg./ = : "https://api.targomo.com/germany/", // http://localhost:8081/",
-      // cfg.serviceKey = route360.key,//travelOptions.serviceKey,// + 'N',
-      // cfg.email = "tomis@motionintelligence.net",
-      // cfg.sendMail =
-      // cfg.callbackUrl = "https://thisisacallback.net/",
-      // cfg.useCache = true,
-      // cfg.pointsPerSolution = optimizationOptions.pointsPerSolution,
-      // cfg.maxSolutions = optimizationOptions.maxSolutions,
-      // cfg.statisticId = optimizationOptions.statistic.id,
-      // cfg.sources = sources,
-      // cfg.forcedPointIds = forceIds
-    // }
-  // }
 }
 
 

@@ -27,7 +27,7 @@ describe('TargomoClient geocoding', () => {
     const result = await testClient.geocoding.esri.reverseGeocode({lat: 52.5330232, lng: 13.356626})
 
     expect(result).toBeDefined()
-    expect(result.address).toEqual('Kruppstraße 1-3, 10557, Berlin, Moabit, Berlin')
+    expect(result.address).toEqual('Kruppstraße 3-3, 10557, Berlin, Moabit, Berlin')
     expect(result.city).toEqual('Berlin')
     expect(result.countryCode).toEqual('DEU')
     expect(result.location).toEqual(undefined)
