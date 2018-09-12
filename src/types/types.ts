@@ -229,19 +229,61 @@ export interface LatLngIdTravelTime extends LatLngId {
  * Describes metadata about a single statistic in a StatisticsGroup
  */
 export interface StatisticsItemMeta {
+
   statistic_id: number
+
+  /**
+   * Minimum cell value for this StatisticsItem
+   */
   min: number
+
+  /**
+   * Minimum cell value for this StatisticsItem
+   */
   max: number
+
+  /**
+   * Average cell value for this StatisticsItem
+   */
   avg: number
-  type: string
-  names: { [langCode: string]: string }
+
+  /**
+   * Sum of all cell values for this StatisticsItem
+   */
+  sum: number
+
+  /**
+   * Standard deviation for this StatisticsItem
+   */
+  std: number
+
+  /**
+   * Indicates if the cell values are to be seen as absolute or relative values
+   */
+  type: 'ABSOLUTE' | 'RELATIVE'
+
+  /**
+   * Names of the StatisticsItem in different languages
+   */
+  names: {
+    en: string,
+    [langCode: string]: string
+  }
+
+  /**
+   * Description of the StatisticsItem in different languages
+   */
   descriptions: { [langCode: string]: string }
+
+  /**
+   * Breakpoints based on different statistical clustering approaches
+   */
   breakpoints: {
     equal_interval?: {
       c9: number[],
       c7: number[],
       c5: number[],
-      [n: string]: number[]
+      [n: string]: number[]statsitcal
     },
     kmeans?: {
       c9: number[],
@@ -254,8 +296,7 @@ export interface StatisticsItemMeta {
       c7: number[],
       c5: number[],
       [n: string]: number[]
-    },
-
+    }
   }
 }
 
@@ -263,12 +304,34 @@ export interface StatisticsItemMeta {
  * Describes metadata about a specific StatisticsSet (details https://service.route360.net/vector-statistics/statistics/list/v1)
  */
 export interface StatisticsGroupMeta {
+
   id: number
+
+  /**
+   * Minimum map zoom level to display the group on a map
+   */
   min_zoom: number,
+
+  /**
+   * TODO
+   */
   table: string
+
+  /**
+   * SRID projection
+   */
   srid: SRID
+
+  /**
+   * TODO
+   */
   type: string
+
+  /**
+   * TODO
+   */
   source: string
+
   created: Date,
   license: string,
   modified: Date,
@@ -278,9 +341,17 @@ export interface StatisticsGroupMeta {
     top_right: LatLng,
     bottom_left: LatLng
   },
+
+  /**
+ * Description of the StatisticsGroup in different languages
+ */
   names: {
     [langCode: string]: string
   },
+
+  /**
+ * Description of the StatisticsGroup in different languages
+ */
   descriptions: {
     [langCode: string]: string
   },
