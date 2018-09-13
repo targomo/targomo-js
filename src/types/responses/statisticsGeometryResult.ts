@@ -1,4 +1,4 @@
-import {StatisticsKey} from '../types'
+import { StatisticsItem } from '../types';
 
 export interface StatisticsGeometryResultItem {
   value: number
@@ -20,7 +20,7 @@ export class StatisticsGeometryResult {
     variance?: StatisticsGeometryResultStatistic
   } = {}
 
-  constructor(result: any[], statistics: StatisticsKey[]) {
+  constructor(result: any[], statistics: StatisticsItem[]) {
     const statsticsMap: {[index: number]: string} = {}
     statistics.forEach(statistic => {
       statsticsMap[statistic.id] = statistic.name

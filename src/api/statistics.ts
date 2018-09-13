@@ -6,9 +6,11 @@ import {
   StatisticsGroupMeta,
   StatisticsGroupId,
   StatisticsItem,
-  StatisticsItemMeta
+  StatisticsItemMeta,
+  StatisticsRequestOptions,
+  StatisticsTravelRequestOptions,
+  StatisticsGeometryRequestOptions
 } from '../index';
-import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../types/options/statisticsRequestOptions';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
 import { requests } from '../util/requestUtil';
