@@ -11,5 +11,15 @@ export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
 
 export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions {
   // statistics: (StatisticsKey | number)[]
+
   statistics: StatisticsItem[]
+  omitIndividualStatistics?: boolean
+}
+
+export interface StatisticsGeometryRequestOptions {
+  statisticsGroup: StatisticsGroupId
+  statistics: StatisticsItem[]
+  useCache?: boolean
+  requestTimeout?: number
+  crs?: number
 }

@@ -44,7 +44,7 @@ build_release:
     - tags
 
 build_pre_release:
-  stage: build
+  # stage: build
   script:
     - npm run build
     - export CURRENT_VERSION=$(git rev-parse HEAD --short)

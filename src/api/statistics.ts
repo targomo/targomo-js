@@ -13,6 +13,8 @@ import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
 import { requests } from '../util/requestUtil';
 import { SimpleLRU } from '../util/cache';
+import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload';
+import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult';
 
 export class StatisticsClient {
   private statisticsMetadataCache = new SimpleLRU<StatisticsGroupMeta>(200)
@@ -75,6 +77,22 @@ export class StatisticsClient {
 
   /**
    *
+   * @param sources
+   * @param options
+   */
+  async geometry(geometry: any, options: StatisticsGeometryRequestOptions): Promise<StatisticsGeometryResult> {
+    if (!geometry) {
+      return null
+    }
+
+    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const result = await requests(this.client, options)
+                         .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
+    return new StatisticsGeometryResult(result, options.statistics)
+  }
+
+  /**
+   *
    * @param group
    */
   async metadata(group: StatisticsGroupMeta | StatisticsGroupId) {
@@ -122,7 +140,7 @@ export class StatisticsClient {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
-    const includeParam = encodeURIComponent(include.map(row => `"${row.id}"`).join(','))
+    const includeParam = encodeURIComponent(include.map(row => +row.id).join(','))
     return `${server}/statistics/tiles/v1/${key}/{z}/{x}/{y}.mvt?columns=${includeParam}&key=${encodeURIComponent(this.client.serviceKey)}`
   }
 }
