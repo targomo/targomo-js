@@ -75,10 +75,12 @@ export class RequestsUtil {
 
       // --------------------------------------------
       //       `)
-      throw new Error(`[ERROR] in service request
+      console.error(`[ERROR] in service request
       status  = ${response.status} ${response.statusText}
       url     = ${url}
       body    = ${responseBody}`)
+
+      throw new Error(responseBody)
     } else {
       if (method === 'JSONP') {
         const data = await response.text()
