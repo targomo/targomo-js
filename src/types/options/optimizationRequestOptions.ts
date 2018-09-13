@@ -1,4 +1,4 @@
-import { StatisticsSet,  StatisticsKey, TravelRequestOptions} from '../index'
+import { StatisticsGroupId,  StatisticsItem, TravelRequestOptions} from '../index'
 
 /**
  * Parameters for an optimization simulation run. Optimization simulations take a set of locations
@@ -13,12 +13,12 @@ export interface OptimizationRequestOptions extends TravelRequestOptions {
   /**
    * Based on which statistic should the simulation be calculated
    */
-  statistic: StatisticsKey | number
+  statistic: StatisticsItem | number
 
   /**
    * Based on which statistic group should the simulation be calculated
    */
-  statisticGroup: StatisticsSet
+  statisticGroup: StatisticsGroupId
 
   /**
    * How many result variation should be returned. Default is 1

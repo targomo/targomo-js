@@ -1,7 +1,5 @@
-import { MultigraphInfo } from './../types/responses/multigraphInfo';
-import { LatLngIdTravelMode, LatLngId, MultigraphRequestAggregation } from './../types';
+import { MultigraphRequestAggregation } from './../types';
 import { TargomoClient } from './targomoClient';
-import { StatisticsSet } from '../index'
 
 describe('Multigraph', () => {
   const testClient = new TargomoClient(

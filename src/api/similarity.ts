@@ -1,5 +1,5 @@
 import { TargomoClient } from './targomoClient'
-import { StatisticsSet, SimilarityCriteria, BoundingBox } from '../index';
+import { StatisticsGroupId, SimilarityCriteria, BoundingBox } from '../index';
 import { requests} from '../util/requestUtil';
 
 export class SimilarityClient {
@@ -10,7 +10,7 @@ export class SimilarityClient {
   /**
    *
    */
-  async metadata(key: StatisticsSet): Promise<any[]> {
+  async metadata(key: StatisticsGroupId): Promise<any[]> {
     const url = `${this.client.config.tilesUrl}/similarity/meta/v1/${encodeURIComponent('' + key)}`
     return await requests(this.client).fetch(url)
   }
@@ -18,7 +18,7 @@ export class SimilarityClient {
   /**
    *
    */
-  async fetch(group: StatisticsSet,
+  async fetch(group: StatisticsGroupId,
     cell: number,
     conditions: SimilarityCriteria[],
     bounds: BoundingBox,
