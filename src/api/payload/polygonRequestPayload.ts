@@ -23,13 +23,13 @@ export class PolygonPayloadOptions {
 export class PolygonRequestPayload extends TravelRequestPayload {
   polygon = new PolygonPayloadOptions()
 
-  constructor(client: TargomoClient, sources: LatLngId[], options: PolygonRequestOptions) {
+  constructor(client: TargomoClient, sources: LatLngId[], options: PolygonRequestOptions, serializer: 'json' | 'geojson') {
     super(<any>options)
 
     this.sources = this.buildSourcesCfg(sources)
     this.polygon.values = options.travelEdgeWeights
 
-    this.polygon.serializer = options.serializer
+    this.polygon.serializer = serializer
     this.polygon.simplify = options.simplifyMeters
     this.polygon.srid = options.srid
     this.polygon.buffer = options.buffer
