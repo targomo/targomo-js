@@ -2,7 +2,7 @@ import { TargomoClient } from './targomoClient'
 
 export class BasemapsClient {
 
-    private basemapsLookup: {[name: string]: string} = {
+    basemapsLookup: {[name: string]: string} = {
         'Bright': 'osm-bright-gl-style',
         'Light': 'positron-gl-style',
         'Light No-Labels': 'positron-nolabels-gl-style',
