@@ -1,6 +1,4 @@
 import { TargomoClient } from './targomoClient'
-import { StatisticsGroupId, BenchmarkCriteria, BoundingBox } from '../index';
-import { requests } from '../util/requestUtil';
 
 export class BasemapsClient {
 
