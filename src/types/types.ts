@@ -299,7 +299,7 @@ export interface TimeResult {
  * A store (also called 'depot' sometimes) to which the respective vehicles/transports and orders are associated.
  * Each store will be optimized individually and independently.
  */
-export interface Store {
+export interface FpStore {
   /**
    *  Unique ID that is required to be set so that Order and Vehicle can reference to their respective store.
    */
@@ -311,7 +311,7 @@ export interface Store {
   /**
    * Location of the store. For store addresses the geocoordinates(lat, lng) must exist already.
    */
-  address: Address;
+  address: FpAddress;
 }
 
 /**
@@ -320,7 +320,7 @@ export interface Store {
  * Otherwise, the geocoordinates are calculated during the request from the other address details (street, city, etc.).
  * This only happens for order addresses. For store and start or endDestination addresses geocoordinates (lat, lng) must exist already.
  */
-export interface Address {
+export interface FpAddress {
   /**
    * Unique ID
    */
@@ -361,7 +361,7 @@ export interface Address {
  * This can lead to small runtime impairments for many addresses, since the geocoding accesses an external service.
  * The resulting geodata must not be saved.
  */
-export interface Order {
+export interface FpOrder {
   /**
    * To map the order entity back to the original after the request.
    */
@@ -373,7 +373,7 @@ export interface Order {
   /**
    * The location of the order.
    */
-  address: Address;
+  address: FpAddress;
   /**
    * The deadline (time and date) for an order to be serviced. Expressed according to ISO 8601.
    * The optimization algorithm tries to minimize the amount of deadlines that are not kept.
@@ -420,12 +420,12 @@ export interface Order {
 /**
  * A transport is the entity which services the orders and for which the optimization finds the best order allocations
  * as well as the best routes.
- * @param {Vehicle} vehicle The vehicle entity describes the fixed parameters of a transport.
- * @param {TransportMetadata} metadata Metadata defining variable specifics for the vehicle/transports.
+ * @param {FpVehicle} vehicle The vehicle entity describes the fixed parameters of a transport.
+ * @param {FpTransportMetadata} metadata Metadata defining variable specifics for the vehicle/transports.
  */
-export interface Transport {
-  vehicle: Vehicle;
-  metadata?: TransportMetadata;
+export interface FpTransport {
+  vehicle: FpVehicle;
+  metadata?: FpTransportMetadata;
 }
 /**
  * The vehicle entity describes the fixed parameters of a transport.
@@ -433,7 +433,7 @@ export interface Transport {
  * However, the same units as in weight and volume in Order need to be used.
  * Parameters name, plate, avgFuelConsumption, and fuelType are currently not relevant for the optimization.
  */
-export interface Vehicle {
+export interface FpVehicle {
   /**
    * To map the vehicle entity back to the original after the request.
    */
@@ -461,7 +461,7 @@ export interface Vehicle {
 /**
  * Metadata defining variable specifics for the vehicle/transports.
  */
-export interface TransportMetadata {
+export interface FpTransportMetadata {
   /**
    * Specifies from when on the transport would be ready to service the orders,
   * e.g. because right now it is still being refuelled. Expressed according to ISO 8601
@@ -474,7 +474,7 @@ export interface TransportMetadata {
  * the address of the store referenced in the Vehicle is assumed to be the start address of the transport's tour.
  * For start addresses the geocoordinates(lat, lng) must exist already.
  */
-  start?: Address ;
+  start?: FpAddress ;
   /**
    * The field endDestinations contains the potential end points of the vehicle.
  * The semantics for its configuration is:
@@ -484,14 +484,14 @@ export interface TransportMetadata {
  * If multiple endDestinations are specified, finding the best endpoint is part of the optimization.
  * For end destination addresses the geocoordinates(lat, lng) must exist already.
    */
-  endDestinations?: Address[];
+  endDestinations?: FpAddress[];
 }
 
 /**
  * Specifies factors with which the travel times of the edges are adjusted.
  * This may be necessary in certain areas where the travel time calculation is almost always off by a certain factor, e.g. Paris rush hour.
  */
-export interface TravelTimeFactors {
+export interface FpTravelTimeFactors {
   /**
    * Has an effect on all edge classes (excluding transit travel times)
    */

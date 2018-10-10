@@ -1,9 +1,9 @@
-import { TravelRequestOptions, TravelTimeFactors} from '../index'
+import { TravelRequestOptions, FpTravelTimeFactors} from '../index'
 
 /**
  * The vehicle routing optimization request body (specification of the fleet planning request).
  */
-export interface FleetRequestOptions extends TravelRequestOptions {
+export interface FpRequestOptions extends TravelRequestOptions {
     /**
     * Specifies the desired maximum run time in seconds this request can use for the optimization.
     * The actual run time can be lower if a solution is found quicker, or exceeded when, for example other parts of the routing request,
@@ -81,5 +81,5 @@ export interface FleetRequestOptions extends TravelRequestOptions {
     * elements that are not recognised are ignored
     * transit travel times are not affected by the travelTimeFactors
      */
-    travelTimeFactors?: TravelTimeFactors;
+    travelTimeFactors?: FpTravelTimeFactors;
 }

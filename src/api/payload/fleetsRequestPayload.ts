@@ -1,20 +1,20 @@
-import { FleetRequestOptions } from './../../types/options/fleetRequestOptions';
-import { Transport} from '../../types';
+import { FpRequestOptions } from './../../types/options/fleetRequestOptions';
+import { FpTransport} from '../../types';
 import { TargomoClient } from '../targomoClient';
-import { Store, Order } from '../..';
+import { FpStore, FpOrder } from '../..';
 
 
 
-export class FleetsRequestPayload {
+export class FpRequestPayload {
 
   optimizationTime: number;
   optimizationAlgorithm: 'NO_OPTIMIZATION' | 'GREEDY_TSP' | 'BRUTE_FORCE_TSP' | 'CONSTRAINT_SATISFACTION';
   optimizationMetadata: any;
-  stores: Store[] = [];
-  transports: Transport[] = [];
-  orders: Order[] = [];
+  stores: FpStore[] = [];
+  transports: FpTransport[] = [];
+  orders: FpOrder[] = [];
 
-  constructor(client: TargomoClient, options: FleetRequestOptions, stores: Store[], transports: Transport[], orders: Order[]) {
+  constructor(client: TargomoClient, options: FpRequestOptions, stores: FpStore[], transports: FpTransport[], orders: FpOrder[]) {
 
     let travelTimeFactors: any;
     if (options.travelTimeFactors) {

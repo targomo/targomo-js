@@ -1,15 +1,14 @@
-import { FleetRequestOptions } from './../types/options/fleetRequestOptions';
 import { TargomoClient } from './index';
-import { LatLngIdTravelMode, LatLngId, Order, Store, Transport, Address, Vehicle, TransportMetadata} from '../index';
+import { FpOrder, FpStore, FpTransport, FpAddress, FpVehicle, FpTransportMetadata, FpRequestOptions} from '../index';
 import 'whatwg-fetch'
-import { FleetsRequestPayload } from './payload/fleetsRequestPayload';
+import { FpRequestPayload } from './payload/fleetsRequestPayload';
 import { throws } from 'assert';
-import * as TestReporter from '../../test-reporter';
+import { TestReporter } from '../../test-reporter';
 
-class OrderImplementation implements Order {
+class OrderImplementation implements FpOrder {
   constructor(
     public storeUuid: string,
-    public address: Address,
+    public address: FpAddress,
     public uuid?: string,
     public deadline?: string,
     public priority?: number,
@@ -19,7 +18,7 @@ class OrderImplementation implements Order {
   ) {}
 }
 
-class AddressImplementation implements Address {
+class AddressImplementation implements FpAddress {
   constructor(
     public uuid?: string,
     public avgHandlingTime?: number,
@@ -35,22 +34,22 @@ class AddressImplementation implements Address {
   ) {}
 }
 
-class StoreImplementation implements Store {
+class StoreImplementation implements FpStore {
   constructor(
     public uuid: string,
-    public address: Address,
+    public address: FpAddress,
     public name?: string,
   ) {}
 }
 
-class TransportImplementation implements Transport {
+class TransportImplementation implements FpTransport {
   constructor(
-    public vehicle: Vehicle,
-    public metadata?: TransportMetadata
+    public vehicle: FpVehicle,
+    public metadata?: FpTransportMetadata
   ) {}
 }
 
-class VehicleImplementation implements Vehicle {
+class VehicleImplementation implements FpVehicle {
   constructor(
     public storeUuid: string,
     public maxVolume: number,
@@ -63,15 +62,15 @@ class VehicleImplementation implements Vehicle {
   ) {}
 }
 
-class TransportMetadataImplementation implements TransportMetadata {
+class TransportMetadataImplementation implements FpTransportMetadata {
   constructor(
     public earliestDepartureTime?: string,
-    public start?: Address,
-    public endDestinations?: Address[]
+    public start?: FpAddress,
+    public endDestinations?: FpAddress[]
   ) {}
 }
 
-class FleetRequestOptionsImplementation implements FleetRequestOptions {
+class FleetRequestOptionsImplementation implements FpRequestOptions {
   constructor(
     public optimizationAlgorithm: 'NO_OPTIMIZATION' | 'GREEDY_TSP' | 'BRUTE_FORCE_TSP' | 'CONSTRAINT_SATISFACTION',
     public maxEdgeWeight: number,
@@ -91,18 +90,18 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 const testClient = new TargomoClient('westcentraleurope', process.env.TGM_TEST_API_KEY);
 
 // Super basic request information which is cloned an slightly altered in each test case
-const ordersBase: Order[] = [
+const ordersBase: FpOrder[] = [
   new OrderImplementation('s1', new AddressImplementation(undefined, undefined, 13.40, 52.55)),
   new OrderImplementation('s1', new AddressImplementation(undefined, undefined, 13.50, 52.60)),
   new OrderImplementation('s2', new AddressImplementation(undefined, undefined, 13.30, 52.60))
 ];
 
-const storesBase: Store[] = [
+const storesBase: FpStore[] = [
   new StoreImplementation('s1', new AddressImplementation(undefined, undefined, 13.30, 52.50)),
   new StoreImplementation('s2', new AddressImplementation(undefined, undefined, 13.50, 52.50))
 ];
 
-const transportsBase: Transport[] = [
+const transportsBase: FpTransport[] = [
   new TransportImplementation(new VehicleImplementation('s1', 100, 100),
   new TransportMetadataImplementation(undefined, new AddressImplementation(undefined, undefined, 13.35, 52.50))),
 
@@ -248,7 +247,7 @@ describe('TargomoClient fleet service', () => {
           break;
         }
 
-        TestReporter.addTest(testName, expected, new FleetsRequestPayload(testClient, options, stores, transports, orders));
+        TestReporter.addTest(testName, expected, new FpRequestPayload(testClient, options, stores, transports, orders));
 
         try {
           const result = await testClient.fleets.fetch(stores, orders, transports, options);
@@ -1635,7 +1634,7 @@ test('base test', async () => {
   });*/
 
 
-  // Disabled the detailed tests for now
+  // Dont run the extensive tests for now
   // allTestOptions.forEach(testOptions => {
   //  DoTests(testOptions);
   // });

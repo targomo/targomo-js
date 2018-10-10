@@ -1,10 +1,10 @@
-import { Vehicle, Store, Address, Order } from './../types';
+import { FpVehicle, FpStore, FpAddress, FpOrder } from './../types';
 import { FeatureCollection, LineString } from 'geojson';
 
 /**
  * Fleetplanner result
  */
-export interface FleetResult {
+export interface FpResult {
     /**
      * Information about the results.
      */
@@ -12,7 +12,7 @@ export interface FleetResult {
     /**
      * The tours computed by the service, one tour object per vehicle.
      */
-    tours: Tour[];
+    tours: FpTour[];
 }
 
 /**
@@ -57,7 +57,7 @@ export interface MitigatedError {
  * fitting the weight and volume into the respective vehicles,
  * for meeting as many as possible deadlines, and for having the shortest (quickest) overall tour durations (in that order).
  */
-export interface Tour {
+export interface FpTour {
     /**
      * An estimation of the travel time of the tour in seconds - only the time travelled.
      */
@@ -98,32 +98,32 @@ export interface Tour {
     /**
      * The store where the vehicle loads and from which it sets out to travel to the orders within this tour.
      */
-    store: Store;
+    store: FpStore;
     /**
      * The vehicle used to travel this tour.
      */
-    vehicle: Vehicle;
+    vehicle: FpVehicle;
     /**
      * Each Tour consists of multiple TourItems which each represent the servicing of one of the "orders".
      */
-    tourItems: TourItem[];
+    tourItems: FpTourItem[];
     /**
      * The location from which the vehicle starts its tour.
      * This location needs to be the same as the location of the store referenced in "vehicle".
      */
-    tourStart: Address;
+    tourStart: FpAddress;
     /**
      * One of the possible endDestinations defined in the TransportMetadata.
      * Can also be empty if no endDestination for this tour's vehicle was defined.
      */
-    tourEnd?: TourStop;
+    tourEnd?: FpTourStop;
 
 }
 
 /**
  * Each Tour consists of multiple TourItems which each represent the servicing of one of the "orders".
  */
-export interface TourItem {
+export interface FpTourItem {
     /**
      * Route distance from the last tour stop to this stop in meters.
      * Distance is only set if "ROUTE_360" is chosen for "geojsonCreation".
@@ -140,7 +140,7 @@ export interface TourItem {
     /**
      * The order which will be serviced.
      */
-    order: Order;
+    order: FpOrder;
     /**
      * Ordered index within the tour, e.g. the first element of the tour has index 0, the second has index 1, and so on.
      */
@@ -160,7 +160,7 @@ export interface TourItem {
  * One of the possible endDestinations defined in the TransportMetadata.
  * Can also be empty if no endDestination for this tour's vehicle was defined.
  */
-export interface TourStop {
+export interface FpTourStop {
     /**
      * Route distance from the last tour stop to this stop in meters.
      * Distance is only set if "ROUTE_360 was" chosen for "geojsonCreation".
@@ -178,5 +178,5 @@ export interface TourStop {
      * The address of the chosen endDestination as defined in the transportMetadata.
      * (Only the "address" field within the order contains data)
      */
-    order: Order;
+    order: FpOrder;
 }
