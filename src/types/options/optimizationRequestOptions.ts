@@ -14,12 +14,10 @@ export interface OptimizationRequestOptions extends TravelRequestOptions {
    * Based on which statistic should the simulation be calculated
    */
   statistic: StatisticsItem | number
-
   /**
    * Based on which statistic group should the simulation be calculated
    */
   statisticGroup: StatisticsGroupId
-
   /**
    * How many result variation should be returned. Default is 1
    */
