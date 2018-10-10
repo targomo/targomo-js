@@ -44,7 +44,12 @@ export class SimpleLRU<T> implements Cache<T> {
       found.next = null
       this.newest = found
 
-      return await found.value
+      try {
+        return await found.value
+      } catch (e) {
+        this.map[key] = undefined
+        return this.get(key, factory)
+      }
     } else if (factory) {
       const promise = factory()
       const entry = this.map[key] = new SimpleLRUEntry<T>(promise, key, this.newest, null)

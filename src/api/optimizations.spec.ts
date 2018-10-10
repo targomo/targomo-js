@@ -1,7 +1,5 @@
-import { LatLngIdTravelMode, LatLngId } from './../types';
+import 'whatwg-fetch';
 import { TargomoClient } from './targomoClient';
-import { StatisticsSet } from '../index'
-import 'whatwg-fetch'
 
 
 describe('TargomoClient optimizations', () => {

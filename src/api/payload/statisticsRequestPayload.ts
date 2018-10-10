@@ -48,6 +48,9 @@ export class StatisticsRequestPayload {
   bikeSpeed?: number
   bikeUphill?: number
 
+  // tslint:disable-next-line:variable-name
+  omitIndividualStatistics: boolean
+
   constructor(client: TargomoClient, sources: LatLngId[], options: StatisticsRequestOptions | StatisticsTravelRequestOptions) {
     // super(options)
 
@@ -80,6 +83,7 @@ export class StatisticsRequestPayload {
     let statisticsIndices: number[] = []
 
     if (isStatisticsRequestOptions(options)) {
+      this.omitIndividualStatistics = options.omitIndividualStatistics
       statisticsIndices = options.statistics.map(statistic => {
         if (statistic instanceof Number || typeof statistic === 'number') {
           return +statistic
@@ -112,5 +116,6 @@ export class StatisticsRequestPayload {
       this.bikeSpeed = options.bikeSpeed.speed
       this.bikeUphill = options.bikeSpeed.uphill
     }
+
   }
 }

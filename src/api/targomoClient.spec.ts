@@ -1,7 +1,5 @@
-import { LatLngIdTravelMode, LatLngId } from './../types';
+import 'whatwg-fetch';
 import { TargomoClient } from './targomoClient';
-import 'whatwg-fetch'
-import { StatisticsSet } from '../index';
 
 describe('TargomoClient client', () => {
   const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)

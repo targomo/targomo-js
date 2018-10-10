@@ -1,6 +1,6 @@
-import { LatLngIdTravelMode, LatLngId } from '../index';
+import 'whatwg-fetch';
+import { LatLngId, LatLngIdTravelMode } from '../index';
 import { TargomoClient } from './index';
-import 'whatwg-fetch'
 
 describe('TargomoClient time service', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)

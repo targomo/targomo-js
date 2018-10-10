@@ -58,12 +58,14 @@ export interface LatLngIdProperties extends LatLngProperties {
 /**
  *
  */
-export type ReachableTile = { [index: number]: number }
+export type ReachableTile = { [tileId: number]: number }
 
 /**
  * The available statistics groups of the statistic service and the vector tiles service
  */
-export enum StatisticsSet {
+export type StatisticsGroupId = number | StatisticsGroups
+
+export enum StatisticsGroups {
   GERMANY_ZENSUS_100M_STATISTICS = 9,
   GERMANY_ZENSUS_200M_STATISTICS = 2,
   GERMANY_ZENSUS_500M_STATISTICS = 11,
@@ -109,24 +111,30 @@ export interface GeoSearchDescription {
 }
 
 /**
- * A specific statistics index/name for making a statistics request
+ * A specific statistics Item for making a statistics request on a StatisticsGroup
  */
-export interface StatisticsKey {
+export interface StatisticsItem {
   id: number
   name: string
+  label?: string,
+  chart?: boolean,
+  type?: 'value' | 'percent' | 'average',
+  meta?: StatisticsItemMeta
+  groupId?: StatisticsGroupId
+  groupMeta?: StatisticsGroupMeta
 }
 
 /**
  *
  */
-export interface LabelStatisticsKey extends StatisticsKey {
+export interface LabelStatisticsItem extends StatisticsItem {
   label: string
 }
 
 /**
  *
  */
-export interface ExtendedStatisticsKey extends LabelStatisticsKey {
+export interface ExtendedStatisticsItem extends LabelStatisticsItem {
   /**
    * Can this statistic be displayed as a chart
    */
@@ -141,17 +149,17 @@ export interface ExtendedStatisticsKey extends LabelStatisticsKey {
 /**
  * A number of travelTime -> value returned by a statistics call
  */
-export interface StatisticsValues {
+export interface RawStatisticsValues {
   [time: number]: number
 }
 
 /**
  *A result object for a specific statistic
  */
-export class Statistics {
+export class StatisticValues {
   readonly total: number
 
-  constructor(readonly values: StatisticsValues) {
+  constructor(readonly values: RawStatisticsValues) {
     this.total = 0
     for (const key in this.values) {
       this.total += this.values[key]
@@ -166,16 +174,16 @@ export class Statistics {
 export interface MatrixOptimizationOptions {
   pointsPerSolution: number,
   maxSolutions: number,
-  statistic: StatisticsKey,
+  statistic: StatisticsItem,
   name?: string
   description?: string
-  statisticsGroup: StatisticsSet
+  statisticsGroup: StatisticsGroupId
 }
 
 /**
  * A map of name->Statistics object returned from a statistics request
  */
-export type StatisticsGroup = { [index: string]: Statistics }
+export type StatisticsList = { [statisticKeyId: string]: StatisticValues }
 
 export enum SRID {
   SRID_3857 = 3857,
@@ -218,37 +226,141 @@ export interface LatLngIdTravelTime extends LatLngId {
 }
 
 /**
- * Describes metadata about a single statistic in a StatisticsSet
+ * Describes metadata about a single statistic in a StatisticsGroup
  */
-export interface StatisticsKeyMeta {
+export interface StatisticsItemMeta {
+
   statistic_id: number
+
+  /**
+   * Minimum cell value for this StatisticsItem
+   */
   min: number
+
+  /**
+   * Minimum cell value for this StatisticsItem
+   */
   max: number
+
+  /**
+   * Average cell value for this StatisticsItem
+   */
   avg: number
-  type: string
-  names: { [index: string]: string }
-  descriptions: { [index: string]: string }
-  breakpoints: any
+
+  /**
+   * Sum of all cell values for this StatisticsItem
+   */
+  sum: number
+
+  /**
+   * Standard deviation for this StatisticsItem
+   */
+  std: number
+
+  /**
+   * Indicates if the cell values are to be seen as absolute or relative values
+   */
+  type: 'ABSOLUTE' | 'PERCENT'
+
+  /**
+   * Names of the StatisticsItem in different languages
+   */
+  names: {
+    en: string,
+    [langCode: string]: string
+  }
+
+  /**
+   * Description of the StatisticsItem in different languages
+   */
+  descriptions: { [langCode: string]: string }
+
+  /**
+   * Breakpoints based on different statistical clustering approaches
+   */
+  breakpoints: {
+    equal_interval?: {
+      c9: number[],
+      c7: number[],
+      c5: number[],
+      [n: string]: number[]
+    },
+    kmeans?: {
+      c9: number[],
+      c7: number[],
+      c5: number[],
+      [n: string]: number[]
+    },
+    [method: string]: {
+      c9: number[],
+      c7: number[],
+      c5: number[],
+      [n: string]: number[]
+    }
+  }
 }
 
 /**
  * Describes metadata about a specific StatisticsSet (details https://service.route360.net/vector-statistics/statistics/list/v1)
  */
-export interface StatisticsSetMeta {
+export interface StatisticsGroupMeta {
+
   id: number
+
+  /**
+   * Minimum map zoom level to display the group on a map
+   */
+  min_zoom: number,
+
+  /**
+   * TODO
+   */
   table: string
+
+  /**
+   * SRID projection
+   */
   srid: SRID
+
+  /**
+   * TODO
+   */
   type: string
+
+  /**
+   * TODO
+   */
   source: string
-  stats: StatisticsKeyMeta[]
+
+  created: Date,
+  license: string,
+  modified: Date,
+  numberofpoints: number,
+  version: string,
+  bounding_box: {
+    top_right: LatLng,
+    bottom_left: LatLng
+  },
+
+  /**
+ * Description of the StatisticsGroup in different languages
+ */
+  names: {
+    [langCode: string]: string
+  },
+
+  /**
+ * Description of the StatisticsGroup in different languages
+ */
+  descriptions: {
+    [langCode: string]: string
+  },
+  ignorevalues: number[],
+  stats: StatisticsItemMeta[]
 }
 
 /**
  * Padding object
- * @param {number} top The padding to apply to map top.
- * @param {number} bottom The padding to apply to map bottom.
- * @param {number} left The padding to apply to map left.
- * @param {number} right The padding to apply to map right.
  */
 export interface PaddingObject {
   top?: number,

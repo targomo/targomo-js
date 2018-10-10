@@ -1,9 +1,9 @@
-import { StatisticsSet,  StatisticsKey, TravelRequestOptions} from '../index'
+import { StatisticsGroupId,  StatisticsItem, TravelRequestOptions} from '../index'
 import { LatLngId } from '../types'
 
 export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
   // statistics: (StatisticsKey | number)[]
-  statisticsGroup: StatisticsSet
+  statisticsGroup: StatisticsGroupId
   inactiveSources?: LatLngId[]
   closestSources?: boolean
   intersectionMode?: string
@@ -11,5 +11,15 @@ export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
 
 export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions {
   // statistics: (StatisticsKey | number)[]
-  statistics: StatisticsKey[]
+
+  statistics: StatisticsItem[]
+  omitIndividualStatistics?: boolean
+}
+
+export interface StatisticsGeometryRequestOptions {
+  statisticsGroup: StatisticsGroupId
+  statistics: StatisticsItem[]
+  useCache?: boolean
+  requestTimeout?: number
+  crs?: number
 }

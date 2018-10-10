@@ -8,7 +8,6 @@ describe('TargomoClient route service', () => {
   test('route service request', async () => {
     const sources: LatLngIdTravelMode[] = [
       { lat: 52.5330232, lng: 13.356626, id: 1 },
-      // { lat: 52.3881693, lng: 13.120117, id: 2 }
     ]
     const targets: LatLngId[] = [
       { lat: 52.510801, lng: 13.401207, id: 10 },

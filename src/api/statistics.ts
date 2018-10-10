@@ -1,13 +1,25 @@
 import { TargomoClient } from './targomoClient'
-import { LatLngId, StatisticsGroup, ReachableTile, StatisticsSetMeta, StatisticsSet, StatisticsKey, StatisticsKeyMeta } from '../index';
-import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../types/options/statisticsRequestOptions';
+import {
+  LatLngId,
+  StatisticsList,
+  ReachableTile,
+  StatisticsGroupMeta,
+  StatisticsGroupId,
+  StatisticsItem,
+  StatisticsItemMeta,
+  StatisticsRequestOptions,
+  StatisticsTravelRequestOptions,
+  StatisticsGeometryRequestOptions
+} from '../index';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
-import { requests} from '../util/requestUtil';
+import { requests } from '../util/requestUtil';
 import { SimpleLRU } from '../util/cache';
+import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload';
+import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult';
 
 export class StatisticsClient {
-  private statisticsMetadataCache = new SimpleLRU<StatisticsSetMeta>(200)
+  private statisticsMetadataCache = new SimpleLRU<StatisticsGroupMeta>(200)
 
   constructor(private client: TargomoClient) {
   }
@@ -18,7 +30,7 @@ export class StatisticsClient {
    * @param options
    */
   async combined(sources: LatLngId[], // sources: LatLng[],
-                 options: StatisticsRequestOptions): Promise<StatisticsGroup> {
+    options: StatisticsRequestOptions): Promise<StatisticsList> {
     const result = await this.dependent(sources, options)
     return result && result.statistics
   }
@@ -27,7 +39,7 @@ export class StatisticsClient {
   * Make a statistics request to the r360 services
   */
   async individual(sources: LatLngId[], // sources: LatLng[],
-                             options: StatisticsRequestOptions): Promise<{[id: string]: StatisticsGroup}> {
+    options: StatisticsRequestOptions): Promise<{ [id: string]: StatisticsList }> {
     const result = await this.dependent(sources, options)
     return result && result.individualStatistics
   }
@@ -37,7 +49,7 @@ export class StatisticsClient {
   * Make a statistics request to the r360 services
   */
   async travelTimes(sources: LatLngId[],
-                              options: StatisticsTravelRequestOptions): Promise<ReachableTile> {
+    options: StatisticsTravelRequestOptions): Promise<ReachableTile> {
     if (!sources.length) {
       return null
     }
@@ -52,7 +64,7 @@ export class StatisticsClient {
    * @param options
    */
   async dependent(sources: LatLngId[], // was LatLng[]
-                       options: StatisticsRequestOptions): Promise<StatisticsResult> {
+    options: StatisticsRequestOptions): Promise<StatisticsResult> {
 
     if (!sources.length) {
       return null
@@ -60,16 +72,32 @@ export class StatisticsClient {
 
     const url = this.client.config.statisticsUrl + '/charts/dependent?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
     const result = await requests(this.client, options)
-                        .fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
+      .fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
     return new StatisticsResult(result, options.statistics)
   }
 
 
   /**
    *
+   * @param sources
+   * @param options
+   */
+  async geometry(geometry: any, options: StatisticsGeometryRequestOptions): Promise<StatisticsGeometryResult> {
+    if (!geometry) {
+      return null
+    }
+
+    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const result = await requests(this.client, options)
+                         .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
+    return new StatisticsGeometryResult(result, options.statistics)
+  }
+
+  /**
+   *
    * @param group
    */
-  async metadata(group: StatisticsSetMeta | StatisticsSet) {
+  async metadata(group: StatisticsGroupMeta | StatisticsGroupId) {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
     const cacheKey = server + '-' + key
@@ -95,7 +123,7 @@ export class StatisticsClient {
   /**
    *
    */
-  async metadataKey(group: StatisticsSetMeta | StatisticsSet, statistic: StatisticsKey): Promise<StatisticsKeyMeta> {
+  async metadataKey(group: StatisticsGroupMeta | StatisticsGroupId, statistic: StatisticsItem): Promise<StatisticsItemMeta> {
     const endpoint = await this.metadata(group)
 
     for (let attribute of endpoint.stats) {
@@ -110,7 +138,7 @@ export class StatisticsClient {
   /**
    * Potentially decorate a layer route with excluded statistics.
    */
-  tileRoute(group: StatisticsSetMeta | StatisticsSet, include: StatisticsKey[]) {
+  tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include: StatisticsItem[]) {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
