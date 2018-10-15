@@ -23,7 +23,6 @@ export class RoutesClient {
     console.log(url)
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'GET', undefined, {
       // Headers are here because something needs to be fixed in the service endpoint
-      'Accept-Encoding': 'gzip, deflate, br',
       'Accept': 'application/json,application/javascript,*/*'
     })
 
