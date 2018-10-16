@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { TargomoClient } from './targomoClient';
 
 
