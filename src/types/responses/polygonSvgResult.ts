@@ -8,7 +8,6 @@ export interface PolygonData {
   }
 
   export interface PolygonSvgResult {
-    metadata: PolygonRequestOptions,
     area: number,
     polygons: PolygonData[]
   }

@@ -25,20 +25,20 @@ export class PolygonsClient {
    * @param sources
    * @param options
    */
-  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonSvgResult>;
+  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonSvgResult[]>;
 
   async fetch(sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions):
-    Promise<PolygonSvgResult | FeatureCollection<MultiPolygon>> {
+    Promise<PolygonSvgResult[] | FeatureCollection<MultiPolygon>> {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
-      const result = await this.executeFetch(sources, options, cfg);
+      const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        return result as PolygonSvgResult;
+        return result as PolygonSvgResult[];
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
       }
   }
 
-  private async executeFetch(sources: LatLngId[], options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<{}> {
+  private async _executeFetch(sources: LatLngId[], options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<{}> {
     const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'polygon', this.client.serviceKey)
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg);
     result.metadata = options
