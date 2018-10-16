@@ -406,3 +406,229 @@ export interface TimeResult {
     travelTime: number
   }[]
 }
+
+/**
+ * A store (also called 'depot' sometimes) to which the respective vehicles/transports and orders are associated.
+ * Each store will be optimized individually and independently.
+ */
+export interface FpStore {
+  /**
+   *  Unique ID that is required to be set so that Order and Vehicle can reference to their respective store.
+   */
+  uuid: string;
+  /**
+   * Name of the store - cannot be longer than 256 chars.
+   */
+  name?: string;
+  /**
+   * Location of the store. For store addresses the geocoordinates(lat, lng) must exist already.
+   */
+  address: FpAddress;
+}
+
+/**
+ * Stores, Orders, and Transports/Vehicles have addresses associated to determine their location.
+ * Preferably these addresses are already geocoded in the WGS84 format (in lat, lng).
+ * Otherwise, the geocoordinates are calculated during the request from the other address details (street, city, etc.).
+ * This only happens for order addresses. For store and start or endDestination addresses geocoordinates (lat, lng) must exist already.
+ */
+export interface FpAddress {
+  /**
+   * Unique ID
+   */
+  uuid?: string;
+  /**
+   * Amount of time it takes to carry out the order for this address in seconds.
+   * This value is only important for addresses in orders.
+   * - default: 0
+   */
+  avgHandlingTime?: number;
+  /**
+   * Latitude of the geocoordinates in the WGS84 format of the the address.
+   * This is required for addresses in store and transport.
+   */
+  lat?: number;
+  /**
+   * Longtitude of the geocoordinates in the WGS84 format of the the address.
+   * This is required for addresses in store and transport.
+   */
+  lng?: number;
+  name?: string;
+  street?: string;
+  streetDetails?: string;
+  postalCode?: string;
+  city?: string;
+  country?: string;
+  phone?: string;
+}
+
+/**
+ * The order object describes the entities that need to be serviced by the transports of the same associated store.
+ * - The physical units for weight and volume must match the units of maxWeight and maxVolume in Vehicle.
+ * - It is not allowed to have a single Order whose weight or volume is larger than maxWeight or maxVolume of any Vehicle.
+ * - In addition, the total weight or volume of all Orders of a Store must not exceed
+ * the total of maxWeight or maxVolume of its associated Vehicles.
+ * - It is sufficient to specify an order’s address without geo-coordinates.
+ * The missing information is derived from the address details via geocoding.
+ * This can lead to small runtime impairments for many addresses, since the geocoding accesses an external service.
+ * The resulting geodata must not be saved.
+ */
+export interface FpOrder {
+  /**
+   * To map the order entity back to the original after the request.
+   */
+  uuid?: string;
+  /**
+   * To associate the order entity to a store. This id must be identical with one of the uuids in the store objects.
+   */
+  storeUuid: string;
+  /**
+   * The location of the order.
+   */
+  address: FpAddress;
+  /**
+   * The deadline (time and date) for an order to be serviced. Expressed according to ISO 8601.
+   * The optimization algorithm tries to minimize the amount of deadlines that are not kept.
+   */
+  deadline?: string;
+  /**
+   * The priority specifies the priority of an order. This has effects on:
+  * - Validation: If the order number or the total order volume/weight is too high,
+  * first orders with a lower rather than a higher priority are removed.
+  * - Optimization: It is preferable to try to keep the deadlines of orders with higher priority.
+  * Here, the priority of the order represents the number of penalty points it accrues for not meeting the order’s deadline.
+  * For example, not meeting a deadline of an order with priority 10 is penalty-equivalent with not meeting the deadline of
+  * 10 orders with priority 1. If the optimization is to have priority classes,
+  * i.e. orders of a higher priority class are more important than infinitely many orders of a lower priority class,
+  * we suggest the usage of a "folding technique": Consider you have 12 orders, 4 of each priority "low", "medium", and "high".
+  * The low priority orders are assigned the value 1, the orders with medium priority are assigned the value 5,
+  * and the orders with the high priority are assigned the value 25.
+  * With this configuration you could always ensure that the meeting of a deadline of one higher priority order is
+  * more important than the meeting of deadlines of all lower priority orders.
+  * Please note that this technique can cause "NumberOverflow" errors for too many classes and orders.
+  * - default: 1
+   */
+  priority?: number;
+  /**
+   * Specifies the volume of an order. Should have the same physical unit as maxVolume in Vehicle.
+  * It is not allowed to have a single Order whose volume is larger than maxVolume of any Vehicle.
+  * In addition, the total volume of all Orders of a Store must not exceed the total of maxVolume of its associated Vehicles.
+  * - default: 0
+   */
+  volume?: number;
+  /**
+   * Specifies the weight of an order. Should have the same physical unit as maxWeight in Vehicle.
+  * It is not allowed to have a single Order whose weight is larger than maxWeight of any Vehicle.
+  * In addition, the total weight of all Orders of a Store must not exceed the total of maxWeight of its associated Vehicles.
+  * - default: 0
+   */
+  weight?: number;
+  /**
+   * A potential service comment for that order. Length cannot exceed 5000 chars.
+   */
+  comments?: string;
+}
+
+/**
+ * A transport is the entity which services the orders and for which the optimization finds the best order allocations
+ * as well as the best routes.
+ * @param {FpVehicle} vehicle The vehicle entity describes the fixed parameters of a transport.
+ * @param {FpTransportMetadata} metadata Metadata defining variable specifics for the vehicle/transports.
+ */
+export interface FpTransport {
+  vehicle: FpVehicle;
+  metadata?: FpTransportMetadata;
+}
+/**
+ * The vehicle entity describes the fixed parameters of a transport.
+ * The physical units for maxWeight and maxVolume are of no relevance for the optimization.
+ * However, the same units as in weight and volume in Order need to be used.
+ * Parameters name, plate, avgFuelConsumption, and fuelType are currently not relevant for the optimization.
+ */
+export interface FpVehicle {
+  /**
+   * To map the vehicle entity back to the original after the request.
+   */
+  uuid?: string;
+  /**
+   * To associate the vehicle entity to a store. This id must be identical with one of the uuids in the store objects.
+   */
+  storeUuid: string;
+  /**
+   * The volume capacity of this vehicle. Has to be a positive number.
+   * The optimization will return a tour for this vehicle where this value is not exceeded.
+   */
+  maxVolume: number;
+  /**
+   * The weight capacity of this vehicle. Has to be a positive number.
+   * The optimization will return a tour for this vehicle where this value is not exceeded.
+   */
+  maxWeight: number;
+  name?: string;
+  plate?: string;
+  avgFuelConsumption?: number;
+  fuelType?: string;
+}
+
+/**
+ * Metadata defining variable specifics for the vehicle/transports.
+ */
+export interface FpTransportMetadata {
+  /**
+   * Specifies from when on the transport would be ready to service the orders,
+  * e.g. because right now it is still being refuelled. Expressed according to ISO 8601
+  * If no earliestDepartureTime is specified, it is assumed that the vehicle is immediately ready for departure.
+  * - default: now
+   */
+  earliestDepartureTime?: string;
+/**
+ * The start location of the vehicle. If no start address was specified,
+ * the address of the store referenced in the Vehicle is assumed to be the start address of the transport's tour.
+ * For start addresses the geocoordinates(lat, lng) must exist already.
+ */
+  start?: FpAddress ;
+  /**
+   * The field endDestinations contains the potential end points of the vehicle.
+ * The semantics for its configuration is:
+ * - List empty: The last delivered order is also the end point of the route.
+ * - One list entry: The route must end at this fixed end point.
+ * - Multiple list entries: The selection of the best end point is part of the optimization.
+ * If multiple endDestinations are specified, finding the best endpoint is part of the optimization.
+ * For end destination addresses the geocoordinates(lat, lng) must exist already.
+   */
+  endDestinations?: FpAddress[];
+}
+
+/**
+ * Specifies factors with which the travel times of the edges are adjusted.
+ * This may be necessary in certain areas where the travel time calculation is almost always off by a certain factor, e.g. Paris rush hour.
+ */
+export interface FpTravelTimeFactors {
+  /**
+   * Has an effect on all edge classes (excluding transit travel times)
+   */
+  all: number,
+
+  motorway: number,
+  motorway_link: number,
+  trunk: number,
+  trunk_link: number,
+  primary: number,
+  primary_link: number,
+  secondary: number,
+  secondary_link: number,
+  tertiary: number,
+  residential: number,
+  tertiary_link: number,
+  road: number,
+  unclassified: number,
+  service: number,
+  living_street: number,
+  pedestrian: number,
+  track: number,
+  path: number,
+  cycleway: number,
+  footway: number,
+  steps: number,
+  unknown: number
+}
