@@ -1,5 +1,4 @@
 import { TargomoClient } from './targomoClient';
-import 'whatwg-fetch'
 import { geometry } from '../index';
 
 describe('TargomoClient poi service', () => {

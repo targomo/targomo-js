@@ -1,5 +1,4 @@
 import { TargomoClient } from './index';
-import 'whatwg-fetch'
 
 describe('TargomoClient geocoding photon', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)

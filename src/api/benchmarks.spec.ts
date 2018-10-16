@@ -1,5 +1,4 @@
 import { TargomoClient } from './targomoClient';
-import 'whatwg-fetch'
 import { StatisticsGroups } from '../types';
 
 describe('Benchmarks service', () => {

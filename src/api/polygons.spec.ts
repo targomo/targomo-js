@@ -1,5 +1,4 @@
 import { TargomoClient } from './index';
-import 'whatwg-fetch'
 
 describe('TargomoClient polygon service', () => {
   const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)

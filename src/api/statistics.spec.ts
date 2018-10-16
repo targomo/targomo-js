@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { StatisticsGroups } from '../index';
 import { TargomoClient } from './targomoClient';
 

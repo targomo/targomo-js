@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { LatLngId, LatLngIdTravelMode } from '../index';
 import { TargomoClient } from './index';
 
