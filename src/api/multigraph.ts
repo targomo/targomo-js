@@ -1,69 +1,24 @@
-import { TargomoClient } from './targomoClient'
-import { LatLngId, MultigraphRequestOptions, MultigraphInfo, BoundingBox } from '../index';
-import { UrlUtil } from '../util/urlUtil';
-import { requests } from '../util/requestUtil';
-import { MultigraphRequestPayload } from './payload'
+import { TargomoClient } from '.';
+import { UrlUtil, LatLngIdTravelMode, LatLngId, requests, MultigraphRequestOptions } from '..';
+import { MgResult } from '../types/responses/multigraphResult';
+import { MultigraphRequestPayload } from './payload/multigraphRequestPayload';
 
 export class MultigraphClient {
   constructor(private client: TargomoClient) {
   }
 
   /**
-   * Creates a new multigraph tile set for the given sources and parameters.
-   * Returns an id for the given aggregation to be used in subsequent mvt requests.
-   *
-   * @param sources
-   * @param options
+
    */
-  async create(sources: LatLngId[], options: MultigraphRequestOptions): Promise<number> {
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'multigraph', this.client.serviceKey, false)
-    const cfg = new MultigraphRequestPayload(this.client, sources, options)
-    const result = await requests(this.client, options)
-      .fetchCachedData(options.useClientCache, url, 'POST', cfg, { 'Accept': 'text/plain' })
-    return result
+  async fetch(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgResult> {
+    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'multigraph', this.client.serviceKey, true)
+    console.log(url);
+
+    const cfg = new MultigraphRequestPayload(sources, options, targets);
+
+    console.log(JSON.stringify(cfg));
+    const result = await requests(this.client, options).fetch(url, 'POST', cfg);
+    return result;
   }
 
-  /**
-   * Returns Info about the current State of the multigraph calculation
-   *
-   * **Multigraph Lifecycle**
-   * 1. CREATED
-   * 2. ROUTING
-   * 3. MERGING
-   * 4. AGGREGATING
-   * 5. COMPLETED / FAILED
-   *
-   * @param multigaphId Id of the multigraph
-   */
-  async info(multigaphId: number): Promise<MultigraphInfo> {
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'multigraph/' + multigaphId, this.client.serviceKey, false)
-    const result = await requests(this.client).fetch(url, 'GET')
-    if (result.boundingBoxNorthEast && result.boundingBoxSouthWest) {
-      result.boundingBox = <BoundingBox>{
-        northEast: {
-          lat: result.boundingBoxNorthEast.y,
-          lng: result.boundingBoxNorthEast.x
-        },
-        southWest: {
-          lat: result.boundingBoxSouthWest.y,
-          lng: result.boundingBoxSouthWest.x
-        }
-      }
-      delete result.boundingBoxNorthEast
-      delete result.boundingBoxSouthWest
-    }
-    return result
-  }
-
-  /**
-   * Redo Multigraph with id `multigraphId`
-   *
-   * @param multigaphId
-   */
-  async redo(multigaphId: number): Promise<void> {
-    const url =
-      UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'multigraph/' + multigaphId + '/update', this.client.serviceKey, false)
-    const result = await requests(this.client).fetch(url, 'PATCH')
-    return result
-  }
 }

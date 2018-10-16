@@ -603,7 +603,7 @@ export interface FpTransportMetadata {
  * Specifies factors with which the travel times of the edges are adjusted.
  * This may be necessary in certain areas where the travel time calculation is almost always off by a certain factor, e.g. Paris rush hour.
  */
-export interface FpTravelTimeFactors {
+export interface TravelTimeFactors {
   /**
    * Has an effect on all edge classes (excluding transit travel times)
    */

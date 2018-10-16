@@ -1,4 +1,4 @@
-import { TravelRequestOptions, FpTravelTimeFactors} from '../index'
+import { TravelRequestOptions, TravelTimeFactors} from '../index'
 
 /**
  * The vehicle routing optimization request body (specification of the fleet planning request).
@@ -65,21 +65,4 @@ export interface FpRequestOptions extends TravelRequestOptions {
      */
     filterMissedDeadlines?: boolean;
 
-    /**
-    * Specifies factors with which the travel times of the edges are adjusted.
-    * This may be necessary in certain areas where the travel time calculation is
-    * almost always off by a certain factor, e.g. Paris rush hour.
-    *
-    * "travelTimeFactors" : { "all":0.5, "motorway":1.5, .... (other specific edge classes possible) },..
-    *
-    * Further specifics about the TravelTimeFactors:
-    *
-    * travel time factor of 1.5 means 50% more time is needed
-    * travel time factor 'all' is applied to ALL edge classes
-    * (on top of a specified one, e.g. for the example above 1.5*0.5=0.75 - the final applied travel time factor for 'motorway' edges)
-    * all elements are optional, min allowed cumulative travel time factor is 0.5; maximum allowed cumulative travel time factor is 100.0
-    * elements that are not recognised are ignored
-    * transit travel times are not affected by the travelTimeFactors
-     */
-    travelTimeFactors?: FpTravelTimeFactors;
 }
