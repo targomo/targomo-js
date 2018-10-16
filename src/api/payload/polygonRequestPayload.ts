@@ -3,6 +3,14 @@ import { TargomoClient } from '../targomoClient';
 import { PolygonRequestOptions } from '../../types/options/polygonRequestOptions';
 import {TravelRequestPayload} from './travelRequestPayload'
 
+export interface PolygonSvgOptions extends PolygonRequestOptions {
+  serializer: 'json'
+}
+
+export interface PolygonGeoJsonOptions extends PolygonRequestOptions {
+  serializer: 'geojson'
+}
+
 export class PolygonPayloadOptions {
   minPolygonHoleSize: number = 10000000
   buffer: number = 50
@@ -23,13 +31,13 @@ export class PolygonPayloadOptions {
 export class PolygonRequestPayload extends TravelRequestPayload {
   polygon = new PolygonPayloadOptions()
 
-  constructor(client: TargomoClient, sources: LatLngId[], options: PolygonRequestOptions, serializer: 'json' | 'geojson') {
+  constructor(client: TargomoClient, sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions) {
     super(<any>options)
 
     this.sources = this.buildSourcesCfg(sources)
     this.polygon.values = options.travelEdgeWeights
 
-    this.polygon.serializer = serializer
+    this.polygon.serializer = options.serializer
     this.polygon.simplify = options.simplifyMeters
     this.polygon.srid = options.srid
     this.polygon.buffer = options.buffer
