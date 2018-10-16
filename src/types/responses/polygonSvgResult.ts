@@ -1,4 +1,3 @@
-import { PolygonRequestOptions } from '../options/polygonRequestOptions';
 
 export interface PolygonData {
     area: number,
