@@ -2,9 +2,7 @@ import { MultigraphRequestAggregation, MultigraphRequestLayer } from '../types';
 import { TargomoClient } from './targomoClient';
 
 describe('Multigraph', () => {
-  const testClient = new TargomoClient(
-    'https://dev.route360.net/tests/',
-    process.env.TGM_TEST_API_KEY)
+  const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
 
   test('create new mg layer', async () => {
     const sources = [
@@ -28,8 +26,6 @@ describe('Multigraph', () => {
           type: MultigraphRequestLayer.HEXAGON
         }
       });
-
-      console.log(result.code);
 
       expect(result.code).toBe('ok')
     } catch (e) {

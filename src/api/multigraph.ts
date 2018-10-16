@@ -12,11 +12,7 @@ export class MultigraphClient {
    */
   async fetch(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgResult> {
     const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'multigraph', this.client.serviceKey, true)
-    console.log(url);
-
     const cfg = new MultigraphRequestPayload(sources, options, targets);
-
-    console.log(JSON.stringify(cfg));
     const result = await requests(this.client, options).fetch(url, 'POST', cfg);
     return result;
   }
