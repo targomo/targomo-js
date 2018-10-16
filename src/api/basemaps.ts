@@ -24,7 +24,7 @@ export class BasemapsClient {
     /**
      * @returns {string[]} Array of Targomo basemap names
      */
-    getBasemapList(): string[] {
+    get basemapNames(): string[] {
         return Object.keys(this.basemapsLookup)
     }
 
@@ -32,8 +32,8 @@ export class BasemapsClient {
      * @param {string} basemapName Accepts string of valid Targomo basemap name
      * @returns {string} Url for mapbox-gl style
      */
-    getGLStyle(basemapName: string): string {
-        if (!basemapName && !this.basemapsLookup[basemapName]) {
+    getGLStyleURL(basemapName: string): string {
+        if (!basemapName || !this.basemapsLookup[basemapName]) {
             throw new Error('valid style name required to access Targomo basemap');
         }
         return 'https://maps.targomo.com/styles/' + this.basemapsLookup[basemapName] + '.json?key=' + this.client.serviceKey
