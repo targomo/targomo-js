@@ -1,6 +1,5 @@
 import { TargomoClient } from './index';
 import { FpOrder, FpStore, FpTransport, FpAddress, FpVehicle, FpTransportMetadata, FpRequestOptions} from '../index';
-import 'whatwg-fetch'
 import { FpRequestPayload } from './payload/fleetsRequestPayload';
 import { throws } from 'assert';
 import { TestReporter } from '../../test-reporter';

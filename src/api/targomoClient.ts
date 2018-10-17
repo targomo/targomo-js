@@ -12,6 +12,7 @@ import { SimilarityClient } from './similarity'
 import { BenchmarksClient } from './benchmarks'
 import { ClientConfig, ClientOptions } from './clientConfig'
 import { MultigraphClient } from './multigraph';
+import { BasemapsClient } from './basemaps';
 import { FleetsClient } from './fleets';
 
 export class GeocodingClients {
@@ -37,6 +38,8 @@ export class TargomoClient {
   readonly benchmarks: BenchmarksClient
   readonly multigraph: MultigraphClient
   readonly fleets: FleetsClient
+
+  readonly basemaps: BasemapsClient
 
   readonly config: ClientConfig
 
@@ -75,6 +78,7 @@ export class TargomoClient {
     this.similarity = new SimilarityClient(this)
     this.benchmarks = new BenchmarksClient(this)
     this.multigraph = new MultigraphClient(this)
+    this.basemaps = new BasemapsClient(this);
     this.fleets = new FleetsClient(this);
   }
 
