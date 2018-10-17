@@ -12,7 +12,6 @@ describe('TargomoClient poi service', () => {
         maxEdgeWeight: 600,
         osmTypes: [{key: 'amenity', value: 'bank'}]
     })
-
     expect(result).toBeDefined()
   })
 

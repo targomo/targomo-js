@@ -14,7 +14,6 @@ export interface PolygonRequestOptions extends TravelMoreRequestOptions, TravelO
   simplifyMeters?: number
   quadrantSegments?: number
 
-  serializer?: 'json' | 'geojson'
   intersectionMode?: string
   decimalPrecision?: number
 }
