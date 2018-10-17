@@ -2,6 +2,7 @@ import { TargomoClient } from './index';
 import { FeatureCollection, MultiPolygon } from 'geojson';
 import { PolygonSvgResult } from '../types/responses/polygonSvgResult';
 
+
 describe('TargomoClient polygon service', () => {
   const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
 
