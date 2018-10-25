@@ -2,7 +2,7 @@
   "name": "@targomo/core",
   "description": "The JavaScript (& TypeScript) API for Targomo's time-based access mapping services.",
   "author": "Targomo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "repository": "github:targomo/targomo-js",
   "homepage": "https://targomo.com/developers",
@@ -51,11 +51,11 @@
     "tslint": "^5.8.0",
     "typescript": "^2.5.0",
     "webpack": "^3.8.1",
-    "webpack-node-externals": "1.6.0",
-    "@types/geojson": "^7946.0.1"
+    "webpack-node-externals": "1.6.0"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "@types/geojson": "^7946.0.1"
   }
 }
