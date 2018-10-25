@@ -129,7 +129,7 @@ export class RequestsUtil {
       const key = JSON.stringify({ url, method, payload })
       return cache.get(key, () => this.fetch(url, method, payload, headers))
     } else {
-      return this.fetch(url, method, payload)
+      return this.fetch(url, method, payload, headers)
     }
   }
 

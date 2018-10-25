@@ -21,7 +21,14 @@ export class RoutesClient {
     const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'route',
       this.client.serviceKey) + '&cfg=' + encodeURIComponent(JSON.stringify(cfg))
     console.log(url)
-    const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'JSONP')
+    const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'GET', undefined, {
+      // Headers are here because something needs to be fixed in the service endpoint
+      'Accept': 'application/json,application/javascript,*/*'
+    })
+
+    if (!result.routes) {
+      return null
+    }
 
     return result.routes.map((meta: any) => {
       return new Route(this.client, meta.travelTime, meta.segments, meta)
