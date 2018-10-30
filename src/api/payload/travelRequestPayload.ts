@@ -1,45 +1,13 @@
-import { TravelRequestOptions, TravelSpeedValues, LatLngId, TravelType, TravelSpeed, LatLngIdTravelMode } from '../../index'
+import { BaseRequestOptions, TravelRequestOptions } from './../../types/requestOptions';
+import { TravelSpeedValues, LatLngId, TravelType, TravelSpeed, LatLngIdTravelMode } from '../../index'
 
 /**
  * An object the contains a configuration set for making requests to the r360 services backend
  */
-export class TravelRequestPayload implements TravelRequestOptions {
-  closestSources = false
-
-  requestTimeout: number = null
-  walkSpeed: TravelSpeedValues = {}
-  bikeSpeed: TravelSpeedValues = {}
-
-  sources: LatLngId[] = [];
-  targets: LatLngId[] = [];
-
-  rushHour: boolean = false;
-
-  reverse: boolean = false;
-  recommendations: boolean = false;
-
-  pathSerializer: string = 'compact'
-  polygonSerializer: string = 'json'
-  pointReduction: boolean = true;
-
-  maxEdgeWeight: number = 1800
-  travelType: TravelType = 'bike'
-  travelSpeed: TravelSpeed = 'medium'
-  edgeWeight: 'time' | 'distance' = 'time'
-
-
-  transitFrameDuration: number = undefined
-  transitFrameDate: number = 20170801
-  transitFrameTime: number = 39600
-
-  date = this.transitFrameDate // deprecated
-  time = this.transitFrameTime // deprecated
-
-  elevation = true
-  useCache = true // TODO: maybe split...also have useClientCache
-  travelEdgeWeights: number[] = null
+export class TravelRequestPayload extends TravelRequestOptions {
 
   constructor(options?: TravelRequestOptions) {
+    super();
     Object.assign(this, options)
 
     if (options.transitFrameDateTime != null) {
@@ -96,8 +64,9 @@ export class TravelRequestPayload implements TravelRequestOptions {
                 frame: {
                   date: this.transitFrameDate,
                   time: this.transitFrameTime,
+                  duration: this.transitFrameDuration
                 },
-                duration: this.transitFrameDuration
+                maxTransfers: this.transitMaxTransfers
               }
             }
         }
@@ -107,4 +76,3 @@ export class TravelRequestPayload implements TravelRequestOptions {
     })
   }
 }
-

@@ -1,5 +1,4 @@
-import { TravelRequestOptions, TravelOptionsClientCache} from '../index'
+import { BaseRequestOptions, UseCacheRequestOptions, TravelRequestOptions } from '../requestOptions';
 
-export interface TimeRequestOptions extends TravelRequestOptions, TravelOptionsClientCache {
-  intersectionMode?: string
+export interface TimeRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
 }

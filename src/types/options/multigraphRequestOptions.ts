@@ -1,5 +1,6 @@
-import { TravelRequestOptions, TravelOptionsClientCache} from '../index'
+import { UseCacheRequestOptions } from './../requestOptions';
 import { SRID } from '../../index';
+import { BaseRequestOptions } from '../requestOptions';
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',
@@ -11,7 +12,8 @@ export enum MultigraphRequestAggregation {
   NEAREST = 'nearest',
 }
 
-export interface MultigraphSpecificRequestOptions {
+
+export interface MultigraphRequestOptions extends BaseRequestOptions, UseCacheRequestOptions {
   edgeClasses?: number[]
 
   serialization?: {
@@ -29,8 +31,4 @@ export interface MultigraphSpecificRequestOptions {
     maxResultValue?: number
     maxResultValueRatio?: number
   }
-}
-
-export interface MultigraphRequestOptions extends TravelRequestOptions, TravelOptionsClientCache, MultigraphSpecificRequestOptions {
-
 }

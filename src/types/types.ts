@@ -381,7 +381,12 @@ export interface SetBoundsOptions {
  * Object that will be passed to a request as source
  */
 export interface LatLngIdTravelMode extends LatLngId {
-  tm?: any
+  tm?: {rushHour: boolean} | TravelSpeedValues | TransitTravelModeOptions
+}
+
+export interface TransitTravelModeOptions {
+  frame: {date: number, time: number, duration: number}
+  maxTransfers: number;
 }
 
 /**
@@ -399,7 +404,11 @@ export interface ReachabilityResult {
   travelTime: number
 }
 
-export interface TimeResult {
+export interface TimeResult {  /**
+  * @General This field defines what travel type is used for Targomo Time Service
+  * (or Routing Service if geojsonCreation = ROUTING_SERVICE).
+  */
+ //  travelType: TravelType
   id: string
   targets: {
     id: string
@@ -408,49 +417,57 @@ export interface TimeResult {
 }
 
 /**
- * A store (also called 'depot' sometimes) to which the respective vehicles/transports and orders are associated.
+ * @General A store (also called 'depot' sometimes) to which the respective vehicles/transports and orders are associated.
  * Each store will be optimized individually and independently.
  */
 export interface FpStore {
   /**
-   *  Unique ID that is required to be set so that Order and Vehicle can reference to their respective store.
+   * @General Unique ID that is required to be set so that Order and Vehicle can reference to their respective store.
+   * @Nullable No.
    */
   uuid: string;
   /**
-   * Name of the store - cannot be longer than 256 chars.
+   * @General Name of the store.
+   * @Format Cannot be longer than 256 chars.
    */
   name?: string;
   /**
-   * Location of the store. For store addresses the geocoordinates(lat, lng) must exist already.
+   * @General Location of the store.
+   * @Format For store addresses the geocoordinates(lat, lng) must be present in the FpAddress object.
    */
   address: FpAddress;
 }
 
 /**
- * Stores, Orders, and Transports/Vehicles have addresses associated to determine their location.
- * Preferably these addresses are already geocoded in the WGS84 format (in lat, lng).
+ * @General Stores, Orders, and Transports/Vehicles have addresses associated to determine their location.
+ * @Performance Preferably these addresses are already geocoded in the WGS84 format (in lat, lng).
  * Otherwise, the geocoordinates are calculated during the request from the other address details (street, city, etc.).
  * This only happens for order addresses. For store and start or endDestination addresses geocoordinates (lat, lng) must exist already.
  */
 export interface FpAddress {
   /**
-   * Unique ID
+   * @General A unique id which can be used to map the order entity back to the original after the request.
    */
   uuid?: string;
   /**
-   * Amount of time it takes to carry out the order for this address in seconds.
-   * This value is only important for addresses in orders.
-   * - default: 0
+   * @General Amount of time it takes to carry out an order for this address in seconds.
+   * @default 0
+   * @Format Time in seconds.
+   * @Nullable This value is only important for addresses in orders.
    */
   avgHandlingTime?: number;
   /**
-   * Latitude of the geocoordinates in the WGS84 format of the the address.
-   * This is required for addresses in store and transport.
+   * @General Latitude of the geocoordinates of the the address.
+   * @Nullable This is required for addresses in store and start or endDestination.
+   * @Format WGS84 format.
+   * @Default If no value is set the result will include a warning and the default of 1 second is assumed,
+   * i.e. after arrival the transport departs one second later.
    */
   lat?: number;
   /**
-   * Longtitude of the geocoordinates in the WGS84 format of the the address.
-   * This is required for addresses in store and transport.
+   * @General Longitude of the geocoordinates of the the address.
+   * @Nullable This is required for addresses in store and start or endDestination.
+   * @Format WGS84 format.
    */
   lng?: number;
   name?: string;
@@ -463,40 +480,104 @@ export interface FpAddress {
 }
 
 /**
- * The order object describes the entities that need to be serviced by the transports of the same associated store.
- * - The physical units for weight and volume must match the units of maxWeight and maxVolume in Vehicle.
- * - It is not allowed to have a single Order whose weight or volume is larger than maxWeight or maxVolume of any Vehicle.
- * - In addition, the total weight or volume of all Orders of a Store must not exceed
- * the total of maxWeight or maxVolume of its associated Vehicles.
- * - It is sufficient to specify an order’s address without geo-coordinates.
- * The missing information is derived from the address details via geocoding.
- * This can lead to small runtime impairments for many addresses, since the geocoding accesses an external service.
- * The resulting geodata must not be saved.
+ * @General The order object describes the entities that need to be serviced by the transports of the same associated store.
  */
 export interface FpOrder {
   /**
-   * To map the order entity back to the original after the request.
+   * @General A unique id which can be used to map the order entity back to the original after the request.
    */
   uuid?: string;
   /**
-   * To associate the order entity to a store. This id must be identical with one of the uuids in the store objects.
+   * @General To associate the order entity to a store.
+   * @Format This id must be identical with one of the uuids in the store objects.
+   * @Nullable No
    */
   storeUuid: string;
   /**
-   * The location of the order.
+   * @General The location of the order.
+   * When specifying an order setting its address is mandatory.
+   * However, for the optimization only the fields lat, lng, and avgHandlingTime are of relevance.
+   * @Example address = {
+   *  lat: 13.380707532171671,
+   *  lng: 52.532420302239096,
+   *  avgHandlingTime: 300
+   * }
+   * @Performance It is sufficient to specify an order’s address without geo-coordinates.
+   * The missing information is derived from the address details via geocoding.
+   * This can lead to small runtime impairments for many addresses, since the geocoding accesses an external service.
+   * The resulting geodata must not be saved.
    */
   address: FpAddress;
   /**
-   * The deadline (time and date) for an order to be serviced. Expressed according to ISO 8601.
+   * @General The deadline (time and date) for an order to be serviced.
    * The optimization algorithm tries to minimize the amount of deadlines that are not kept.
+   * Deadline will be ignored if visitingTimes were set.
+   * @Format Expressed according to ISO 8601.
+   * @Default null
    */
   deadline?: string;
+
   /**
-   * The priority specifies the priority of an order. This has effects on:
-  * - Validation: If the order number or the total order volume/weight is too high,
-  * first orders with a lower rather than a higher priority are removed.
+   * @General The user can specify within what time intervals the order can be serviced via visitingTimes.
+   * The actual planned visits have to be within these time intervals - this includes the time at the premise (see address.avgHandlingTime).
+   * The start of the first interval as well as the end of the last interval can be null or undefined, which means there are no total lower
+   * or upper boundaries only breaks in which the order cannot be serviced.
+   * @Example visitingTimes = [{
+   *  end: "2012-04-23T18:00:00.000Z"
+   * },{
+   *  start: "2012-04-24T08:00:00.000Z"
+   * }]
+   * means that the order cannot be serviced between 23.04.2012, 6pm and 24.04.2012, 8am but at any other time before or after.
+   *
+   * The user can also define just lower or upper boundaries for orders with only setting one or the other:
+   * start or end of a single visiting time interval, e.g.
+   * visitingTimes = [{ end: "2012-04-23T18:00:00.000Z" }]
+   * means that the order must have been serviced/visited before the specified time (including the handling time at the address).
+   * @Alternative If only an upper boundary for the visit is important the user can also simply choose to define this via the deadline
+   * parameter. The difference here is that the handling time at the address is not included in the specified time,
+   * i.e. if the vehicle/transport arrives at the location before the deadline then this time constraint is met.
+   * For instance consider the visitingTimes from above: if the avgHandlingTime of this order's address is 300 (=5 minutes) then setting
+   * the deadline to "2012-04-23T17:55:00.000Z" would be equivalent with visiting times.
+   * Simplified: visitingTimes[0].end = deadline + address.avgHandlingTime.
+   * Note, that deadline and visitingTimes cannot both be set for one order. This will result in the deadline value to be ignored
+   * (+ warning) in favour of the visitingTimes.
+   * @Performance Generally, the optimization tries to fit all orders into the specified visiting hours/deadlines and within the valid
+   * working hours of the assigned vehicle. If this is not possible orders will be outside of these time constraints, i.e. after the last
+   * visiting end time (or deadline) or after the valid working hours of the vehicle. This will result in penalty points for not meeting
+   * the respective time constraints or to filtering out (i.e. not servicing) the orders depending on how the optimization was configured
+   * (see OptimizationMetadata).
+   * @Format Expressed according to ISO 8601.
+   * @Default []
+   */
+  visitingTimes?: {start: string, end: string}[];
+  /**
+   * @General The user can define a respective load to specify the use case specific characteristics of the order.
+   * @Example
+   * load = {
+   *  bottles: 12
+   *  weight: 5
+   *  crate: 1
+   * }
+   * @Min Greater than or equal to 0
+   * It is not allowed to have a single Order whose single load is smaller than the smallest minSingle of all of the load's
+   * loadRestrictions of the vehicles
+   * @Max Smaller than 2147483648
+   * It is not allowed to have a single Order whose single load is larger than the largest maxSingle of all of the load's
+   * loadRestrictions of the vehicles (or maxSum if the former is not specified)
+   * In addition, the total loads of all Orders of a Store must not exceed the total of all of the load's maxSum of its associated Vehicles.
+   * @Default If no value was defined for a load for which a load restriction exists that load is assumed to be 0.0.
+   * If no restrictions for a load in any of the vehicles of the associated store exist the value is ignored (i.e. removed from the list).
+   * @Format The physical units of the load values, e.g. for weight and volume, must match the units of the associated loadRestrictions
+   * in the Vehicle.
+   */
+  load?: {[key: string]: number};
+
+  /**
+   * @General The priority specifies the priority of an order. This has effects on:
+  * - Validation: If the order number or the total order volume/weight is too high, first orders with a lower rather than a higher
+  * priority are removed.
   * - Optimization: It is preferable to try to keep the deadlines of orders with higher priority.
-  * Here, the priority of the order represents the number of penalty points it accrues for not meeting the order’s deadline.
+  * Here, the priority of the order represents the number of penalty points it acquires for not meeting the order’s deadline.
   * For example, not meeting a deadline of an order with priority 10 is penalty-equivalent with not meeting the deadline of
   * 10 orders with priority 1. If the optimization is to have priority classes,
   * i.e. orders of a higher priority class are more important than infinitely many orders of a lower priority class,
@@ -505,65 +586,125 @@ export interface FpOrder {
   * and the orders with the high priority are assigned the value 25.
   * With this configuration you could always ensure that the meeting of a deadline of one higher priority order is
   * more important than the meeting of deadlines of all lower priority orders.
-  * Please note that this technique can cause "NumberOverflow" errors for too many classes and orders.
-  * - default: 1
+  * ! Please note that this technique can cause "NumberOverflow" errors for too many classes and orders.
+  * @Default 1
    */
   priority?: number;
+
   /**
-   * Specifies the volume of an order. Should have the same physical unit as maxVolume in Vehicle.
-  * It is not allowed to have a single Order whose volume is larger than maxVolume of any Vehicle.
-  * In addition, the total volume of all Orders of a Store must not exceed the total of maxVolume of its associated Vehicles.
-  * - default: 0
-   */
-  volume?: number;
-  /**
-   * Specifies the weight of an order. Should have the same physical unit as maxWeight in Vehicle.
-  * It is not allowed to have a single Order whose weight is larger than maxWeight of any Vehicle.
-  * In addition, the total weight of all Orders of a Store must not exceed the total of maxWeight of its associated Vehicles.
-  * - default: 0
-   */
-  weight?: number;
-  /**
-   * A potential service comment for that order. Length cannot exceed 5000 chars.
+   * @General A potential service comment for that order.
+   * @Format Length cannot exceed 5000 chars.
    */
   comments?: string;
+
+  /**
+   * @General With demands an order can be annotated with a list of things that need to be met by the supplies of the servicing/visiting
+   * vehicle, i.e. all demands of an order have to be contained in the list of the supplies of a vehicle for the vehicle to be eligible
+   * to service this order.
+   * @Example
+   * demands = ["dangerous_goods", "region_germany"]
+   * Means that this order needs to be serviced by a transport that has at least "dangerous_goods" and "region_germany" in its list of
+   * supplies.
+   * @Default []
+   */
+  demands?: string[];
+
+  /*
+   * @General If a tag is listed in optimizationMetadata.nonParallelOrdersByTags then they restrict the optimization in a way that some
+   * orders are not allowed to be serviced in parallel when they have the same values for the specified tags. Using tags for that purpose
+   * makes sense if some orders share the same external resource which would have to be present at both locations.
+   * @Example
+   * "tags" : {
+   *  "facility manager":"Max Mustermann",
+   *  "owner": "Muster AG"
+   * }
+   * It means that if another order exists that has the same "facility manager":"Max Mustermann" or "owner": "Muster AG" (or both) then
+   * they cannot be serviced in parallel since for both visits the same facility manager and/or owner has to be present.
+   */
+  tags?: {[key: string]: string};
 }
 
 /**
- * A transport is the entity which services the orders and for which the optimization finds the best order allocations
+ * @General A transport is the entity which services the orders and for which the optimization finds the best order allocations
  * as well as the best routes.
- * @param {FpVehicle} vehicle The vehicle entity describes the fixed parameters of a transport.
- * @param {FpTransportMetadata} metadata Metadata defining variable specifics for the vehicle/transports.
  */
 export interface FpTransport {
+  /**
+   * @General The vehicle entity describes the fixed parameters of a transport.
+   */
   vehicle: FpVehicle;
+  /**
+   * @General Metadata defining variable specifics for the vehicle/transports.
+   */
   metadata?: FpTransportMetadata;
 }
 /**
- * The vehicle entity describes the fixed parameters of a transport.
- * The physical units for maxWeight and maxVolume are of no relevance for the optimization.
- * However, the same units as in weight and volume in Order need to be used.
+ * @General The vehicle entity describes the fixed parameters of a transport.
  * Parameters name, plate, avgFuelConsumption, and fuelType are currently not relevant for the optimization.
  */
 export interface FpVehicle {
   /**
-   * To map the vehicle entity back to the original after the request.
+   * @General A unique id which can be used to map the order entity back to the original after the request.
    */
   uuid?: string;
   /**
-   * To associate the vehicle entity to a store. This id must be identical with one of the uuids in the store objects.
+   * @General To associate the vehicle entity to a store.
+   * @Format This id must be identical with one of the uuids in the store objects.
+   * @Nullable No
    */
   storeUuid: string;
+
   /**
-   * The volume capacity of this vehicle. Has to be a positive number.
-   * The optimization will return a tour for this vehicle where this value is not exceeded.
+   * @General For each use case specific load key, for instance "weight", "volume", "item", the user can define restrictions
+   * @Example
+   * loadRestrictions = {
+   *  weight: { maxSum": 100 },
+   *  volume: { maxSum": 2000, "minSingle": 100, "maxSingle": 200 },
+   *  item: { minSum": 10, "maxSum": 20 }
+   * }
    */
-  maxVolume: number;
+  loadRestrictions?: {
+    [key: string]: {
+      maxSum: number,
+      minSum: number,
+      minSingle: number,
+      maxSingle: number
+    }
+  }
+
   /**
-   * The weight capacity of this vehicle. Has to be a positive number.
-   * The optimization will return a tour for this vehicle where this value is not exceeded.
+   * @General Vehicles should be annotated with a priority to rank their importance with regards to their respective keeping time
+   * constraints, i.e. when valid working hours (from earliestDepartureTime until latestArrivalTime) are exceeded the penalty for not
+   * finishing the tour on time is multiplied by the factor priority. In this way vehicle with a higher are more likely having tours
+   * that are still within their specified working hours. For instance, the optimization would evaluate the meeting of the time constraints
+   * of a vehicle with the priority of 50 as high as meeting the time constraints of five vehicles with a priority of 10. That also applies
+   * when secondsToPenaltyRatioForOutOfWorkingHours is set.
+   * @Default If the priority is not specified the service will assume a priority of 1 and include a warning in the tour planning result.
    */
-  maxWeight: number;
+  priority: number;
+
+  /**
+   * @General With supplies a vehicle can be annotated with a list of items or expertise that it provides so it can fulfil the demands of
+   * orders, i.e. all demands of an order have to be contained in the list of the supplies of a vehicle for the vehicle to be eligible to
+   * service this order.
+   * @Example supplies = ["dangerous_goods", "normal_goods", "region_germany", "region_benelux"]
+   * Means that this vehicle can service any order that demands "normal_goods", "dangerous_goods", "region_germany", or
+   * "region_benelux" or any combination of that, e.g. its tour can include an order with dangerous goods in Germany.
+   */
+  supplies?: string[];
+
+  /**
+   * An optional parameter that is used in the route optimization. With this parameter all or some vehicles can be annotated with extra
+   * costs (in seconds if travel costs are travel times) that are added during the optimization if a tour for this vehicle was created.
+   * This can be used, for instance, to motivate the usage of certain vehicles over other vehicles (the preferred vehicle should have a
+   * smaller fixed cost), or to generally penalize the usage of many vehicles (e.g. if all vehicles have a value set of $300$ it means
+   * that the optimization tries to fulfil all requirements with as few cars as possible and only would add a tour/vehicle if the travel
+   * costs can be reduced by at least $300$ (or more deadlines can be met)).
+   * @Min If specified it has to be equal or greater than 0.
+   * @Default 0
+   */
+  fixedTravelCosts?: number;
+
   name?: string;
   plate?: string;
   avgFuelConsumption?: number;
@@ -571,41 +712,75 @@ export interface FpVehicle {
 }
 
 /**
- * Metadata defining variable specifics for the vehicle/transports.
+ * @General Metadata defining variable specifics for the vehicle/transports.
+ * @Example The three parameters earliestDepartureTime, latestArrivalTime, and interruptionTimes constitute the transport's valid
+ * working hours. In the example below the vehicle has a valid working hour from 8 to 18 with a 2 hour break from 12 to 14:
+ * metadata = {
+ *  earliestDepartureTime: "2012-04-23T08:00:00.000Z",
+ *  latestArrivalTime: "2012-04-23T18:00:00.000Z",
+ *  interruptionTimes: [{
+ *   start: "2012-04-23T12:00:00.000Z",
+ *   end: "2012-04-23T14:00:00.000Z"
+ *  }]
+ * }
  */
 export interface FpTransportMetadata {
   /**
-   * Specifies from when on the transport would be ready to service the orders,
-  * e.g. because right now it is still being refuelled. Expressed according to ISO 8601
-  * If no earliestDepartureTime is specified, it is assumed that the vehicle is immediately ready for departure.
-  * - default: now
+   * @General Specifies from when on the transport would be ready to service the orders,
+   * e.g. because right now it is still being refuelled.
+   * @Format Expressed according to ISO 8601
+   * @Default If no earliestDepartureTime is specified, it is assumed that the vehicle is immediately ready for departure.
    */
   earliestDepartureTime?: string;
-/**
- * The start location of the vehicle. If no start address was specified,
- * the address of the store referenced in the Vehicle is assumed to be the start address of the transport's tour.
- * For start addresses the geocoordinates(lat, lng) must exist already.
- */
+
+  /**
+   * @General latestArrivalTime can be set to when the tour for this transport/vehicle has to end at the latest.
+   * @Default If no value was set it is assumed that no latest end date for this transport/vehicle exists.
+   */
+  latestArrivalTime?: string;
+
+  /**
+   * @General Breaks within the working hours (from earliestDepartureTime to latestArrivalTime) can be set with interruptionTimes.
+   * In the specified interruption times the transport/vehicle cannot service orders or travel between them.
+   * If these breaks fall within the tour (-item) the result will contain these in the tourItem.interruptions parameter.
+   * @Format Both, start and end dates must be set for all time intervals of interruption times.
+   */
+  interruptionTimes?: {start: string, end: string}[]
+
+  /**
+   * @General The start location of the vehicle.
+   * @Default If no start address was specified,
+   * the address of the store referenced in the Vehicle is assumed to be the start address of the transport's tour.
+   * @Format For start addresses, the geocoordinates(lat, lng) must exist already.
+   */
   start?: FpAddress ;
   /**
-   * The field endDestinations contains the potential end points of the vehicle.
- * The semantics for its configuration is:
- * - List empty: The last delivered order is also the end point of the route.
- * - One list entry: The route must end at this fixed end point.
- * - Multiple list entries: The selection of the best end point is part of the optimization.
- * If multiple endDestinations are specified, finding the best endpoint is part of the optimization.
- * For end destination addresses the geocoordinates(lat, lng) must exist already.
+   * @General The field endDestinations contains the potential end points of the vehicle.
+   * @Performance If multiple endDestinations are specified, finding the best endpoint is part of the optimization.
+   * @Format The semantics for its configuration is:
+   * - List empty: The last delivered order is also the end point of the route.
+   * - One list entry: The route must end at this fixed end point.
+   * - Multiple list entries: The selection of the best end point is part of the optimization.
+   * For end destination addresses the geocoordinates(lat, lng) must exist already.
    */
   endDestinations?: FpAddress[];
 }
-
 /**
- * Specifies factors with which the travel times of the edges are adjusted.
- * This may be necessary in certain areas where the travel time calculation is almost always off by a certain factor, e.g. Paris rush hour.
+ * @General Specifies factors with which the travel times of the edges are adjusted.
+ * This may be necessary in certain areas where the travel time calculation is
+ * almost always off by a certain factor, e.g. Paris rush hour.
+ * Transit travel times are not affected by the travelTimeFactors
+ * @Example "travelTimeFactors" : { "all":0.5, "motorway":1.5, .... (other specific edge classes possible) },..
+ * @Min Minimum allowed cumulative travel time factor is 0.5;
+ * @Max Maximum allowed cumulative travel time factor is 100.0
+ * @Format
+ * Travel time factor of 1.5 means 50% more time is needed
+ * (on top of a specified one, e.g. for the example above 1.5*0.5=0.75 - the final applied travel time factor for 'motorway' edges)
+ * @Nullable All elements are optional
  */
-export interface FpTravelTimeFactors {
+export interface TravelTimeFactors {
   /**
-   * Has an effect on all edge classes (excluding transit travel times)
+   * @General Has an effect on all edge classes (excluding transit travel times)
    */
   all: number,
 

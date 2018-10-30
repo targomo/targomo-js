@@ -1,19 +1,14 @@
-import { TravelOptionsClientCache} from '../index'
+import { UseCacheRequestOptions } from './../requestOptions';
 import { SRID } from '../types'
-import { TravelTypeOptions, TravelMoreRequestOptions } from '../travelOptions'
+import { BaseRequestOptions } from '../requestOptions';
 
-export interface PolygonRequestOptions extends TravelMoreRequestOptions, TravelOptionsClientCache, TravelTypeOptions {
+export interface PolygonRequestOptions extends BaseRequestOptions, UseCacheRequestOptions {
   minPolygonHoleSize?: number
   buffer?: number
   simplify?: number
   srid?: SRID
-
   travelEdgeWeights: number[]
-
-  // format?: string
-  simplifyMeters?: number
   quadrantSegments?: number
-
-  intersectionMode?: string
+  intersectionMode?: 'average' | 'union' | 'intersection' | 'none'
   decimalPrecision?: number
 }

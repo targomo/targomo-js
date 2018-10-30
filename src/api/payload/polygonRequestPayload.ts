@@ -18,11 +18,10 @@ export class PolygonPayloadOptions {
   srid: SRID = SRID.SRID_4326
 
   format?: string
-  simplifyMeters?: number
   quadrantSegments: number = 2
 
   serializer: 'json' | 'geojson'
-  intersectionMode: string = 'union'
+  intersectionMode: 'average' | 'union' | 'intersection' | 'none' = 'union'
   decimalPrecision: number = 6
 
   values: number[]
@@ -36,14 +35,13 @@ export class PolygonRequestPayload extends TravelRequestPayload {
 
     this.sources = this.buildSourcesCfg(sources)
     this.polygon.values = options.travelEdgeWeights
-
     this.polygon.serializer = options.serializer
-    this.polygon.simplify = options.simplifyMeters
+    this.polygon.simplify = options.simplify
     this.polygon.srid = options.srid
     this.polygon.buffer = options.buffer
     this.polygon.minPolygonHoleSize = options.minPolygonHoleSize
     this.polygon.quadrantSegments = options.quadrantSegments
     this.polygon.intersectionMode = options.intersectionMode
-    // this.polygon.pointReduction = options.pointReduction
+    this.polygon.decimalPrecision = options.decimalPrecision
   }
 }

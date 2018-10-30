@@ -1,5 +1,5 @@
-import { TravelRequestOptions, TravelOptionsClientCache} from '../index'
+import { BaseRequestOptions } from '../requestOptions';
 
-export interface RouteRequestOptions extends TravelRequestOptions, TravelOptionsClientCache {
+export interface RouteRequestOptions extends BaseRequestOptions {
   recommendations?: boolean
 }

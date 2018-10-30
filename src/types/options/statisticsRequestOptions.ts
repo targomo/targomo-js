@@ -1,12 +1,15 @@
-import { StatisticsGroupId,  StatisticsItem, TravelRequestOptions} from '../index'
+import { StatisticsGroupId,  StatisticsItem} from '../index'
 import { LatLngId } from '../types'
+import { BaseRequestOptions } from '../requestOptions';
 
-export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
+export interface StatisticsTravelRequestOptions extends BaseRequestOptions {
   // statistics: (StatisticsKey | number)[]
   statisticsGroup: StatisticsGroupId
   inactiveSources?: LatLngId[]
   closestSources?: boolean
   intersectionMode?: string
+
+  travelType: 'walk' | 'bike' | 'car'
 }
 
 export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions {
