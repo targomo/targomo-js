@@ -11,6 +11,8 @@ import { RoutesClient } from './routes'
 import { SimilarityClient } from './similarity'
 import { BenchmarksClient } from './benchmarks'
 import { ClientConfig, ClientOptions } from './clientConfig'
+import { StatefulMultigraphClient } from './statefulMultigraph';
+import { FleetsClient } from './fleets';
 import { MultigraphClient } from './multigraph';
 import { BasemapsClient } from './basemaps';
 import { FleetsClient } from './fleets';
@@ -36,6 +38,7 @@ export class TargomoClient {
   readonly routes: RoutesClient
   readonly similarity: SimilarityClient
   readonly benchmarks: BenchmarksClient
+  readonly statefulMultigraph: StatefulMultigraphClient
   readonly multigraph: MultigraphClient
   readonly fleets: FleetsClient
 
@@ -77,6 +80,7 @@ export class TargomoClient {
     this.routes = new RoutesClient(this)
     this.similarity = new SimilarityClient(this)
     this.benchmarks = new BenchmarksClient(this)
+    this.statefulMultigraph = new StatefulMultigraphClient(this)
     this.multigraph = new MultigraphClient(this)
     this.basemaps = new BasemapsClient(this);
     this.fleets = new FleetsClient(this);
