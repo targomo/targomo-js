@@ -1,5 +1,5 @@
 import {
-  TravelSpeedValues, TravelSpeed,
+  TravelSpeedValues,
   TravelType,
   TravelTimeFactors
 } from './types'
