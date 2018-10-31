@@ -22,7 +22,7 @@ export class TravelRequestPayload extends TravelRequestOptions {
     }
   }
 
-  protected buildTargetsCfg(targets: LatLngId[]) {
+  protected buildTargetsCfg(targets: LatLngId[]): LatLngId[] {
     return targets.map(original => {
       return {
         lat: original.lat,
@@ -32,7 +32,7 @@ export class TravelRequestPayload extends TravelRequestOptions {
     })
   }
 
-  protected buildSourcesCfg(sources: LatLngIdTravelMode[]) {
+  protected buildSourcesCfg(sources: LatLngIdTravelMode[]): LatLngIdTravelMode[] {
     return sources.map(original => {
       const source = {
         lat: original.lat,
