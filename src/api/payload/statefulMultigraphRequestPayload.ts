@@ -33,8 +33,8 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
     delete this.useCache
 
     if (options) {
-      this.multiGraphSerializationType = options.serialization.format
-      this.multiGraphSerializationDecimalPrecision = options.serialization.decimalPrecision
+      this.multiGraphSerializationType = options.multigraph.serialization.format
+      this.multiGraphSerializationDecimalPrecision = options.multigraph.serialization.decimalPrecision
       /**
        * not yet supported in the stateful version
       if (options.layer) {
@@ -45,13 +45,13 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
         this.multiGraphLayerMaxGeometryDetailLevel = options.layer.maxGeometryDetailLevel
       }
       */
-      if (options.aggregation) {
-        this.multiGraphAggregationType = options.aggregation.type || null
-        this.multiGraphAggregationIgnoreOutlier = options.aggregation.ignoreOutliers || null
-        this.multiGraphAggregationMinSourcesRatio = options.aggregation.minSourcesRatio || null
-        this.multiGraphAggregationMinSourcesCount = options.aggregation.minSourceCount || null
-        this.multiGraphAggregationMaxResultValueRatio = options.aggregation.maxResultValueRatio || null
-        this.multiGraphAggregationMaxResultValue = options.aggregation.maxResultValue || null
+      if (options.multigraph.aggregation) {
+        this.multiGraphAggregationType = options.multigraph.aggregation.type || null
+        this.multiGraphAggregationIgnoreOutlier = options.multigraph.aggregation.ignoreOutliers || null
+        this.multiGraphAggregationMinSourcesRatio = options.multigraph.aggregation.minSourcesRatio || null
+        this.multiGraphAggregationMinSourcesCount = options.multigraph.aggregation.minSourceCount || null
+        this.multiGraphAggregationMaxResultValueRatio = options.multigraph.aggregation.maxResultValueRatio || null
+        this.multiGraphAggregationMaxResultValue = options.multigraph.aggregation.maxResultValue || null
       }
     }
   }

@@ -20,7 +20,7 @@ export class BaseRequestOptions {
    * @Format time (distance in seconds) or distance (distance in meters)
    * @Default 'time'
    */
-  edgeWeight?: 'time' | 'distance';
+  edgeWeight?: 'time' | 'distance' = 'time';
 
   /*
    * @General The maximum distance "depth" of the built network.
@@ -51,21 +51,20 @@ export class BaseRequestOptions {
    * @Nullable All elements are optional
    */
    travelTimeFactors?: TravelTimeFactors;
-
-
 }
 
+
+
 export class TravelRequestOptions extends BaseRequestOptions {
-  sources: LatLngIdTravelMode[];
-  targets: LatLngId[];
-  transitFrameDateTime: string;
-  transitFrameDuration: number = undefined
-  transitFrameDate: number = 20170801
-  transitFrameTime: number = 39600
-  transitMaxTransfers: number = 5
-  date = this.transitFrameDate // deprecated
-  time = this.transitFrameTime // deprecated
-  travelType: TravelType = 'bike'
+
+  transitFrameDateTime?: string;
+  transitFrameDuration?: number = undefined
+  transitFrameDate?: number = 20170801
+  transitFrameTime?: number = 39600
+  transitMaxTransfers?: number = 5
+  date? = this.transitFrameDate // deprecated
+  time? = this.transitFrameTime // deprecated
+  travelType?: TravelType;
 
   /**
    * @General Enable the rush hour mode to simulate a more crowded street. Warning this is a paid feature so not
@@ -74,6 +73,6 @@ export class TravelRequestOptions extends BaseRequestOptions {
    */
   rushHour?: boolean;
 
-  walkSpeed: TravelSpeedValues = {}
-  bikeSpeed: TravelSpeedValues = {}
+  walkSpeed?: TravelSpeedValues = {}
+  bikeSpeed?: TravelSpeedValues = {}
 }

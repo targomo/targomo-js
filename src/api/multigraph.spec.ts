@@ -1,4 +1,4 @@
-import { MultigraphRequestAggregation, MultigraphRequestLayer } from '../types';
+import { MultigraphRequestAggregation, MultigraphRequestLayer, MultigraphRequestOptions } from '../types';
 import { TargomoClient } from './targomoClient';
 
 describe('Multigraph', () => {
@@ -11,21 +11,27 @@ describe('Multigraph', () => {
       { lng: 13.3799274, lat: 52.51644311, id: 3 }
     ]
     try {
-      const result = await testClient.multigraph.fetch(sources, {
+      const options: MultigraphRequestOptions = {
         maxEdgeWeight: 3600,
         travelType: 'car',
-        aggregation: {
-          type: MultigraphRequestAggregation.MEDIAN,
-          ignoreOutliers: true,
-          minSourcesRatio: 0.5
-        },
-        serialization: {
-          format: 'geojson'
-        },
-        layer: {
-          type: MultigraphRequestLayer.HEXAGON
+        useClientCache: false,
+        multigraph: {
+          aggregation: {
+            type: MultigraphRequestAggregation.MEDIAN,
+            ignoreOutliers: true,
+            minSourcesRatio: 0.5
+          },
+          serialization: {
+            format: 'geojson'
+          },
+          layer: {
+            type: MultigraphRequestLayer.HEXAGON
+          }
         }
-      });
+      }
+
+
+      const result = await testClient.multigraph.fetch(sources, options);
 
       expect(result.code).toBe('ok')
     } catch (e) {

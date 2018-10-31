@@ -8,7 +8,6 @@ export class POIRequestPayload extends TravelRequestPayload {
   serviceKey: string
   serviceUrl: string
   format: 'json' | 'geojson'
-  maxEdgeWeight: number
 
   constructor(client: TargomoClient, source: LatLngId, options: POIRequestOptions) {
     super(options)

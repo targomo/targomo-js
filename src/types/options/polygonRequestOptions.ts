@@ -1,8 +1,8 @@
-import { UseCacheRequestOptions } from './../requestOptions';
+import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOptions';
 import { SRID } from '../types'
 import { BaseRequestOptions } from '../requestOptions';
 
-export interface PolygonRequestOptions extends BaseRequestOptions, UseCacheRequestOptions {
+export interface PolygonRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
   minPolygonHoleSize?: number
   buffer?: number
   simplify?: number

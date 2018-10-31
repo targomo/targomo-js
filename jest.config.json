@@ -19,7 +19,5 @@
       "lines": 50,
       "statements": 50
     }
-  },
-  "reporters": ["default", "<rootDir>/test-reporter.js"]
-
+  }
 }

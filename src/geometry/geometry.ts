@@ -1,4 +1,4 @@
-import { TravelTypeEdgeWeightOptions, LatLng, BoundingBox } from './../types/index'
+import { LatLng, BoundingBox, TravelType } from './../types/index'
 import * as projection from './projection'
 
 /**
@@ -79,7 +79,11 @@ export function boundingBox(from: LatLng, distance: number): BoundingBox {
  * @param options traveloptions (affect the distance around the `from` list that will be considered)
  */
 export function locationsWithinTravelOptions<T extends LatLng>(locations: T[], from: LatLng | LatLng[],
-  options: TravelTypeEdgeWeightOptions) {
+  options: {
+    maxEdgeWeight: number,
+    edgeWeight: 'time' | 'distance',
+    travelType: TravelType
+  }) {
   const maxEdgeWeight = options.maxEdgeWeight
   let speed: number;
   switch (options.travelType) {
@@ -95,7 +99,11 @@ export function locationsWithinTravelOptions<T extends LatLng>(locations: T[], f
   return locationsWithinDistance(locations, from, distanceKm)
 }
 
-function getSpeed(options: TravelTypeEdgeWeightOptions) {
+function getSpeed(options: {
+  maxEdgeWeight: number,
+  edgeWeight: 'time' | 'distance',
+  travelType: TravelType
+}) {
   switch (options.travelType) {
     case 'walk': return 10
     case 'bike': return 25
@@ -111,7 +119,13 @@ function getSpeed(options: TravelTypeEdgeWeightOptions) {
  * @param from
  * @param options
  */
-export function boundingBoxWithinTravelOptions<T extends LatLng>(from: T, options: TravelTypeEdgeWeightOptions) {
+export function boundingBoxWithinTravelOptions<T extends LatLng>(
+  from: T,
+  options: {
+    maxEdgeWeight: number,
+    edgeWeight: 'time' | 'distance',
+    travelType: TravelType
+  }) {
   const maxEdgeWeight = options.maxEdgeWeight
   const speed: number = getSpeed(options)
   const distanceKm = (options.edgeWeight === 'distance')
@@ -153,7 +167,11 @@ export function boundingBoxFromLocationArray<T extends LatLng>(locations: T[]): 
  * @param sources
  * @param options
  */
-export function boundingBoxListWithinTravelOptions(sources: LatLng[], options: TravelTypeEdgeWeightOptions): BoundingBox {
+export function boundingBoxListWithinTravelOptions(sources: LatLng[], options: {
+  maxEdgeWeight: number,
+  edgeWeight: 'time' | 'distance',
+  travelType: TravelType
+}): BoundingBox {
   const maxEdgeWeight = options.maxEdgeWeight
   const speed: number = getSpeed(options)
   const distanceKm = (options.edgeWeight === 'distance')

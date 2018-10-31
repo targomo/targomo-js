@@ -1,9 +1,15 @@
 import { TravelRequestPayload } from './travelRequestPayload';
-import { LatLngIdTravelMode, MultigraphRequestOptions, LatLngId, MultigraphRequestAggregation } from '../..';
+import {
+  LatLngIdTravelMode,
+  MultigraphSpecificRequestOptions,
+  LatLngId,
+  MultigraphRequestAggregation,
+  MultigraphRequestOptions
+} from '../..';
 
 
 export class MultigraphRequestPayload extends TravelRequestPayload {
-    multigraph: MultigraphRequestOptions;
+    multigraph: MultigraphSpecificRequestOptions;
 
     constructor(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]) {
         super(options);
@@ -12,7 +18,7 @@ export class MultigraphRequestPayload extends TravelRequestPayload {
             this.targets = this.buildTargetsCfg(targets);
         }
 
-        this.multigraph = options;
+        this.multigraph = options.multigraph;
 
     }
 }

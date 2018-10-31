@@ -381,12 +381,12 @@ export interface SetBoundsOptions {
  * Object that will be passed to a request as source
  */
 export interface LatLngIdTravelMode extends LatLngId {
-  tm?: {rushHour: boolean} | TravelSpeedValues | TransitTravelModeOptions
+  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
 }
 
 export interface TransitTravelModeOptions {
-  frame: {date: number, time: number, duration: number}
-  maxTransfers: number;
+  frame?: {date?: number, time?: number, duration?: number}
+  maxTransfers?: number;
 }
 
 /**

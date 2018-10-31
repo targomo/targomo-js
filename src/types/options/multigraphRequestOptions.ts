@@ -1,6 +1,5 @@
-import { UseCacheRequestOptions } from './../requestOptions';
 import { SRID } from '../../index';
-import { BaseRequestOptions } from '../requestOptions';
+import { BaseRequestOptions, TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',
@@ -51,4 +50,9 @@ export interface MultigraphSpecificRequestOptions {
   }
 
   edgeClasses?: number[]
+}
+
+export interface MultigraphRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
+  multigraph: MultigraphSpecificRequestOptions;
+
 }

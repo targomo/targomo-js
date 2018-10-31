@@ -6,8 +6,9 @@ describe('Stateful Multigraph', () => {
   const testClient = new TargomoClient(
     'https://dev.route360.net/tests/',
     process.env.TGM_TEST_API_KEY,
-    {statisticsUrl: 'https://dev.route360.net/statistics/'
-  })
+    {
+      statisticsUrl: 'https://dev.route360.net/statistics/'
+    })
 
   test('create new mg layer', async () => {
     const sources = [
@@ -20,16 +21,19 @@ describe('Stateful Multigraph', () => {
       const result = await testClient.statefulMultigraph.create(sources, {
         maxEdgeWeight: 3600,
         travelType: 'car',
-        aggregation: {
-          type: MultigraphRequestAggregation.MEDIAN,
-          ignoreOutliers: true,
-          minSourcesRatio: 0.5
-        },
-        serialization: {
-          format: 'geojson'
-        },
-        layer: {
-          type: MultigraphRequestLayer.HEXAGON
+        useClientCache: false,
+        multigraph: {
+          aggregation: {
+            type: MultigraphRequestAggregation.MEDIAN,
+            ignoreOutliers: true,
+            minSourcesRatio: 0.5
+          },
+          serialization: {
+            format: 'geojson'
+          },
+          layer: {
+            type: MultigraphRequestLayer.HEXAGON
+          }
         }
       })
       expect(typeof result).toBe('number')

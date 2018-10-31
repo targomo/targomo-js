@@ -1,3 +1,4 @@
+import { TravelRequestOptions } from './../requestOptions';
 import { StatisticsGroupId,  StatisticsItem} from '../index'
 import { BaseRequestOptions } from '../requestOptions';
 
@@ -29,5 +30,5 @@ export interface OptimizationRequestOptions extends BaseRequestOptions {
   description?: string
   email?: string
   callbackUrl?: string
-  useCache?: boolean
+  travelType: 'car' | 'bike' | 'walk'
 }

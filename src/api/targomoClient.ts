@@ -15,7 +15,6 @@ import { StatefulMultigraphClient } from './statefulMultigraph';
 import { FleetsClient } from './fleets';
 import { MultigraphClient } from './multigraph';
 import { BasemapsClient } from './basemaps';
-import { FleetsClient } from './fleets';
 
 export class GeocodingClients {
   constructor(

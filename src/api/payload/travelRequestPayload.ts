@@ -5,6 +5,8 @@ import { TravelSpeedValues, LatLngId, TravelType, TravelSpeed, LatLngIdTravelMod
  * An object the contains a configuration set for making requests to the r360 services backend
  */
 export class TravelRequestPayload extends TravelRequestOptions {
+  sources: LatLngIdTravelMode[];
+  targets: LatLngId[];
 
   constructor(options?: TravelRequestOptions) {
     super();
