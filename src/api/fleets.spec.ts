@@ -1,5 +1,5 @@
 import { TargomoClient } from './index';
-import { FpOrder, FpStore, FpTransport, FpAddress, FpVehicle, FpTransportMetadata, FpRequestOptions } from '../index';
+import { FpOrder, FpStore, FpTransport, FpRequestOptions } from '../index';
 
 
 describe('Fleetplanner', () => {

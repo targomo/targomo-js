@@ -1,10 +1,7 @@
-import { PolygonData } from './responses/polygonSvgResult';
 import {
   TravelSpeedValues, TravelSpeed,
   TravelType,
-  TravelTimeFactors,
-  LatLngId,
-  LatLngIdTravelMode
+  TravelTimeFactors
 } from './types'
 
 

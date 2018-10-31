@@ -1,4 +1,3 @@
-import { TravelRequestOptions } from './../requestOptions';
 import { StatisticsGroupId,  StatisticsItem} from '../index'
 import { LatLngId } from '../types'
 import { BaseRequestOptions } from '../requestOptions';

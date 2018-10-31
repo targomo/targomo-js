@@ -1,5 +1,4 @@
-import { SRID } from '../../index';
-import { BaseRequestOptions, TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
+import { TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',

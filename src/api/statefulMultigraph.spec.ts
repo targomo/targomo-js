@@ -1,6 +1,5 @@
 import { MultigraphRequestAggregation, MultigraphRequestLayer } from '../types';
 import { TargomoClient } from './targomoClient';
-import { StatefulMultigraphRequestPayload } from './payload/statefulMultigraphRequestPayload';
 
 describe('Stateful Multigraph', () => {
   const testClient = new TargomoClient(

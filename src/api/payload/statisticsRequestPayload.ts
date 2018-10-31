@@ -1,7 +1,6 @@
 import { LatLngId } from '../../types';
 import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../../types/options/statisticsRequestOptions'
 import { TargomoClient } from '../targomoClient';
-import { TravelRequestPayload } from './travelRequestPayload';
 
 function isStatisticsRequestOptions(value: StatisticsRequestOptions | StatisticsTravelRequestOptions): value is StatisticsRequestOptions {
   return (<any>value).statistics

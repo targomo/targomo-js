@@ -1,8 +1,5 @@
-import { BaseRequestOptions } from './../../types/requestOptions';
 import { OptimizationRequestOptions } from '../../types/options/optimizationRequestOptions'
-import { LatLngId, TravelType } from '../../types/types';
-import { TravelRequestOptions } from '../../types/requestOptions';
-import { TravelRequestPayload } from './travelRequestPayload';
+import { LatLngId } from '../../types/types';
 
 export class OptimizationRequestPayload {
   description: string

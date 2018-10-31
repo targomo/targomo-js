@@ -1,7 +1,6 @@
 import { LatLngId} from '../../types'
 import { TargomoClient } from '../targomoClient'
 import { RouteRequestOptions } from '../../types/options'
-import { TimeRequestPayload } from './timeRequestPayload';
 import { isNumber } from 'util';
 import { TravelRequestPayload } from './travelRequestPayload';
 

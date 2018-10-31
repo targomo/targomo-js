@@ -1,6 +1,4 @@
-import { FpRequestOptions } from './../../types/options/fleetRequestOptions';
 import { FpTransport, TravelTimeFactors, TravelType, EdgeWeightType} from '../../types';
-import { TargomoClient } from '../targomoClient';
 import { FpStore, FpOrder } from '../..';
 
 export interface FpRequestMetadata {

@@ -1,5 +1,5 @@
 import { StatisticsRequestPayload } from './statisticsRequestPayload';
-import { LatLngId, MultigraphRequestOptions, MultigraphRequestAggregation, MultigraphRequestLayer} from '../../types';
+import { LatLngId, MultigraphRequestOptions, MultigraphRequestAggregation} from '../../types';
 import { TargomoClient } from '../targomoClient';
 
 export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
