@@ -59,8 +59,6 @@ export class TravelRequestOptions extends BaseRequestOptions {
   transitFrameDate?: number = 20170801
   transitFrameTime?: number = 39600
   transitMaxTransfers?: number = 5
-  date = this.transitFrameDate // deprecated
-  time = this.transitFrameTime // deprecated
   travelType?: TravelType;
 
   /**

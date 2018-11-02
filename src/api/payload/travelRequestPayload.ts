@@ -17,8 +17,8 @@ export class TravelRequestPayload extends TravelRequestOptions {
       const transitFrameDate = date ? ((date.getFullYear() * 10000) + (date.getMonth() + 1) * 100 + date.getDate()) : undefined
       const transitFrameTime = date ? ((date.getHours() * 3600) + (date.getMinutes() * 60)) : undefined
 
-      this.date = this.transitFrameDate = transitFrameDate || this.transitFrameDate
-      this.time = this.transitFrameTime = transitFrameTime || this.transitFrameTime
+      this.transitFrameDate = transitFrameDate || this.transitFrameDate
+      this.transitFrameTime = transitFrameTime || this.transitFrameTime
     }
   }
 
