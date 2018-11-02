@@ -1,7 +1,6 @@
 import { LatLngId} from '../../types'
 import { TargomoClient } from '../targomoClient'
 import { RouteRequestOptions } from '../../types/options'
-import { isNumber } from 'util';
 import { TravelRequestPayload } from './travelRequestPayload';
 
 export class RouteRequestPayload extends TravelRequestPayload {
@@ -14,7 +13,7 @@ export class RouteRequestPayload extends TravelRequestPayload {
     this.targets = this.buildTargetsCfg(targets)
     this.pathSerializer = options.pathSerializer;
 
-    if (isNumber(options.recommendations) && this.sources) {
+    if (Number.isInteger(options.recommendations) && this.sources) {
       this.sources.forEach((source: any) => {
         if (source.tm != null) {
           for (let mode in source.tm) {
