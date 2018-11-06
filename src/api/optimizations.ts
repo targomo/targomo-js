@@ -43,7 +43,7 @@ export class OptimizationsClient {
 
     const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/ready', this.client.serviceKey, false)
                 + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
-                + optimizationId.map(id => `&simulationId=${encodeURIComponent('' + +id)}`)
+                + optimizationId.map(id => `&simulationId=${encodeURIComponent('' + +id)}`).join('')
 
     return requests(this.client).fetch(url)
   }
