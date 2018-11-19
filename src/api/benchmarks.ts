@@ -30,6 +30,7 @@ export class BenchmarksClient {
     }
 
     const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v1/${encodeURIComponent('' + group)}`
+                 + `?key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url, 'POST', data)
   }
 

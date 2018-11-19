@@ -43,7 +43,8 @@ export class SimilarityClient {
       }))
     }
 
-    const normalizeParam = normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}` : ''
+    const normalizeParam = (normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}&` : '?')
+                            + `?key=${encodeURIComponent(this.client.serviceKey)}`
     const url = `${this.client.config.tilesUrl}/similarity/scores_cumulative/v1/${encodeURIComponent('' + group)}${normalizeParam}`
     return await requests(this.client).fetch(url, 'POST', data)
   }
