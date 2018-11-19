@@ -6,7 +6,7 @@ export interface StatisticsTravelRequestOptions extends BaseRequestOptions {
   statisticsGroup: StatisticsGroupId
   inactiveSources?: LatLngId[]
   closestSources?: boolean
-  travelType: 'walk' | 'bike' | 'car'
+  travelType: 'walk' | 'bike' | 'car' | 'transit'
   useCache?: boolean
   iFeelLucky?: boolean
 
