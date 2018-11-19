@@ -1,12 +1,12 @@
 import { StatisticsGroupId,  StatisticsItem} from '../index'
-import { LatLngId } from '../types'
+import { LatLngId, TravelType } from '../types'
 import { BaseRequestOptions } from '../requestOptions';
 
 export interface StatisticsTravelRequestOptions extends BaseRequestOptions {
   statisticsGroup: StatisticsGroupId
   inactiveSources?: LatLngId[]
   closestSources?: boolean
-  travelType: 'walk' | 'bike' | 'car' | 'transit'
+  travelType: TravelType
   useCache?: boolean
   iFeelLucky?: boolean
 

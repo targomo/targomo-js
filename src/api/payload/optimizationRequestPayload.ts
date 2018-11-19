@@ -1,5 +1,5 @@
 import { OptimizationRequestOptions } from '../../types/options/optimizationRequestOptions'
-import { LatLngId } from '../../types/types';
+import { LatLngId, TravelType } from '../../types/types';
 
 export class OptimizationRequestPayload {
   description: string
@@ -12,7 +12,7 @@ export class OptimizationRequestPayload {
   pointsPerSolution: number
   maxSolutions: number
   statisticId: number
-  travelType: 'car' | 'walk' | 'bike'
+  travelType: TravelType
   edgeWeight?: 'time' | 'distance'
   maxEdgeWeight: number
   sources: {[id: string]: { id: string, x: number, y: number }}[]

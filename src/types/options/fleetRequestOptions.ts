@@ -1,4 +1,5 @@
 import { BaseRequestOptions } from '../requestOptions';
+import { TravelType } from '../types';
 
 /**
  * @General The vehicle routing optimization request body (specification of the fleet planning request).
@@ -12,8 +13,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * @General This field defines what travel type is used for Targomo Time Service
      * (or Routing Service if geojsonCreation = ROUTING_SERVICE).
      */
-    travelType: 'walk' | 'car' | 'bike';
-
+    travelType: TravelType;
 
     /**
      * @General Specifies the desired maximum run time in seconds this request can use for the optimization.

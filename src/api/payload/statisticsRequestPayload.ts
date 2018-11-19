@@ -1,4 +1,4 @@
-import { LatLngId } from '../../types';
+import { LatLngId, TravelType } from '../../types';
 import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../../types/options/statisticsRequestOptions'
 import { TargomoClient } from '../targomoClient';
 
@@ -17,7 +17,7 @@ export class StatisticsRequestPayload {
   iFeelLucky: boolean
   omitIndividualStatistics: boolean
   sources: { id: string, x: number, y: number }[]
-  travelType: 'car' | 'bike' | 'walk'
+  travelType: TravelType
   edgeWeight: 'time' | 'distance'
   maxEdgeWeight: number
 

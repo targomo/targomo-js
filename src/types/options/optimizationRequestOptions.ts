@@ -1,5 +1,6 @@
 import { StatisticsGroupId,  StatisticsItem} from '../index'
 import { BaseRequestOptions } from '../requestOptions';
+import { TravelType } from '../types';
 
 /**
  * Parameters for an optimization simulation run. Optimization simulations take a set of locations
@@ -29,5 +30,5 @@ export interface OptimizationRequestOptions extends BaseRequestOptions {
   description?: string
   email?: string
   callbackUrl?: string
-  travelType: 'car' | 'bike' | 'walk'
+  travelType: TravelType
 }
