@@ -1,45 +1,15 @@
-import { TravelRequestOptions, TravelSpeedValues, LatLngId, TravelType, TravelSpeed, LatLngIdTravelMode } from '../../index'
+import { TravelRequestOptions } from './../../types/requestOptions';
+import { LatLngId, LatLngIdTravelMode } from '../../index'
 
 /**
  * An object the contains a configuration set for making requests to the r360 services backend
  */
-export class TravelRequestPayload implements TravelRequestOptions {
-  closestSources = false
-
-  requestTimeout: number = null
-  walkSpeed: TravelSpeedValues = {}
-  bikeSpeed: TravelSpeedValues = {}
-
-  sources: LatLngId[] = [];
-  targets: LatLngId[] = [];
-
-  rushHour: boolean = false;
-
-  reverse: boolean = false;
-  recommendations: boolean = false;
-
-  pathSerializer: string = 'compact'
-  polygonSerializer: string = 'json'
-  pointReduction: boolean = true;
-
-  maxEdgeWeight: number = 1800
-  travelType: TravelType = 'bike'
-  travelSpeed: TravelSpeed = 'medium'
-  edgeWeight: 'time' | 'distance' = 'time'
-
-
-  transitFrameDuration: number = undefined
-  transitFrameDate: number = 20170801
-  transitFrameTime: number = 39600
-
-  date = this.transitFrameDate // deprecated
-  time = this.transitFrameTime // deprecated
-
-  elevation = true
-  useCache = true // TODO: maybe split...also have useClientCache
-  travelEdgeWeights: number[] = null
+export class TravelRequestPayload extends TravelRequestOptions {
+  sources: LatLngIdTravelMode[];
+  targets: LatLngId[];
 
   constructor(options?: TravelRequestOptions) {
+    super();
     Object.assign(this, options)
 
     if (options.transitFrameDateTime != null) {
@@ -47,12 +17,12 @@ export class TravelRequestPayload implements TravelRequestOptions {
       const transitFrameDate = date ? ((date.getFullYear() * 10000) + (date.getMonth() + 1) * 100 + date.getDate()) : undefined
       const transitFrameTime = date ? ((date.getHours() * 3600) + (date.getMinutes() * 60)) : undefined
 
-      this.date = this.transitFrameDate = transitFrameDate || this.transitFrameDate
-      this.time = this.transitFrameTime = transitFrameTime || this.transitFrameTime
+      this.transitFrameDate = transitFrameDate || this.transitFrameDate
+      this.transitFrameTime = transitFrameTime || this.transitFrameTime
     }
   }
 
-  protected buildTargetsCfg(targets: LatLngId[]) {
+  protected buildTargetsCfg(targets: LatLngId[]): LatLngId[] {
     return targets.map(original => {
       return {
         lat: original.lat,
@@ -62,7 +32,7 @@ export class TravelRequestPayload implements TravelRequestOptions {
     })
   }
 
-  protected buildSourcesCfg(sources: LatLngIdTravelMode[]) {
+  protected buildSourcesCfg(sources: LatLngIdTravelMode[]): LatLngIdTravelMode[] {
     return sources.map(original => {
       const source = {
         lat: original.lat,
@@ -96,8 +66,9 @@ export class TravelRequestPayload implements TravelRequestOptions {
                 frame: {
                   date: this.transitFrameDate,
                   time: this.transitFrameTime,
+                  duration: this.transitFrameDuration
                 },
-                duration: this.transitFrameDuration
+                maxTransfers: this.transitMaxTransfers
               }
             }
         }
@@ -107,4 +78,3 @@ export class TravelRequestPayload implements TravelRequestOptions {
     })
   }
 }
-

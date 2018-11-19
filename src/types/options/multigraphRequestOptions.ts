@@ -1,5 +1,4 @@
-import { TravelRequestOptions, TravelOptionsClientCache} from '../index'
-import { SRID } from '../../index';
+import { TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',
@@ -9,28 +8,50 @@ export enum MultigraphRequestAggregation {
   MEAN = 'mean',
   MEDIAN = 'median',
   NEAREST = 'nearest',
+  UNION = 'routing_union'
+}
+
+export enum MultigraphRequestLayer {
+  EDGE = 'edge',
+  NODE = 'node',
+  TILE = 'tile',
+  HEXAGON = 'hexagon',
+  TILE_NODE = 'tile_node',
+  HEXAGON_NODE = 'hexagon_node'
 }
 
 export interface MultigraphSpecificRequestOptions {
-  edgeClasses?: number[]
 
-  serialization?: {
-    type?: 'geojson' | 'json'
-    decimalPrecision?: number
-    srid?: SRID
-  }
-
-  aggregation?: {
-    type?: MultigraphRequestAggregation
+  aggregation: {
+    type: MultigraphRequestAggregation
     ignoreOutliers?: boolean
     outlierPenalty?: number
     minSourcesRatio?: number
     minSourceCount?: number
     maxResultValue?: number
     maxResultValueRatio?: number
+    filterValuesForSourceOrigins?: string[]
   }
+
+  serialization: {
+    format: 'geojson' | 'json' | 'mvt'
+    decimalPrecision?: number
+    maxGeometryCount?: number
+  }
+
+  layer: {
+    type: MultigraphRequestLayer
+    edgeAggregationType?: 'min' | 'max' | 'mean'
+    geometryDetailPerTile?: number
+    minGeometryDetailLevel?: number
+    maxGeometryDetailLevel?: number
+    geometryDetailLevel?: number
+  }
+
+  edgeClasses?: number[]
 }
 
-export interface MultigraphRequestOptions extends TravelRequestOptions, TravelOptionsClientCache, MultigraphSpecificRequestOptions {
+export interface MultigraphRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
+  multigraph: MultigraphSpecificRequestOptions;
 
 }

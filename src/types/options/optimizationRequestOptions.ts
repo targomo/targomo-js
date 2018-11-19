@@ -1,10 +1,12 @@
-import { StatisticsGroupId,  StatisticsItem, TravelRequestOptions} from '../index'
+import { StatisticsGroupId,  StatisticsItem} from '../index'
+import { BaseRequestOptions } from '../requestOptions';
+import { TravelType } from '../types';
 
 /**
  * Parameters for an optimization simulation run. Optimization simulations take a set of locations
  * and return an optimal subset of these based on these parameters
  */
-export interface OptimizationRequestOptions extends TravelRequestOptions {
+export interface OptimizationRequestOptions extends BaseRequestOptions {
   /**
    * How many locations should be included in the optimal subset
    */
@@ -28,5 +30,5 @@ export interface OptimizationRequestOptions extends TravelRequestOptions {
   description?: string
   email?: string
   callbackUrl?: string
-  useCache?: boolean
+  travelType: TravelType
 }

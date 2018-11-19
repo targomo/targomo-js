@@ -1,5 +1,6 @@
-import { TravelRequestOptions, TravelOptionsClientCache} from '../index'
+import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOptions';
 
-export interface RouteRequestOptions extends TravelRequestOptions, TravelOptionsClientCache {
-  recommendations?: boolean
+export interface RouteRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
+  recommendations?: number
+  pathSerializer?: 'compact' | 'geojson'
 }

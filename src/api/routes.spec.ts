@@ -15,6 +15,7 @@ describe('TargomoClient route service', () => {
     const result = await testClient.routes.fetch(sources, targets, {
       travelType: 'car',
       maxEdgeWeight: 1800,
+      useClientCache: false
     })
 
     expect(result).toBeDefined()

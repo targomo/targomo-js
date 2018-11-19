@@ -1,5 +1,5 @@
-import { LatLng, TravelTypeEdgeWeightOptions } from './../types'
 import * as geometry from './'
+import { LatLng, TravelType } from '..';
 
 describe('geometry functions', () => {
 
@@ -8,7 +8,11 @@ describe('geometry functions', () => {
 
   const testKey = process.env.TGM_TEST_API_KEY; // TODO create key explicit for unit tests
   const serviceUrl = 'https://route360.net/germany'
-  const travelOptions: TravelTypeEdgeWeightOptions = {maxEdgeWeight: 1800, travelType: 'bike'}
+  const travelOptions: {
+    maxEdgeWeight: number,
+    edgeWeight: 'time' | 'distance',
+    travelType: TravelType
+  } = {edgeWeight: 'time', maxEdgeWeight: 1800, travelType: 'bike'}
 
   test('caclulates distance from A to B', () => {
     const distance = geometry.calculateDistance(pointA, pointB)

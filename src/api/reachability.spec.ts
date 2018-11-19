@@ -16,6 +16,7 @@ describe('TargomoClient time service', () => {
     const result = await testClient.reachability.individual(sources, targets, {
       travelType: 'car',
       maxEdgeWeight: 300,
+      useClientCache: false
     })
 
     expect(result).toBeDefined()
@@ -36,6 +37,7 @@ describe('TargomoClient time service', () => {
     const result = await testClient.reachability.individual(sources, targets, {
       travelType: 'car',
       maxEdgeWeight: 600,
+      useClientCache: false
     })
 
     expect(result).toBeDefined()
@@ -62,6 +64,7 @@ describe('TargomoClient reachability service', () => {
     const result = await testClient.reachability.combined(sources, targets, {
       travelType: 'car',
       maxEdgeWeight: 600,
+      useClientCache: false
     })
 
     expect(result).toBeDefined()
@@ -83,6 +86,7 @@ describe('TargomoClient reachability service', () => {
     const result = await testClient.reachability.count(sources, targets, {
       travelType: 'car',
       maxEdgeWeight: 600,
+      useClientCache: false
     })
 
     expect(result).toEqual(2)

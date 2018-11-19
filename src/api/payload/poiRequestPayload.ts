@@ -7,13 +7,14 @@ export class POIRequestPayload extends TravelRequestPayload {
   osmTypes: OSMType[] = []
   serviceKey: string
   serviceUrl: string
-  maxEdgeWeight: number
+  format: 'json' | 'geojson'
 
   constructor(client: TargomoClient, source: LatLngId, options: POIRequestOptions) {
     super(options)
-      this.sources = this.buildSourcesCfg([source])
-      this.osmTypes = options.osmTypes
-      this.serviceKey = client.serviceKey
-      this.serviceUrl = client.serviceUrl
-    }
+    this.sources = this.buildSourcesCfg([source])
+    this.osmTypes = options.osmTypes
+    this.format = options.format;
+    this.serviceKey = client.serviceKey
+    this.serviceUrl = client.serviceUrl
   }
+}

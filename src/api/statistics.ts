@@ -48,8 +48,7 @@ export class StatisticsClient {
   /**
   * Make a statistics request to the r360 services
   */
-  async travelTimes(sources: LatLngId[],
-    options: StatisticsTravelRequestOptions): Promise<ReachableTile> {
+  async travelTimes(sources: LatLngId[], options: StatisticsTravelRequestOptions): Promise<ReachableTile> {
     if (!sources.length) {
       return null
     }
@@ -82,14 +81,14 @@ export class StatisticsClient {
    * @param sources
    * @param options
    */
-  async geometry(geometry: any, options: StatisticsGeometryRequestOptions): Promise<StatisticsGeometryResult> {
+  async geometry(geometry: string, options: StatisticsGeometryRequestOptions): Promise<StatisticsGeometryResult> {
     if (!geometry) {
       return null
     }
 
     const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
     const result = await requests(this.client, options)
-                         .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
+    .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
     return new StatisticsGeometryResult(result, options.statistics)
   }
 
@@ -103,7 +102,8 @@ export class StatisticsClient {
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
-      const result = await requests(this.client).fetch(`${server}/statistics/meta/v1/${key}`)
+      const result = await requests(this.client)
+                     .fetch(`${server}/statistics/meta/v1/${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
       }

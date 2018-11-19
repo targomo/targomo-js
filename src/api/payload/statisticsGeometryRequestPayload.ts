@@ -4,15 +4,9 @@ import { TargomoClient } from '../targomoClient';
 export class StatisticsGeometryRequestPayload {
   statisticIds: number[]
   statisticGroupId: number
+  intersectionGeometry: {data: string, crs: number}
 
-  serviceKey: string
-  serviceUrl: string
-  useCache: boolean
-
-  intersectionGeometry: any
-
-  constructor(client: TargomoClient, geometry: any[], options: StatisticsGeometryRequestOptions) {
-    this.useCache = options.useCache == undefined ? true : options.useCache
+  constructor(client: TargomoClient, geometry: string, options: StatisticsGeometryRequestOptions) {
 
     let statisticsIndices: number[] = options.statistics.map(statistic => {
       if (statistic instanceof Number || typeof statistic === 'number') {
@@ -24,9 +18,6 @@ export class StatisticsGeometryRequestPayload {
 
     this.statisticGroupId = +options.statisticsGroup
     this.statisticIds = statisticsIndices
-
-    this.serviceKey = client.serviceKey
-    this.serviceUrl = client.serviceUrl
 
     this.intersectionGeometry = {
       data: geometry,
