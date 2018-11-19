@@ -23,7 +23,7 @@ Install via npm (for client or server side use):
 npm install @targomo/core
 ```
 
-1. Create and instance of `TargomoClient` with your API Key and region
+1. Create an instance of `TargomoClient` with your API Key and region
 
 ``` js
 import { TargomoClient } from '@targomo/core'
