@@ -13,7 +13,12 @@ export class TravelRequestPayload extends TravelRequestOptions {
     Object.assign(this, options)
 
     if (options.transitFrameDateTime != null) {
-      const date = new Date(<any>options.transitFrameDateTime)
+      let date;
+      if (options.transitFrameDateTime instanceof Date) {
+        date = options.transitFrameDateTime
+      } else {
+        date = new Date(<any>options.transitFrameDateTime)
+      }
       const transitFrameDate = date ? ((date.getFullYear() * 10000) + (date.getMonth() + 1) * 100 + date.getDate()) : undefined
       const transitFrameTime = date ? ((date.getHours() * 3600) + (date.getMinutes() * 60)) : undefined
 
