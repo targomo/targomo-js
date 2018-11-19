@@ -14,7 +14,7 @@ export class RouteRequestPayload extends TravelRequestPayload {
     this.pathSerializer = options.pathSerializer;
 
     if (typeof options.recommendations === 'boolean') {
-      options.recommendations = 1
+      options.recommendations = options.recommendations ? 1 : 0
     }
     if (Number.isInteger(options.recommendations) && this.sources) {
       this.sources.forEach((source: any) => {
