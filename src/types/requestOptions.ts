@@ -47,17 +47,34 @@ export class BaseRequestOptions {
    * (on top of a specified one, e.g. for the example above 1.5*0.5=0.75 - the final applied travel time factor for 'motorway' edges)
    * @Nullable All elements are optional
    */
-   travelTimeFactors?: TravelTimeFactors;
+  travelTimeFactors?: TravelTimeFactors;
 }
 
 
 
 export class TravelRequestOptions extends BaseRequestOptions {
 
-  transitFrameDateTime?: string;
+  /**
+   * Date and time of a transit request. Should either be a `Date` or a string/number that can be used in the constructor of `Date`.
+   * Using this option overrides `transitFrameDate` and `transitFrameTime`.
+   */
+  transitFrameDateTime?: string | number | Date;
+
   transitFrameDuration?: number = undefined
+
+  /**
+   * Date of the transit request in the format `YYYYMMDD`
+   */
   transitFrameDate?: number = 20170801
+
+  /**
+   * Time of the transit request in seconds from midnight
+   */
   transitFrameTime?: number = 39600
+
+  /**
+   * Maximum transfer segements in a route
+   */
   transitMaxTransfers?: number = 5
   travelType?: TravelType;
 
