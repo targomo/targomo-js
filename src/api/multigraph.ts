@@ -17,4 +17,8 @@ export class MultigraphClient {
     return result;
   }
 
+  getTiledMultigraphUrl(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): string {
+    const config = encodeURIComponent(JSON.stringify(new MultigraphRequestPayload(sources, options, targets)));
+    return this.client.serviceUrl + 'v1/multigraph/{z}/{x}/{y}.mvt?key=' + this.client.serviceKey + '&cfg=' + config;
+  }
 }
