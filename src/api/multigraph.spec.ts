@@ -64,7 +64,7 @@ describe('Multigraph', () => {
           }
         }
       }
-      const url = testClient.multigraph.getTiledMultigraphUrl(sources, options);
+      const url = testClient.multigraph.getTiledMultigraphUrl(sources, options, 'mvt');
       expect(url).toBe('https://api.targomo.com/germany/v1/multigraph/{z}/{x}/{y}.mvt?key=' +
     testClient.serviceKey + '&cfg=%7B%22edgeWeight%22%3A%22time%22%2C%22transitFrameDate%22%3A20170801%2C%22transitFrameTime%22%3A39600%' +
     '2C%22transitMaxTransfers%22%3A5%2C%22walkSpeed%22%3A%7B%7D%2C%22bikeSpeed%22%3A%7B%7D%2C%22maxEdgeWeight%22%3A3600%2C%22travelType%' +
