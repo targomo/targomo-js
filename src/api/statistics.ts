@@ -138,11 +138,15 @@ export class StatisticsClient {
   /**
    * Potentially decorate a layer route with excluded statistics.
    */
-  tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include: StatisticsItem[]) {
+  tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include?: StatisticsItem[]) {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
-    const includeParam = encodeURIComponent(include.map(row => +row.id).join(','))
-    return `${server}/statistics/tiles/v1/${key}/{z}/{x}/{y}.mvt?columns=${includeParam}&key=${encodeURIComponent(this.client.serviceKey)}`
+    let includeParam = ''
+
+    if (include && include.length > 0) {
+      includeParam = 'columns=' + encodeURIComponent(include.map(row => +row.id).join(',')) + '&'
+    }
+    return `${server}/statistics/tiles/v1/${key}/{z}/{x}/{y}.mvt?${includeParam}key=${encodeURIComponent(this.client.serviceKey)}`
   }
 }
