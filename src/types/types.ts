@@ -124,6 +124,16 @@ export interface StatisticsItem {
   groupMeta?: StatisticsGroupMeta
 }
 
+export interface StatisticsGroupEnsemble {
+  id: number
+  name: string
+  groups: {
+    id: number,
+    hierarchy: number,
+    minZoomRecommendation: number
+  }[]
+}
+
 /**
  *
  */
