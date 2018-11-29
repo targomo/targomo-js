@@ -156,7 +156,7 @@ export class StatisticsClient {
    * @param sources
    * @param options
    */
-  async ensembles(): Promise<StatisticsGroupEnsemble> {
+  async ensembles(): Promise<{[id: string]: StatisticsGroupEnsemble}> {
     const url = this.client.config.tilesUrl + '/ensemble/list/v1?key=' + encodeURIComponent(this.client.serviceKey)
     const result = await requests(this.client).fetch(url, 'GET')
 
