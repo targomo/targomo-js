@@ -21,6 +21,7 @@ import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryR
 
 export class StatisticsClient {
   private statisticsMetadataCache = new SimpleLRU<StatisticsGroupMeta>(200)
+  private statisticsEnsemblesCache = new SimpleLRU<{[id: string]: StatisticsGroupEnsemble}>(200)
 
   constructor(private client: TargomoClient) {
   }
@@ -157,23 +158,27 @@ export class StatisticsClient {
    * @param options
    */
   async ensembles(): Promise<{[id: string]: StatisticsGroupEnsemble}> {
-    const url = this.client.config.tilesUrl + '/ensemble/list/v1?key=' + encodeURIComponent(this.client.serviceKey)
-    const result = await requests(this.client).fetch(url, 'GET')
+    const cacheKey = this.client.config.tilesUrl
 
-    // FIXME: workaround for server results
-    for (let id in result) {
-      if (result[id]) {
-        const ensemble = result[id]
-        ensemble.id = +ensemble.id
-        if (ensemble.groups && ensemble.groups.length) {
-          ensemble.groups.forEach((group: any) => {
-            group.hierarchy = +group.hierarchy
-            group.id = +group.id
-          })
+    return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
+      const url = this.client.config.tilesUrl + '/ensemble/list/v1?key=' + encodeURIComponent(this.client.serviceKey)
+      const result = await requests(this.client).fetch(url, 'GET')
+
+      // FIXME: workaround for server results
+      for (let id in result) {
+        if (result[id]) {
+          const ensemble = result[id]
+          ensemble.id = +ensemble.id
+          if (ensemble.groups && ensemble.groups.length) {
+            ensemble.groups.forEach((group: any) => {
+              group.hierarchy = +group.hierarchy
+              group.id = +group.id
+            })
+          }
         }
       }
-    }
 
-    return result
+      return result
+    })
   }
 }
