@@ -9,7 +9,8 @@ import {
   StatisticsItemMeta,
   StatisticsRequestOptions,
   StatisticsTravelRequestOptions,
-  StatisticsGeometryRequestOptions
+  StatisticsGeometryRequestOptions,
+  StatisticsGroupEnsemble
 } from '../index';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
@@ -20,6 +21,7 @@ import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryR
 
 export class StatisticsClient {
   private statisticsMetadataCache = new SimpleLRU<StatisticsGroupMeta>(200)
+  private statisticsEnsemblesCache = new SimpleLRU<{[id: string]: StatisticsGroupEnsemble}>(200)
 
   constructor(private client: TargomoClient) {
   }
@@ -148,5 +150,35 @@ export class StatisticsClient {
       includeParam = 'columns=' + encodeURIComponent(include.map(row => +row.id).join(',')) + '&'
     }
     return `${server}/statistics/tiles/v1/${key}/{z}/{x}/{y}.mvt?${includeParam}key=${encodeURIComponent(this.client.serviceKey)}`
+  }
+
+  /**
+   *
+   * @param sources
+   * @param options
+   */
+  async ensembles(): Promise<{[id: string]: StatisticsGroupEnsemble}> {
+    const cacheKey = this.client.config.tilesUrl
+
+    return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
+      const url = this.client.config.tilesUrl + '/ensemble/list/v1?key=' + encodeURIComponent(this.client.serviceKey)
+      const result = await requests(this.client).fetch(url, 'GET')
+
+      // FIXME: workaround for server results
+      for (let id in result) {
+        if (result[id]) {
+          const ensemble = result[id]
+          ensemble.id = +ensemble.id
+          if (ensemble.groups && ensemble.groups.length) {
+            ensemble.groups.forEach((group: any) => {
+              group.hierarchy = +group.hierarchy
+              group.id = +group.id
+            })
+          }
+        }
+      }
+
+      return result
+    })
   }
 }
