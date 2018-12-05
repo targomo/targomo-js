@@ -16,6 +16,9 @@ import { FleetsClient } from './fleets';
 import { MultigraphClient } from './multigraph';
 import { BasemapsClient } from './basemaps';
 
+/**
+ * @Topic Geocoding
+ */
 export class GeocodingClients {
   constructor(
     readonly esri: GeocodeEsriClient,

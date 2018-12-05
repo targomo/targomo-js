@@ -2,6 +2,9 @@ import { TargomoClient } from './targomoClient'
 import { StatisticsGroupId, SimilarityCriteria, BoundingBox } from '../index';
 import { requests} from '../util/requestUtil';
 
+/**
+ * @Topic Similarity
+ */
 export class SimilarityClient {
   constructor(private client: TargomoClient) {
   }

@@ -4,6 +4,9 @@ import { UrlUtil } from '../util/urlUtil';
 import { requests } from '../util/requestUtil';
 import { StatefulMultigraphRequestPayload } from './payload/statefulMultigraphRequestPayload';
 
+/**
+ * @Topic Stateful Multigraph
+ */
 export class StatefulMultigraphClient {
   constructor(private client: TargomoClient) {
   }

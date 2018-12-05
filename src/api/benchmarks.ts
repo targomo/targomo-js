@@ -2,6 +2,9 @@ import { TargomoClient } from './targomoClient'
 import { StatisticsGroupId, BenchmarkCriteria, BoundingBox } from '../index';
 import { requests} from '../util/requestUtil';
 
+/**
+ * @Topic Benchmarks
+ */
 export class BenchmarksClient {
   constructor(private client: TargomoClient) {
   }

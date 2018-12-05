@@ -19,6 +19,9 @@ import { SimpleLRU } from '../util/cache';
 import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload';
 import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult';
 
+/**
+ * @Topic Statistics
+ */
 export class StatisticsClient {
   private statisticsMetadataCache = new SimpleLRU<StatisticsGroupMeta>(200)
   private statisticsEnsemblesCache = new SimpleLRU<{[id: string]: StatisticsGroupEnsemble}>(200)

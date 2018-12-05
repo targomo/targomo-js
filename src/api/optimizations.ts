@@ -6,6 +6,9 @@ import { LatLngId } from '../types/types';
 import { OptimizationRequestPayload } from './payload/optimizationRequestPayload';
 import { OptimizationResult } from '../types/responses/optimizationResult';
 
+/**
+ *  @Topic Optimizations
+ */
 export class OptimizationsClient {
   constructor(private client: TargomoClient) {
   }

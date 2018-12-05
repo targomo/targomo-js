@@ -3,6 +3,9 @@ import { UrlUtil, LatLngIdTravelMode, LatLngId, requests, MultigraphRequestOptio
 import { MgResult } from '../types/responses/multigraphResult';
 import { MultigraphRequestPayload } from './payload/multigraphRequestPayload';
 
+/**
+ * @Topic Multigraph
+ */
 export class MultigraphClient {
   constructor(private client: TargomoClient) {
   }
