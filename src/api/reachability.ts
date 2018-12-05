@@ -6,6 +6,9 @@ import { TimeRequestPayload } from './payload/timeRequestPayload';
 import { UrlUtil } from '../util/urlUtil';
 
 // TODO: decide on method names...or keep previous names
+/**
+ * @Topic Reachability
+ */
 export class ReachabilityClient {
   constructor(private client: TargomoClient) {
   }

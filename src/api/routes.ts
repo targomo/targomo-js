@@ -6,6 +6,9 @@ import { requests } from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
 import { RouteRequestPayload } from './payload/routeRequestPayload';
 
+/**
+ * @Topic Routes
+ */
 export class RoutesClient {
   constructor(private client: TargomoClient) {
   }

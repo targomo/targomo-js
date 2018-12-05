@@ -53,6 +53,9 @@ function parseOSMLocation(item: any): OSMLatLng {
  *
  */
 // TODO: better method names
+/**
+ *  @Topic Points of Interest
+ */
 export class PointsOfInterestClient {
   // Idea is this will be instantiated internally in Targomoclient,. and will receive instance of parent in its constructor
   constructor(private client: TargomoClient) {

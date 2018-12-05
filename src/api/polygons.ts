@@ -8,7 +8,9 @@ import { PolygonSvgResult } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
 
 
-
+/**
+ *  @Topic Polygons
+ */
 export class PolygonsClient {
   constructor(private client: TargomoClient) {
   }
