@@ -27,7 +27,13 @@ export class MultigraphClient {
     targets?: LatLngId[]): Promise<string> {
     const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'objectcache/add', this.client.serviceKey, true)
     const cfg = new MultigraphRequestPayload(sources, options, targets);
-    const objectCacheId: string = await requests(this.client, options).fetch(url, 'POST', cfg);
-    return this.client.serviceUrl + 'v1/multigraph/{z}/{x}/{y}.' + format + '?key=' + this.client.serviceKey + '&cfgUuid=' + objectCacheId;
+      // TODO ObjectCache should have its own client
+    const objectCache: any = await requests(this.client, options).fetch(url, 'POST', cfg);
+    return this.client.serviceUrl +
+          'v1/multigraph/{z}/{x}/{y}.' +
+          format + '?key=' +
+          this.client.serviceKey +
+          '&cfgUuid=' +
+          objectCache.uuid;
   }
 }
