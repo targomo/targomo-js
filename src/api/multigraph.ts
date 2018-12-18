@@ -20,12 +20,14 @@ export class MultigraphClient {
     return result;
   }
 
-  getTiledMultigraphUrl(
+  async getTiledMultigraphUrl(
     sources: LatLngIdTravelMode[],
     options: MultigraphRequestOptions,
     format: 'geojson' | 'json' | 'mvt',
-    targets?: LatLngId[]): string {
-    const config = encodeURIComponent(JSON.stringify(new MultigraphRequestPayload(sources, options, targets)));
-    return this.client.serviceUrl + 'v1/multigraph/{z}/{x}/{y}.' + format + '?key=' + this.client.serviceKey + '&cfg=' + config;
+    targets?: LatLngId[]): Promise<string> {
+    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'objectcache/add', this.client.serviceKey, true)
+    const cfg = new MultigraphRequestPayload(sources, options, targets);
+    const objectCacheId: string = await requests(this.client, options).fetch(url, 'POST', cfg);
+    return this.client.serviceUrl + 'v1/multigraph/{z}/{x}/{y}.' + format + '?key=' + this.client.serviceKey + '&cfgUuid=' + objectCacheId;
   }
 }
