@@ -6,3 +6,24 @@ export interface MgResult {
     message: string;
     requestTime: string;
 }
+
+export interface MgOverviewResult {
+    data: {
+        minValue: number,
+        maxValue: number,
+        southWest: {
+            x: number,
+            y: number,
+            z: number
+        },
+        northEast: {
+            x: number,
+            y: number,
+            z: number
+        }
+    };
+    code: string;
+    message: string;
+    requestTime: string;
+}
+
