@@ -10,7 +10,7 @@ export interface ClientOptions {
   mapTilesUrl?: string
   photonGeocoderUrl?: string
   overpassUrl?: string
-
+  fleetsUrl?: string
   requestTimeout?: number
 
   routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
