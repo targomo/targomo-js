@@ -98,7 +98,7 @@ describe('Multigraph', () => {
         }
       }
       const result = await testClient.multigraph.fetchOverview(sources, options);
-      expect(result.data.minValue).toBe(123);
+      expect(result.data.minValue).toBe(124);
       expect(result.data.maxValue).toBe(3599);
 
     } catch (e) {
