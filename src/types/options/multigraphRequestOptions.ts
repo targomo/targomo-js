@@ -27,7 +27,7 @@ export interface MultigraphSpecificRequestOptions {
     ignoreOutliers?: boolean
     outlierPenalty?: number
     minSourcesRatio?: number
-    minSourceCount?: number
+    minSourcesCount?: number
     maxResultValue?: number
     maxResultValueRatio?: number
     filterValuesForSourceOrigins?: string[]
