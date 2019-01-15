@@ -26,7 +26,7 @@ export class OptimizationsClient {
       return null
     }
 
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/start', this.client.serviceKey, false)
+    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/start', this.client.serviceKey)
                 + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
     const cfg = new OptimizationRequestPayload(this.client.serviceUrl, this.client.serviceKey, sources, options)
 
@@ -44,7 +44,7 @@ export class OptimizationsClient {
       optimizationId = [optimizationId]
     }
 
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/ready', this.client.serviceKey, false)
+    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'simulation/ready', this.client.serviceKey)
                 + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
                 + optimizationId.map(id => `&simulationId=${encodeURIComponent('' + +id)}`).join('')
 
@@ -57,7 +57,7 @@ export class OptimizationsClient {
    * @param optimizationId
    */
   async fetch(optimizationId: number) {
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, `simulation/${optimizationId}`, this.client.serviceKey, false)
+    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, `simulation/${optimizationId}`, this.client.serviceKey)
                 + '&serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
 
     return new OptimizationResult(await requests(this.client).fetch(url))

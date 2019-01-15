@@ -25,8 +25,8 @@ export class ClientConfig implements ClientOptions {
   mapTilesUrl: string = 'https://maps.targomo.com'
   photonGeocoderUrl: string = 'https://api.targomo.com/geocode'
   overpassUrl: string = 'https://api.targomo.com/overpass'
-  fleetsUrl: string = 'https://api.targomo.com/fleetplanner'
-
+  fleetsUrl: string = 'https://api.targomo.com/fleetplanner/v1/'
+  basemapsUrl: string = 'https://maps.targomo.com/styles/'
   requestTimeout: 20000
 
 

@@ -13,8 +13,8 @@ export class SimilarityClient {
   /**
    *
    */
-  async metadata(key: StatisticsGroupId): Promise<any[]> {
-    const url = `${this.client.config.tilesUrl}/similarity/meta/v1/${encodeURIComponent('' + key)}`
+  async metadata(key: StatisticsGroupId, version: number = 1): Promise<any[]> {
+    const url = `${this.client.config.tilesUrl}/similarity/meta/v${version}/${encodeURIComponent('' + key)}`
                  + `?key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url)
   }

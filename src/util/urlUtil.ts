@@ -13,11 +13,11 @@ export namespace UrlUtil {
     return result.join('&')
   }
 
-  export function buildTargomoUrl(serviceUrl: string, service: string, serviceKey: string, versionFlag: boolean = true) {
+  export function buildTargomoUrl(serviceUrl: string, service: string, serviceKey: string) {
     if (serviceUrl[serviceUrl.length - 1] !== '/') {
       serviceUrl += '/'
     }
-    return serviceUrl + (versionFlag ? 'v1/' : '') + service + '?key=' + serviceKey
+    return serviceUrl + service + '?key=' + serviceKey
   }
 
 }
