@@ -49,7 +49,7 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
         this.multiGraphAggregationType = options.multigraph.aggregation.type || null
         this.multiGraphAggregationIgnoreOutlier = options.multigraph.aggregation.ignoreOutliers || null
         this.multiGraphAggregationMinSourcesRatio = options.multigraph.aggregation.minSourcesRatio || null
-        this.multiGraphAggregationMinSourcesCount = options.multigraph.aggregation.minSourceCount || null
+        this.multiGraphAggregationMinSourcesCount = options.multigraph.aggregation.minSourcesCount || null
         this.multiGraphAggregationMaxResultValueRatio = options.multigraph.aggregation.maxResultValueRatio || null
         this.multiGraphAggregationMaxResultValue = options.multigraph.aggregation.maxResultValue || null
       }
