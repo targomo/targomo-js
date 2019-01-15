@@ -108,7 +108,7 @@ export class FleetsClient {
           fallbackServiceUrl: '',
           edgeWeight: options.edgeWeight,
           maxEdgeWeight: options.maxEdgeWeight,
-          elevationEnabled: options.elevation,
+          elevation: options.elevation,
           rushHour: options.rushHour
         }
       },
