@@ -101,14 +101,15 @@ export class StatisticsClient {
    *
    * @param group
    */
-  async metadata(group: StatisticsGroupMeta | StatisticsGroupId, version: number = 1) {
+  async metadata(group: StatisticsGroupMeta | StatisticsGroupId) {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
       const result = await requests(this.client)
-                     .fetch(`${server}/statistics/meta/v${version}/${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
+                     .fetch(`${server}/statistics/meta/v${this.client.config.version}/` +
+                     `${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
       }
@@ -143,7 +144,7 @@ export class StatisticsClient {
   /**
    * Potentially decorate a layer route with excluded statistics.
    */
-  tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include?: StatisticsItem[], version: number = 1) {
+  tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include?: StatisticsItem[]) {
     const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
@@ -152,7 +153,8 @@ export class StatisticsClient {
     if (include && include.length > 0) {
       includeParam = 'columns=' + encodeURIComponent(include.map(row => +row.id).join(',')) + '&'
     }
-    return `${server}/statistics/tiles/v${version}/${key}/{z}/{x}/{y}.mvt?${includeParam}key=${encodeURIComponent(this.client.serviceKey)}`
+    return `${server}/statistics/tiles/v${this.client.config.version}/` +
+    `${key}/{z}/{x}/{y}.mvt?${includeParam}key=${encodeURIComponent(this.client.serviceKey)}`
   }
 
   /**
@@ -160,11 +162,12 @@ export class StatisticsClient {
    * @param sources
    * @param options
    */
-  async ensembles(version: number = 1): Promise<{[id: string]: StatisticsGroupEnsemble}> {
+  async ensembles(): Promise<{[id: string]: StatisticsGroupEnsemble}> {
     const cacheKey = this.client.config.tilesUrl
 
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
-      const url = this.client.config.tilesUrl + '/ensemble/list/v' + version + '?key=' + encodeURIComponent(this.client.serviceKey)
+      const url = this.client.config.tilesUrl + '/ensemble/list/v' + this.client.config.version +
+      '?key=' + encodeURIComponent(this.client.serviceKey)
       const result = await requests(this.client).fetch(url, 'GET')
 
       // FIXME: workaround for server results

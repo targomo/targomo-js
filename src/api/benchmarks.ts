@@ -13,7 +13,7 @@ export class BenchmarksClient {
   /**
    *
    */
-  async fetch(group: StatisticsGroupId, conditions: BenchmarkCriteria[], bounds: BoundingBox, version: number = 1): Promise<any> {
+  async fetch(group: StatisticsGroupId, conditions: BenchmarkCriteria[], bounds: BoundingBox): Promise<any> {
     // TODO: have a "Payload" object
     const boundsData = {
       'west': bounds.southWest.lng,
@@ -32,7 +32,8 @@ export class BenchmarksClient {
       }))
     }
 
-    const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v${version}/${encodeURIComponent('' + group)}`
+    const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v` +
+    `${this.client.config.version}/${encodeURIComponent('' + group)}`
      + `?key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url, 'POST', data)
   }
@@ -40,8 +41,8 @@ export class BenchmarksClient {
   /**
    *
    */
-  async metadata(key: StatisticsGroupId, version: number = 1): Promise<any[]> {
-    const url = `${this.client.config.tilesUrl}/benchmarks/meta/v${version}/${encodeURIComponent('' + key)}`
+  async metadata(key: StatisticsGroupId): Promise<any[]> {
+    const url = `${this.client.config.tilesUrl}/benchmarks/meta/v${this.client.config.version}/${encodeURIComponent('' + key)}`
                   + `?key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url)
   }

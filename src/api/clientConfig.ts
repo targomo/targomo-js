@@ -12,7 +12,7 @@ export interface ClientOptions {
   overpassUrl?: string
   fleetsUrl?: string
   requestTimeout?: number
-
+  version?: number
   routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
 }
 
@@ -28,7 +28,7 @@ export class ClientConfig implements ClientOptions {
   fleetsUrl: string = 'https://api.targomo.com/fleetplanner/v1/'
   basemapsUrl: string = 'https://maps.targomo.com/styles/'
   requestTimeout: 20000
-
+  version: number = 1
 
   // routeTypes  = [
   //   // non transit

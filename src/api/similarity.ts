@@ -13,8 +13,8 @@ export class SimilarityClient {
   /**
    *
    */
-  async metadata(key: StatisticsGroupId, version: number = 1): Promise<any[]> {
-    const url = `${this.client.config.tilesUrl}/similarity/meta/v${version}/${encodeURIComponent('' + key)}`
+  async metadata(key: StatisticsGroupId): Promise<any[]> {
+    const url = `${this.client.config.tilesUrl}/similarity/meta/v${this.client.config.version}/${encodeURIComponent('' + key)}`
                  + `?key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url)
   }
@@ -48,7 +48,8 @@ export class SimilarityClient {
 
     const normalizeParam = (normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}&` : '?')
                             + `?key=${encodeURIComponent(this.client.serviceKey)}`
-    const url = `${this.client.config.tilesUrl}/similarity/scores_cumulative/v1/${encodeURIComponent('' + group)}${normalizeParam}`
+    const url = `${this.client.config.tilesUrl}/similarity/scores_cumulative/v${this.client.config.version}/` +
+    `${encodeURIComponent('' + group)}${normalizeParam}`
     return await requests(this.client).fetch(url, 'POST', data)
   }
 }

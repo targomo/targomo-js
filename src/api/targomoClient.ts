@@ -63,7 +63,7 @@ export class TargomoClient {
     this.config = new ClientConfig(options)
 
     if (!region.includes('http') && !region.includes('localhost') && !region.includes('/')) {
-      this.serviceUrl = 'https://api.targomo.com/' + region + '/v1/'
+      this.serviceUrl = 'https://api.targomo.com/' + region + '/v' + this.config.version + '/'
     } else {
       this.serviceUrl = region
     }
