@@ -101,7 +101,6 @@ export class TargomoClient {
    *
    */
   async metadata() {
-    const endpoint = this.endpoint
     const key = this.serviceKey
     const url = `${this.serviceUrl}metadata/network?key=${encodeURIComponent(key)}`
     return await requests(this).fetch(url)
