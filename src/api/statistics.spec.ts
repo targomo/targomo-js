@@ -2,7 +2,7 @@ import { StatisticsGroups } from '../index';
 import { TargomoClient } from './targomoClient';
 
 describe('TargomoClient statistics service', () => {
-  const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
+  const testClient = new TargomoClient('westcentraleurope', process.env.TGM_TEST_API_KEY)
 
   test('statistic service request', async () => {
     const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 1}]

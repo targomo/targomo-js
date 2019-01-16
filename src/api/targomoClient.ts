@@ -63,7 +63,7 @@ export class TargomoClient {
     this.config = new ClientConfig(options)
 
     if (!region.includes('http') && !region.includes('localhost') && !region.includes('/')) {
-      this.serviceUrl = 'https://api.targomo.com/' + region + '/v' + this.config.version + '/'
+      this.serviceUrl = 'https://api.targomo.com/' + region + '/'
     } else {
       this.serviceUrl = region
     }
@@ -102,7 +102,7 @@ export class TargomoClient {
    */
   async metadata() {
     const key = this.serviceKey
-    const url = `${this.serviceUrl}metadata/network?key=${encodeURIComponent(key)}`
+    const url = `${this.serviceUrl}v${this.config.version}/metadata/network?key=${encodeURIComponent(key)}`
     return await requests(this).fetch(url)
   }
 }

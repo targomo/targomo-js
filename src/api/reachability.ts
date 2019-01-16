@@ -20,7 +20,7 @@ export class ReachabilityClient {
    * @param options
    */
   async individual(sources: LatLngIdTravelMode[], targets: LatLngId[], options: TimeRequestOptions): Promise<TimeResult[]> {
-    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'time', this.client.serviceKey)
+    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'v' + this.client.config.version + '/time', this.client.serviceKey)
     const cfg = new TimeRequestPayload(this.client, sources, targets, options)
     return await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg)
   }
@@ -34,7 +34,7 @@ export class ReachabilityClient {
    * @param options
    */
   async combined(sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptions): Promise<ReachabilityResult[]> {
-    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'reachability', this.client.serviceKey)
+    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'v' + this.client.config.version + '/reachability', this.client.serviceKey)
     const cfg = new TimeRequestPayload(this.client, sources, targets, options)
     // TODO: add timeout
     return await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg)
