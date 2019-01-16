@@ -14,7 +14,12 @@ export class MultigraphClient {
 
    */
   async fetch(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgResult> {
-    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'v' + this.client.config.version + '/multigraph', this.client.serviceKey)
+    const url = UrlUtil.buildTargomoUrl(
+      this.client.serviceUrl,
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      'multigraph',
+      this.client.serviceKey
+    )
     const cfg = new MultigraphRequestPayload(sources, options, targets);
     const result = await requests(this.client, options).fetch(url, 'POST', cfg);
     return result;
@@ -23,7 +28,8 @@ export class MultigraphClient {
   async fetchOverview(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgOverviewResult> {
     const url = UrlUtil.buildTargomoUrl(
       this.client.serviceUrl,
-      'v' + this.client.config.version + '/multigraph/overview',
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      'multigraph/overview',
       this.client.serviceKey
     )
     const cfg = new MultigraphRequestPayload(sources, options, targets);
@@ -38,7 +44,8 @@ export class MultigraphClient {
     targets?: LatLngId[]): Promise<string> {
     const url = UrlUtil.buildTargomoUrl(
       this.client.serviceUrl,
-      'v' + this.client.config.version + '/objectcache/add',
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      'objectcache/add',
       this.client.serviceKey
     )
     const cfg = new MultigraphRequestPayload(sources, options, targets);
@@ -46,7 +53,8 @@ export class MultigraphClient {
     const objectCache: any = await requests(this.client, options).fetch(url, 'POST', cfg);
     return UrlUtil.buildTargomoUrl(
       this.client.serviceUrl,
-      'v' + this.client.config.version + '/multigraph/{z}/{x}/{y}.' + format,
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      'multigraph/{z}/{x}/{y}.' + format,
       this.client.serviceKey
     ) + '&cfgUuid=' + objectCache.uuid;
   }

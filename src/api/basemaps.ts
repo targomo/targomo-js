@@ -1,4 +1,5 @@
 import { TargomoClient } from './targomoClient'
+import { UrlUtil } from '../util';
 /**
  * @Topic Basemaps
  * @General This is the entry point for using the basemaps provided by Targomo.
@@ -59,6 +60,6 @@ export class BasemapsClient {
         if (!basemapName || !this.basemapsLookup[basemapName]) {
             throw new Error('valid style name required to access Targomo basemap');
         }
-        return this.client.config.basemapsUrl + this.basemapsLookup[basemapName] + '.json?key=' + this.client.serviceKey
+        return UrlUtil.buildTargomoUrl(this.client.config.basemapsUrl, this.basemapsLookup[basemapName] + '.json', this.client.serviceKey);
     }
 }

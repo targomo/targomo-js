@@ -1,5 +1,5 @@
 import { TargomoClient } from './targomoClient'
-import { StatisticsGroupId, BenchmarkCriteria, BoundingBox } from '../index';
+import { StatisticsGroupId, BenchmarkCriteria, BoundingBox, UrlUtil } from '../index';
 import { requests} from '../util/requestUtil';
 
 /**
@@ -32,9 +32,13 @@ export class BenchmarksClient {
       }))
     }
 
-    const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v` +
-    `${this.client.config.version}/${encodeURIComponent('' + group)}`
-     + `?key=${encodeURIComponent(this.client.serviceKey)}`
+    const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
+      'benchmarks/scores_cumulative/' +
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      encodeURIComponent('' + group),
+      this.client.serviceKey
+    );
+
     return await requests(this.client).fetch(url, 'POST', data)
   }
 
@@ -42,8 +46,13 @@ export class BenchmarksClient {
    *
    */
   async metadata(key: StatisticsGroupId): Promise<any[]> {
-    const url = `${this.client.config.tilesUrl}/benchmarks/meta/v${this.client.config.version}/${encodeURIComponent('' + key)}`
-                  + `?key=${encodeURIComponent(this.client.serviceKey)}`
+
+    const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
+      '/benchmarks/meta/' +
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      encodeURIComponent('' + key),
+      this.client.serviceKey
+    );
     return await requests(this.client).fetch(url)
   }
 }

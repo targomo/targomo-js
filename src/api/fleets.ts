@@ -69,7 +69,12 @@ export class FleetsClient {
    */
   async fetch(stores: FpStore[], orders: FpOrder[], transports: FpTransport[], options: FpRequestOptions): Promise<FpResult> {
 
-    const url = UrlUtil.buildTargomoUrl(this.client.config.fleetsUrl, 'api/key-auth/optimizations', this.client.serviceKey)
+    const url = UrlUtil.buildTargomoUrl(
+      this.client.config.fleetsUrl,
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      'api/key-auth/optimizations',
+      this.client.serviceKey
+    )
     const cfg = this._createPayload(this.client, stores, orders, transports, options);
 
     const result = await requests(this.client, options).fetch(url, 'POST', cfg);

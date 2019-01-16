@@ -15,6 +15,7 @@ import { StatefulMultigraphClient } from './statefulMultigraph';
 import { FleetsClient } from './fleets';
 import { MultigraphClient } from './multigraph';
 import { BasemapsClient } from './basemaps';
+import { UrlUtil } from '..';
 
 /**
  * @Topic Geocoding
@@ -101,8 +102,13 @@ export class TargomoClient {
    *
    */
   async metadata() {
-    const key = this.serviceKey
-    const url = `${this.serviceUrl}v${this.config.version}/metadata/network?key=${encodeURIComponent(key)}`
+
+    const url = UrlUtil.buildTargomoUrl(this.serviceUrl,
+      (this.config.version !== null && this.config.version !== undefined ? 'v' + this.config.version + '/' : '') +
+      'metadata/network',
+      this.serviceKey
+    );
+
     return await requests(this).fetch(url)
   }
 }

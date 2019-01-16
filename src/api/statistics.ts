@@ -10,7 +10,8 @@ import {
   StatisticsRequestOptions,
   StatisticsTravelRequestOptions,
   StatisticsGeometryRequestOptions,
-  StatisticsGroupEnsemble
+  StatisticsGroupEnsemble,
+  UrlUtil
 } from '../index';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
@@ -107,9 +108,16 @@ export class StatisticsClient {
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
-      const result = await requests(this.client)
-                     .fetch(`${server}/statistics/meta/v${this.client.config.version}/` +
-                     `${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
+
+      const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
+        '/statistics/meta/' +
+        (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+        key,
+        this.client.serviceKey
+      );
+
+
+      const result = await requests(this.client).fetch(url)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
       }
@@ -145,16 +153,22 @@ export class StatisticsClient {
    * Potentially decorate a layer route with excluded statistics.
    */
   tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include?: StatisticsItem[]) {
-    const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
     let includeParam = ''
 
     if (include && include.length > 0) {
-      includeParam = 'columns=' + encodeURIComponent(include.map(row => +row.id).join(',')) + '&'
+      includeParam = '&columns=' + encodeURIComponent(include.map(row => +row.id).join(','))
     }
-    return `${server}/statistics/tiles/v${this.client.config.version}/` +
-    `${key}/{z}/{x}/{y}.mvt?${includeParam}key=${encodeURIComponent(this.client.serviceKey)}`
+
+    return UrlUtil.buildTargomoUrl(
+      this.client.config.tilesUrl,
+      'statistics/tiles/' +
+      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
+      key + '/{z}/{x}/{y}.mvt',
+      this.client.serviceKey
+    ) + includeParam;
+
   }
 
   /**
@@ -166,8 +180,14 @@ export class StatisticsClient {
     const cacheKey = this.client.config.tilesUrl
 
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
-      const url = this.client.config.tilesUrl + '/ensemble/list/v' + this.client.config.version +
-      '?key=' + encodeURIComponent(this.client.serviceKey)
+
+      const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
+        '/ensemble/list/' +
+        (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version : ''),
+        this.client.serviceKey
+      );
+
+
       const result = await requests(this.client).fetch(url, 'GET')
 
       // FIXME: workaround for server results
