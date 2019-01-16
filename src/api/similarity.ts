@@ -15,12 +15,13 @@ export class SimilarityClient {
    */
   async metadata(key: StatisticsGroupId): Promise<any[]> {
 
-    const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
-      '/similarity/meta/' +
-      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
-      encodeURIComponent('' + key),
-      this.client.serviceKey
-    );
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.tilesUrl)
+      .part('similarity/meta')
+      .version()
+      .part(encodeURIComponent('' + key))
+      .key()
+      .toString();
 
     return await requests(this.client).fetch(url)
   }
@@ -55,10 +56,14 @@ export class SimilarityClient {
     const normalizeParam = (normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}&` : '?')
                             + `?key=${encodeURIComponent(this.client.serviceKey)}`
 
-    const url = this.client.config.tilesUrl +
-    '/similarity/scores_cumulative/' +
-    (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
-    encodeURIComponent('' + group) + normalizeParam;
+
+    const urlObject = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.tilesUrl)
+      .part('similarity/scores_cumulative')
+      .version()
+      .part(encodeURIComponent('' + group))
+      .key();
+    const url = normalizeOnViewport ? urlObject.params({normalizeOnViewport: !!normalizeOnViewport}).toString() : urlObject.toString();
 
     return await requests(this.client).fetch(url, 'POST', data)
   }

@@ -1,5 +1,5 @@
 import { TargomoClient } from './targomoClient'
-import { GeoSearchDescription, LatLng } from '../index';
+import { GeoSearchDescription, LatLng, UrlUtil } from '../index';
 import { requests} from '../util/requestUtil';
 
 export class GeocodePhotonClient {
@@ -7,9 +7,16 @@ export class GeocodePhotonClient {
   }
 
   async geocode(query: string, center?: LatLng, language?: string): Promise<any[]> {
-    const geocoderUrl = this.client.config.photonGeocoderUrl
-    // let url = geocoderUrl + '/geocode/api/?q=' + encodeURIComponent(query) + '&limit=5'
-    let url = geocoderUrl + '/api/?q=' + encodeURIComponent(query) + '&limit=5'
+
+
+    let url = new UrlUtil.TargomoUrl()
+      .part(this.client.config.photonGeocoderUrl)
+      .part('api')
+      .params({
+        q: encodeURIComponent(query),
+        limit: 5
+      })
+      .toString();
 
     if (center) {
       url += '&lat=' + center.lat + '&lon=' + center.lng

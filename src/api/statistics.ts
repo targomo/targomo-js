@@ -59,7 +59,14 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/traveltimes?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.statisticsUrl)
+      .part('traveltimes')
+      .params({
+        serviceUrl: this.client.serviceUrl
+      })
+      .toString();
+
     return await requests(this.client, options).fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
   }
 
@@ -75,7 +82,14 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/charts/dependent?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.statisticsUrl)
+      .part('charts/dependent')
+      .params({
+        serviceUrl: this.client.serviceUrl
+      })
+      .toString();
+
     const result = await requests(this.client, options)
       .fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
     return new StatisticsResult(result, options.statistics)
@@ -92,7 +106,14 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.statisticsUrl)
+      .part('values/geometry')
+      .params({
+        serviceUrl: this.client.serviceUrl
+      })
+      .toString();
+
     const result = await requests(this.client, options)
     .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
     return new StatisticsGeometryResult(result, options.statistics)
@@ -109,13 +130,13 @@ export class StatisticsClient {
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
 
-      const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
-        '/statistics/meta/' +
-        (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
-        key,
-        this.client.serviceKey
-      );
-
+      const url = new UrlUtil.TargomoUrl(this.client)
+        .part(this.client.config.tilesUrl)
+        .part('statistics/meta')
+        .version()
+        .part(key + '')
+        .key()
+        .toString();
 
       const result = await requests(this.client).fetch(url)
       if (!result.name && result.names && result.names.en) {
@@ -155,19 +176,16 @@ export class StatisticsClient {
   tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include?: StatisticsItem[]) {
     const key = (typeof group == 'number') ? group : group.id
 
-    let includeParam = ''
+    const urlObject = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.tilesUrl)
+      .part('statistics/tiles')
+      .version()
+      .part(key + '/{z}/{x}/{y}.mvt')
+      .key();
 
-    if (include && include.length > 0) {
-      includeParam = '&columns=' + encodeURIComponent(include.map(row => +row.id).join(','))
-    }
-
-    return UrlUtil.buildTargomoUrl(
-      this.client.config.tilesUrl,
-      'statistics/tiles/' +
-      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
-      key + '/{z}/{x}/{y}.mvt',
-      this.client.serviceKey
-    ) + includeParam;
+    return include && include.length > 0 ?
+      urlObject.params({columns: encodeURIComponent(include.map(row => +row.id).join(','))}).toString() :
+      urlObject.toString()
 
   }
 
@@ -181,12 +199,12 @@ export class StatisticsClient {
 
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
 
-      const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
-        '/ensemble/list/' +
-        (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version : ''),
-        this.client.serviceKey
-      );
-
+      const url = new UrlUtil.TargomoUrl(this.client)
+        .part(this.client.config.tilesUrl)
+        .part('ensemble/list')
+        .version()
+        .key()
+        .toString();
 
       const result = await requests(this.client).fetch(url, 'GET')
 

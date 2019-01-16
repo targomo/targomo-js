@@ -19,7 +19,13 @@ export class StatefulMultigraphClient {
    * @param options
    */
   async create(sources: LatLngId[], options: MultigraphRequestOptions): Promise<number> {
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'multigraph', this.client.serviceKey)
+
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.statisticsUrl)
+      .part('multigraph')
+      .key()
+      .toString();
+
     const cfg = new StatefulMultigraphRequestPayload(this.client, sources, options);
 
     const result = await requests(this.client, options)
@@ -40,7 +46,12 @@ export class StatefulMultigraphClient {
    * @param multigaphId Id of the multigraph
    */
   async info(multigaphId: number): Promise<MultigraphInfo> {
-    const url = UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'multigraph/' + multigaphId, this.client.serviceKey)
+    const url = new UrlUtil.TargomoUrl(this.client)
+    .part(this.client.config.statisticsUrl)
+    .part('multigraph/' + multigaphId)
+    .key()
+    .toString();
+
     const result = await requests(this.client).fetch(url, 'GET')
     if (result.boundingBoxNorthEast && result.boundingBoxSouthWest) {
       result.boundingBox = <BoundingBox>{
@@ -65,8 +76,12 @@ export class StatefulMultigraphClient {
    * @param multigaphId
    */
   async redo(multigaphId: number): Promise<void> {
-    const url =
-      UrlUtil.buildTargomoUrl(this.client.config.statisticsUrl, 'multigraph/' + multigaphId + '/update', this.client.serviceKey)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.statisticsUrl)
+      .part('multigraph/' + multigaphId + '/update')
+      .key()
+      .toString();
+
     const result = await requests(this.client).fetch(url, 'PATCH')
     return result
   }

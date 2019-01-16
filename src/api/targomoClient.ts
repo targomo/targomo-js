@@ -103,11 +103,12 @@ export class TargomoClient {
    */
   async metadata() {
 
-    const url = UrlUtil.buildTargomoUrl(this.serviceUrl,
-      (this.config.version !== null && this.config.version !== undefined ? 'v' + this.config.version + '/' : '') +
-      'metadata/network',
-      this.serviceKey
-    );
+    const url = new UrlUtil.TargomoUrl(this)
+      .part(this.serviceUrl)
+      .version()
+      .part('metadata/network')
+      .key()
+      .toString();
 
     return await requests(this).fetch(url)
   }

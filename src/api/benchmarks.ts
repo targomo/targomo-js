@@ -32,12 +32,13 @@ export class BenchmarksClient {
       }))
     }
 
-    const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
-      'benchmarks/scores_cumulative/' +
-      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
-      encodeURIComponent('' + group),
-      this.client.serviceKey
-    );
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.tilesUrl)
+      .part('benchmarks/scores_cumulative')
+      .version()
+      .part(encodeURIComponent('' + group))
+      .key()
+      .toString();
 
     return await requests(this.client).fetch(url, 'POST', data)
   }
@@ -47,12 +48,14 @@ export class BenchmarksClient {
    */
   async metadata(key: StatisticsGroupId): Promise<any[]> {
 
-    const url = UrlUtil.buildTargomoUrl(this.client.config.tilesUrl,
-      '/benchmarks/meta/' +
-      (this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '') +
-      encodeURIComponent('' + key),
-      this.client.serviceKey
-    );
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.config.tilesUrl)
+      .part('benchmarks/meta')
+      .version()
+      .part(encodeURIComponent('' + key))
+      .key()
+      .toString();
+
     return await requests(this.client).fetch(url)
   }
 }

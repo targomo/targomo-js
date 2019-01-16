@@ -60,6 +60,10 @@ export class BasemapsClient {
         if (!basemapName || !this.basemapsLookup[basemapName]) {
             throw new Error('valid style name required to access Targomo basemap');
         }
-        return UrlUtil.buildTargomoUrl(this.client.config.basemapsUrl, this.basemapsLookup[basemapName] + '.json', this.client.serviceKey);
+        return new UrlUtil.TargomoUrl(this.client)
+            .part(this.client.config.basemapsUrl)
+            .part(this.basemapsLookup[basemapName] + '.json')
+            .params({key: this.client.serviceKey})
+            .toString();
     }
 }

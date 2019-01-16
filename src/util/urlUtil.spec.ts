@@ -1,4 +1,5 @@
 import {UrlUtil} from './urlUtil'
+import { TargomoClient } from '..';
 
 describe('Url Util tests', () => {
 
@@ -10,9 +11,12 @@ describe('Url Util tests', () => {
       key: 'baz'
     }
 
-    const queryString = UrlUtil.queryToString(sampleParams)
+    const client = new TargomoClient('westcentraleurope', 'aaa', {version: 2});
 
-    expect(queryString.indexOf('&')).toBeGreaterThan(0)
+    const queryString =
+    new UrlUtil.TargomoUrl(client).part(client.serviceUrl).version().part('test/test').key().params(sampleParams).toString();
+
+    expect(queryString).toEqual('https://api.targomo.com/westcentraleurope/v2/test/test?key=aaa&search=foo&auth=bar&key=baz');
 
   })
 
