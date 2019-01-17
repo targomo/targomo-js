@@ -53,10 +53,6 @@ export class SimilarityClient {
       }))
     }
 
-    const normalizeParam = (normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}&` : '?')
-                            + `?key=${encodeURIComponent(this.client.serviceKey)}`
-
-
     const urlObject = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.config.tilesUrl)
       .part('similarity/scores_cumulative')
