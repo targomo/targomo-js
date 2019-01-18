@@ -9,7 +9,7 @@ import { FeatureCollection, MultiPolygon } from 'geojson';
 
 
 /**
- *  @Topic Polygons
+ * @Topic Polygons
  */
 export class PolygonsClient {
   constructor(private client: TargomoClient) {
