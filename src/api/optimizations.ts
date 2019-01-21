@@ -57,9 +57,10 @@ export class OptimizationsClient {
       .part('simulation/ready/')
       .key()
       .params({
-        serviceUrl: encodeURIComponent(this.client.serviceUrl)
+        serviceUrl: encodeURIComponent(this.client.serviceUrl),
+        simulationId: optimizationId
       })
-      .toString() + optimizationId.map(id => `&simulationId=${encodeURIComponent('' + +id)}`).join('');
+      .toString();
 
     return requests(this.client).fetch(url)
   }

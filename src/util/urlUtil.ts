@@ -32,18 +32,26 @@ export namespace UrlUtil {
     }
 
     params(value: any) {
-
       const keys = Object.keys(value);
       keys.forEach(key => {
-        if (!this.firstParamPlaced) {
-          this.firstParamPlaced = true;
-          this.url += '?' + key + '=' + value[key];
+        if (value[key] instanceof Array) {
+          value[key].forEach((v: any) => {
+            this.param(key, v);
+          });
         } else {
-          this.url += '&' + key + '=' + value[key];
+          this.param(key, value[key]);
         }
       });
-
       return this;
+    }
+
+    private param(name: string, value: any) {
+      if (!this.firstParamPlaced) {
+        this.firstParamPlaced = true;
+        this.url += '?' + name + '=' + value;
+      } else {
+        this.url += '&' + name + '=' + value;
+      }
     }
 
     key() {
