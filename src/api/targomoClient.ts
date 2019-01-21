@@ -106,7 +106,7 @@ export class TargomoClient {
     const url = new UrlUtil.TargomoUrl(this)
       .part(this.serviceUrl)
       .version()
-      .part('metadata/network')
+      .part('/metadata/network')
       .key()
       .toString();
 

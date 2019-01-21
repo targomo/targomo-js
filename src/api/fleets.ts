@@ -70,9 +70,9 @@ export class FleetsClient {
   async fetch(stores: FpStore[], orders: FpOrder[], transports: FpTransport[], options: FpRequestOptions): Promise<FpResult> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.fleetsUrl)
+      .host(this.client.config.fleetsUrl)
       .version()
-      .part('api/key-auth/optimizations')
+      .part('/api/key-auth/optimizations')
       .key()
       .toString();
 

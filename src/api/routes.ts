@@ -26,7 +26,7 @@ export class RoutesClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('route')
+      .part('/route')
       .key()
       .params({
         cfg: encodeURIComponent(JSON.stringify(cfg))

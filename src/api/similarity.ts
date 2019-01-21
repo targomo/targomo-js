@@ -16,10 +16,10 @@ export class SimilarityClient {
   async metadata(key: StatisticsGroupId): Promise<any[]> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.tilesUrl)
-      .part('similarity/meta')
+      .host(this.client.config.tilesUrl)
+      .part('similarity/meta/')
       .version()
-      .part(encodeURIComponent('' + key))
+      .part('/' + encodeURIComponent('' + key))
       .key()
       .toString();
 
@@ -54,10 +54,10 @@ export class SimilarityClient {
     }
 
     const urlObject = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.tilesUrl)
-      .part('similarity/scores_cumulative')
+      .host(this.client.config.tilesUrl)
+      .part('similarity/scores_cumulative/')
       .version()
-      .part(encodeURIComponent('' + group))
+      .part('/' + encodeURIComponent('' + group))
       .key();
     const url = normalizeOnViewport ? urlObject.params({normalizeOnViewport: !!normalizeOnViewport}).toString() : urlObject.toString();
 

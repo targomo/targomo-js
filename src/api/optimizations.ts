@@ -28,8 +28,8 @@ export class OptimizationsClient {
 
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
-      .part('simulation/start')
+      .host(this.client.config.statisticsUrl)
+      .part('simulation/start/')
       .key()
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl)
@@ -53,8 +53,8 @@ export class OptimizationsClient {
     }
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
-      .part('simulation/ready')
+      .host(this.client.config.statisticsUrl)
+      .part('simulation/ready/')
       .key()
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl)
@@ -72,8 +72,8 @@ export class OptimizationsClient {
   async fetch(optimizationId: number) {
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
-      .part('simulation/' + optimizationId)
+      .host(this.client.config.statisticsUrl)
+      .part('simulation/' + optimizationId + '/')
       .key()
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl)

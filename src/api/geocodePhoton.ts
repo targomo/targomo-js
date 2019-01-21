@@ -10,7 +10,7 @@ export class GeocodePhotonClient {
 
 
     let url = new UrlUtil.TargomoUrl()
-      .part(this.client.config.photonGeocoderUrl)
+      .host(this.client.config.photonGeocoderUrl)
       .part('api')
       .params({
         q: encodeURIComponent(query),

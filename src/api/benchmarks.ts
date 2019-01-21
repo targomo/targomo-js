@@ -33,10 +33,10 @@ export class BenchmarksClient {
     }
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.tilesUrl)
-      .part('benchmarks/scores_cumulative')
+      .host(this.client.config.tilesUrl)
+      .part('benchmarks/scores_cumulative/')
       .version()
-      .part(encodeURIComponent('' + group))
+      .part('/' + encodeURIComponent('' + group))
       .key()
       .toString();
 
@@ -49,10 +49,10 @@ export class BenchmarksClient {
   async metadata(key: StatisticsGroupId): Promise<any[]> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.tilesUrl)
-      .part('benchmarks/meta')
+      .host(this.client.config.tilesUrl)
+      .part('benchmarks/meta/')
       .version()
-      .part(encodeURIComponent('' + key))
+      .part('/' + encodeURIComponent('' + key))
       .key()
       .toString();
 

@@ -60,7 +60,7 @@ export class StatisticsClient {
     }
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
+      .host(this.client.config.statisticsUrl)
       .part('traveltimes')
       .params({
         serviceUrl: this.client.serviceUrl
@@ -83,7 +83,7 @@ export class StatisticsClient {
     }
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
+      .host(this.client.config.statisticsUrl)
       .part('charts/dependent')
       .params({
         serviceUrl: this.client.serviceUrl
@@ -107,7 +107,7 @@ export class StatisticsClient {
     }
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
+      .host(this.client.config.statisticsUrl)
       .part('values/geometry')
       .params({
         serviceUrl: this.client.serviceUrl
@@ -131,10 +131,10 @@ export class StatisticsClient {
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
 
       const url = new UrlUtil.TargomoUrl(this.client)
-        .part(this.client.config.tilesUrl)
-        .part('statistics/meta')
+        .host(this.client.config.tilesUrl)
+        .part('statistics/meta/')
         .version()
-        .part(key + '')
+        .part('/' + key + '')
         .key()
         .toString();
 
@@ -177,10 +177,10 @@ export class StatisticsClient {
     const key = (typeof group == 'number') ? group : group.id
 
     const urlObject = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.tilesUrl)
-      .part('statistics/tiles')
+      .host(this.client.config.tilesUrl)
+      .part('statistics/tiles/')
       .version()
-      .part(key + '/{z}/{x}/{y}.mvt')
+      .part('/' + key + '/{z}/{x}/{y}.mvt')
       .key();
 
     return include && include.length > 0 ?
@@ -200,8 +200,8 @@ export class StatisticsClient {
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
 
       const url = new UrlUtil.TargomoUrl(this.client)
-        .part(this.client.config.tilesUrl)
-        .part('ensemble/list')
+        .host(this.client.config.tilesUrl)
+        .part('ensemble/list/')
         .version()
         .key()
         .toString();

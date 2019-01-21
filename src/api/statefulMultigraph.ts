@@ -21,7 +21,7 @@ export class StatefulMultigraphClient {
   async create(sources: LatLngId[], options: MultigraphRequestOptions): Promise<number> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
+      .host(this.client.config.statisticsUrl)
       .part('multigraph')
       .key()
       .toString();
@@ -47,7 +47,7 @@ export class StatefulMultigraphClient {
    */
   async info(multigaphId: number): Promise<MultigraphInfo> {
     const url = new UrlUtil.TargomoUrl(this.client)
-    .part(this.client.config.statisticsUrl)
+    .host(this.client.config.statisticsUrl)
     .part('multigraph/' + multigaphId)
     .key()
     .toString();
@@ -77,7 +77,7 @@ export class StatefulMultigraphClient {
    */
   async redo(multigaphId: number): Promise<void> {
     const url = new UrlUtil.TargomoUrl(this.client)
-      .part(this.client.config.statisticsUrl)
+      .host(this.client.config.statisticsUrl)
       .part('multigraph/' + multigaphId + '/update')
       .key()
       .toString();

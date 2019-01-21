@@ -18,13 +18,13 @@ export interface ClientOptions {
 
 export class ClientConfig implements ClientOptions {
 
-  serverUrl: string = 'https://api.targomo.com'
-  statisticsUrl: string = 'https://api.targomo.com/statistics'
-  tilesUrl: string = 'https://api.targomo.com/vector-statistics'
-  poiUrl: string = 'https://api.targomo.com/pointofinterest'
-  mapTilesUrl: string = 'https://maps.targomo.com'
-  photonGeocoderUrl: string = 'https://api.targomo.com/geocode'
-  overpassUrl: string = 'https://api.targomo.com/overpass'
+  serverUrl: string = 'https://api.targomo.com/'
+  statisticsUrl: string = 'https://api.targomo.com/statistics/'
+  tilesUrl: string = 'https://api.targomo.com/vector-statistics/'
+  poiUrl: string = 'https://api.targomo.com/pointofinterest/'
+  mapTilesUrl: string = 'https://maps.targomo.com/'
+  photonGeocoderUrl: string = 'https://api.targomo.com/geocode/'
+  overpassUrl: string = 'https://api.targomo.com/overpass/'
   fleetsUrl: string = 'https://api.targomo.com/fleetplanner/'
   basemapsUrl: string = 'https://maps.targomo.com/styles/'
   requestTimeout: 20000

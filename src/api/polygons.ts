@@ -45,7 +45,7 @@ export class PolygonsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('polygon')
+      .part('/polygon')
       .key()
       .toString();
 

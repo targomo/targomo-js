@@ -23,7 +23,7 @@ export class ReachabilityClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('time')
+      .part('/time')
       .key()
       .toString();
 
@@ -43,7 +43,7 @@ export class ReachabilityClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('reachability')
+      .part('/reachability')
       .key()
       .toString();
 

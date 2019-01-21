@@ -18,7 +18,7 @@ export class MultigraphClient {
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('multigraph')
+      .part('/multigraph')
       .key()
       .toString();
 
@@ -32,7 +32,7 @@ export class MultigraphClient {
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('multigraph/overview')
+      .part('/multigraph/overview')
       .key()
       .toString();
 
@@ -50,7 +50,7 @@ export class MultigraphClient {
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('objectcache/add')
+      .part('/objectcache/add')
       .key()
       .toString();
 
@@ -60,7 +60,7 @@ export class MultigraphClient {
     return new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('multigraph/{z}/{x}/{y}.' + format)
+      .part('/multigraph/{z}/{x}/{y}.' + format)
       .key()
       .params({
         cfgUuid: objectCache.uuid

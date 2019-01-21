@@ -61,7 +61,7 @@ export class BasemapsClient {
             throw new Error('valid style name required to access Targomo basemap');
         }
         return new UrlUtil.TargomoUrl(this.client)
-            .part(this.client.config.basemapsUrl)
+            .host(this.client.config.basemapsUrl)
             .part(this.basemapsLookup[basemapName] + '.json')
             .params({key: this.client.serviceKey})
             .toString();

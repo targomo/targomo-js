@@ -8,28 +8,30 @@ export namespace UrlUtil {
 
     constructor(private client?: TargomoClient) { }
 
-    part(value: string) {
-      if (value[0] === '/') {
-        value = value.substr(1, value.length - 2);
-      }
-      if (value[value.length - 1] !== '/') {
+
+    host(value: string) {
+      if (this.url.length === 0 && value[value.length - 1] !== '/') {
         value += '/';
       }
-      this.url += value;
+      return this.part(value);
+    }
 
+    part(value: string) {
+      this.url += value;
       return this;
     }
 
     version() {
-      this.url +=
-        this.client.config.version !== null && this.client.config.version !== undefined ? 'v' + this.client.config.version + '/' : '';
+      if (this.client.config.version !== null && this.client.config.version !== undefined) {
+        this.part('v' + this.client.config.version);
+      } else if (this.url[this.url.length - 1] === '/' ) {
+        this.url = this.url.substr(0, this.url.length - 1);
+      }
+
       return this;
     }
 
     params(value: any) {
-      if (this.url[this.url.length - 1] === '/') {
-        this.url = this.url.substr(0, this.url.length - 1);
-      }
 
       const keys = Object.keys(value);
       keys.forEach(key => {
