@@ -12,23 +12,23 @@ export interface ClientOptions {
   overpassUrl?: string
   fleetsUrl?: string
   requestTimeout?: number
-
+  version?: number
   routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
 }
 
 export class ClientConfig implements ClientOptions {
 
-  serverUrl: string = 'https://api.targomo.com'
-  statisticsUrl: string = 'https://api.targomo.com/statistics'
-  tilesUrl: string = 'https://api.targomo.com/vector-statistics'
-  poiUrl: string = 'https://api.targomo.com/pointofinterest'
-  mapTilesUrl: string = 'https://maps.targomo.com'
-  photonGeocoderUrl: string = 'https://api.targomo.com/geocode'
-  overpassUrl: string = 'https://api.targomo.com/overpass'
-  fleetsUrl: string = 'https://api.targomo.com/fleetplanner'
-
+  serverUrl: string = 'https://api.targomo.com/'
+  statisticsUrl: string = 'https://api.targomo.com/statistics/'
+  tilesUrl: string = 'https://api.targomo.com/vector-statistics/'
+  poiUrl: string = 'https://api.targomo.com/pointofinterest/'
+  mapTilesUrl: string = 'https://maps.targomo.com/'
+  photonGeocoderUrl: string = 'https://api.targomo.com/geocode/'
+  overpassUrl: string = 'https://api.targomo.com/overpass/'
+  fleetsUrl: string = 'https://api.targomo.com/fleetplanner/'
+  basemapsUrl: string = 'https://maps.targomo.com/styles/'
   requestTimeout: 20000
-
+  version: number = 1
 
   // routeTypes  = [
   //   // non transit

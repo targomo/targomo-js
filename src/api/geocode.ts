@@ -36,7 +36,10 @@ export class GeocodeEsriClient {
       params.magicKey = magicKey
     }
 
-    const url = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?' + UrlUtil.queryToString(params)
+    const url = new UrlUtil.TargomoUrl()
+      .part('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates')
+      .params(params)
+      .toString();
     const jsonResult = await requests().fetch(url)
 
     const results = jsonResult.candidates.map(function (result: any) {
@@ -75,9 +78,11 @@ export class GeocodeEsriClient {
     if (center) {
       params.location = `${center.lng},${center.lat}`
     }
-
-    const response = await requests().fetch('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest?'
-                                                        + UrlUtil.queryToString(params))
+    const url = new UrlUtil.TargomoUrl()
+      .part('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest')
+      .params(params)
+      .toString();
+    const response = await requests().fetch(url)
 
     return response.suggestions
   }
@@ -97,8 +102,12 @@ export class GeocodeEsriClient {
 
     params.location = `${location.lng},${location.lat}`
 
-    const response = await requests().fetch('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?'
-                                                       + UrlUtil.queryToString(params))
+    const url = new UrlUtil.TargomoUrl()
+      .part('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode')
+      .params(params)
+      .toString();
+
+    const response = await requests().fetch(url)
     if (response && response.address) {
       const result = {
         address: response.address.Match_addr,

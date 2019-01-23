@@ -21,7 +21,7 @@ export interface FpRequestMetadata {
     fallbackServiceUrl: string,
     edgeWeight: EdgeWeightType,
     maxEdgeWeight: number,
-    elevationEnabled: boolean,
+    elevation: boolean,
     rushHour: boolean
   }
 }

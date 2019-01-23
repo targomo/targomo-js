@@ -1,5 +1,5 @@
 import { TargomoClient } from './targomoClient'
-import { StatisticsGroupId, SimilarityCriteria, BoundingBox } from '../index';
+import { StatisticsGroupId, SimilarityCriteria, BoundingBox, UrlUtil } from '../index';
 import { requests} from '../util/requestUtil';
 
 /**
@@ -14,8 +14,15 @@ export class SimilarityClient {
    *
    */
   async metadata(key: StatisticsGroupId): Promise<any[]> {
-    const url = `${this.client.config.tilesUrl}/similarity/meta/v1/${encodeURIComponent('' + key)}`
-                 + `?key=${encodeURIComponent(this.client.serviceKey)}`
+
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.tilesUrl)
+      .part('similarity/meta/')
+      .version()
+      .part('/' + encodeURIComponent('' + key))
+      .key()
+      .toString();
+
     return await requests(this.client).fetch(url)
   }
 
@@ -46,10 +53,14 @@ export class SimilarityClient {
       }))
     }
 
-    const normalizeParam = (normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}&` : '?')
-                            + `?key=${encodeURIComponent(this.client.serviceKey)}`
-    const url = `${this.client.config.tilesUrl}/similarity/scores_cumulative/v1/${encodeURIComponent('' + group)}${normalizeParam}`
+    const urlObject = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.tilesUrl)
+      .part('similarity/scores_cumulative/')
+      .version()
+      .part('/' + encodeURIComponent('' + group))
+      .key();
+    const url = normalizeOnViewport ? urlObject.params({normalizeOnViewport: !!normalizeOnViewport}).toString() : urlObject.toString();
+
     return await requests(this.client).fetch(url, 'POST', data)
   }
 }
-

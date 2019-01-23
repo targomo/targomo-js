@@ -21,8 +21,18 @@ export class RoutesClient {
    */
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions): Promise<Route[]> {
     const cfg = new RouteRequestPayload(this.client, sources, targets, options)
-    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'route',
-      this.client.serviceKey) + '&cfg=' + encodeURIComponent(JSON.stringify(cfg))
+
+
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.serviceUrl)
+      .version()
+      .part('/route')
+      .key()
+      .params({
+        cfg: encodeURIComponent(JSON.stringify(cfg))
+      })
+      .toString();
+
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'GET', undefined, {
       // Headers are here because something needs to be fixed in the service endpoint
       'Accept': 'application/json,application/javascript,*/*'

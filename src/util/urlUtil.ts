@@ -1,24 +1,66 @@
+import { TargomoClient } from '..';
+
 export namespace UrlUtil {
 
-  export function queryToString(params: any) {
-    const result: string[] = []
+  export class TargomoUrl {
+    private url = '';
+    private firstParamPlaced = false;
 
-    for (const key in params) {
-      const value = params[key]
-      if (value !== undefined) {
-        result.push(`${key}=${encodeURIComponent(value)}`)
+    constructor(private client?: TargomoClient) { }
+
+
+    host(value: string) {
+      if (this.url.length === 0 && value[value.length - 1] !== '/') {
+        value += '/';
+      }
+      return this.part(value);
+    }
+
+    part(value: string) {
+      this.url += value;
+      return this;
+    }
+
+    version() {
+      if (this.client.config.version !== null && this.client.config.version !== undefined) {
+        this.part('v' + this.client.config.version);
+      } else if (this.url[this.url.length - 1] === '/' ) {
+        this.url = this.url.substr(0, this.url.length - 1);
+      }
+
+      return this;
+    }
+
+    params(value: any) {
+      const keys = Object.keys(value);
+      keys.forEach(key => {
+        if (value[key] instanceof Array) {
+          value[key].forEach((v: any) => {
+            this.param(key, v);
+          });
+        } else {
+          this.param(key, value[key]);
+        }
+      });
+      return this;
+    }
+
+    private param(name: string, value: any) {
+      if (!this.firstParamPlaced) {
+        this.firstParamPlaced = true;
+        this.url += '?' + name + '=' + value;
+      } else {
+        this.url += '&' + name + '=' + value;
       }
     }
 
-    return result.join('&')
-  }
-
-  export function buildTargomoUrl(serviceUrl: string, service: string, serviceKey: string, versionFlag: boolean = true) {
-    if (serviceUrl[serviceUrl.length - 1] !== '/') {
-      serviceUrl += '/'
+    key() {
+      return this.params({key: this.client.serviceKey});
     }
-    return serviceUrl + (versionFlag ? 'v1/' : '') + service + '?key=' + serviceKey
-  }
 
+    toString(): string {
+      return this.url;
+    }
+  }
 }
 

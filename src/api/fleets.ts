@@ -69,8 +69,13 @@ export class FleetsClient {
    */
   async fetch(stores: FpStore[], orders: FpOrder[], transports: FpTransport[], options: FpRequestOptions): Promise<FpResult> {
 
-    const url =
-      UrlUtil.buildTargomoUrl(this.client.config.fleetsUrl, 'api/key-auth/optimizations', this.client.serviceKey, true)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.fleetsUrl)
+      .version()
+      .part('/api/key-auth/optimizations')
+      .key()
+      .toString();
+
     const cfg = this._createPayload(this.client, stores, orders, transports, options);
 
     const result = await requests(this.client, options).fetch(url, 'POST', cfg);
@@ -108,7 +113,7 @@ export class FleetsClient {
           fallbackServiceUrl: '',
           edgeWeight: options.edgeWeight,
           maxEdgeWeight: options.maxEdgeWeight,
-          elevationEnabled: options.elevation,
+          elevation: options.elevation,
           rushHour: options.rushHour
         }
       },

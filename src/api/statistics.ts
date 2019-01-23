@@ -10,7 +10,8 @@ import {
   StatisticsRequestOptions,
   StatisticsTravelRequestOptions,
   StatisticsGeometryRequestOptions,
-  StatisticsGroupEnsemble
+  StatisticsGroupEnsemble,
+  UrlUtil
 } from '../index';
 import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
 import { StatisticsResult } from '../types/responses/index';
@@ -58,7 +59,14 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/traveltimes?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.statisticsUrl)
+      .part('traveltimes')
+      .params({
+        serviceUrl: this.client.serviceUrl
+      })
+      .toString();
+
     return await requests(this.client, options).fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
   }
 
@@ -74,7 +82,14 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/charts/dependent?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.statisticsUrl)
+      .part('charts/dependent')
+      .params({
+        serviceUrl: this.client.serviceUrl
+      })
+      .toString();
+
     const result = await requests(this.client, options)
       .fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
     return new StatisticsResult(result, options.statistics)
@@ -91,7 +106,14 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.statisticsUrl)
+      .part('values/geometry')
+      .params({
+        serviceUrl: this.client.serviceUrl
+      })
+      .toString();
+
     const result = await requests(this.client, options)
     .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
     return new StatisticsGeometryResult(result, options.statistics)
@@ -107,8 +129,16 @@ export class StatisticsClient {
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
-      const result = await requests(this.client)
-                     .fetch(`${server}/statistics/meta/v1/${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
+
+      const url = new UrlUtil.TargomoUrl(this.client)
+        .host(this.client.config.tilesUrl)
+        .part('statistics/meta/')
+        .version()
+        .part('/' + key + '')
+        .key()
+        .toString();
+
+      const result = await requests(this.client).fetch(url)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
       }
@@ -144,15 +174,19 @@ export class StatisticsClient {
    * Potentially decorate a layer route with excluded statistics.
    */
   tileRoute(group: StatisticsGroupMeta | StatisticsGroupId, include?: StatisticsItem[]) {
-    const server = this.client.config.tilesUrl
     const key = (typeof group == 'number') ? group : group.id
 
-    let includeParam = ''
+    const urlObject = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.tilesUrl)
+      .part('statistics/tiles/')
+      .version()
+      .part('/' + key + '/{z}/{x}/{y}.mvt')
+      .key();
 
-    if (include && include.length > 0) {
-      includeParam = 'columns=' + encodeURIComponent(include.map(row => +row.id).join(',')) + '&'
-    }
-    return `${server}/statistics/tiles/v1/${key}/{z}/{x}/{y}.mvt?${includeParam}key=${encodeURIComponent(this.client.serviceKey)}`
+    return include && include.length > 0 ?
+      urlObject.params({columns: encodeURIComponent(include.map(row => +row.id).join(','))}).toString() :
+      urlObject.toString()
+
   }
 
   /**
@@ -164,7 +198,14 @@ export class StatisticsClient {
     const cacheKey = this.client.config.tilesUrl
 
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
-      const url = this.client.config.tilesUrl + '/ensemble/list/v1?key=' + encodeURIComponent(this.client.serviceKey)
+
+      const url = new UrlUtil.TargomoUrl(this.client)
+        .host(this.client.config.tilesUrl)
+        .part('ensemble/list/')
+        .version()
+        .key()
+        .toString();
+
       const result = await requests(this.client).fetch(url, 'GET')
 
       // FIXME: workaround for server results

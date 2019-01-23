@@ -9,7 +9,7 @@ import { FeatureCollection, MultiPolygon } from 'geojson';
 
 
 /**
- *  @Topic Polygons
+ * @Topic Polygons
  */
 export class PolygonsClient {
   constructor(private client: TargomoClient) {
@@ -41,7 +41,14 @@ export class PolygonsClient {
   }
 
   private async _executeFetch(sources: LatLngId[], options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<{}> {
-    const url = UrlUtil.buildTargomoUrl(this.client.serviceUrl, 'polygon', this.client.serviceKey)
+
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .part(this.client.serviceUrl)
+      .version()
+      .part('/polygon')
+      .key()
+      .toString();
+
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg);
     result.metadata = options
     return result
