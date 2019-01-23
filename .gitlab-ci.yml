@@ -1,4 +1,4 @@
-image: code.route360.net:4567/docker/general-image/image:basic_node8
+image: code.route360.net:4567/docker/general-image/node8:0.0.3
 
 variables:
   NODE_ENV: gitlab-ci
