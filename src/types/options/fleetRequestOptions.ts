@@ -19,9 +19,9 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * @General Specifies the desired maximum run time in seconds this request can use for the optimization.
      * The actual run time can be lower if a solution is found quicker, or exceeded when, for example other parts of the routing request,
      * e.g. routing, parsing, serializing of the request response, take longer.
-     * @Min 1 (Not exclusive)
+     * @Min `1` (Not exclusive)
      * @Max Varies depending on your API plan
-     * @Default 1
+     * @Default `1`
      */
     optimizationTime?: number;
     /**
@@ -46,7 +46,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * - AIR_DISTANCE – the connection costs are determined by the air line distance between the two respective addresses
      * - TRAVEL_COST_SERVICE – The Targomo service is used to calculate the cost of connections as travel times between the
      * individual addresses. Using this source is a lot more accurate than using "AIR_DISTANCE"
-     * @Default TRAVEL_COST_SERVICE
+     * @Default `TRAVEL_COST_SERVICE`
     */
     costMatrixSource?: 'AIR_DISTANCE' | 'TRAVEL_COST_SERVICE';
     /**
@@ -56,7 +56,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * - ROUTING_SERVICE: The Targomo service is used to generate accurate routes to and from the individual stops of the route.
      * When this value is selected it will also add all missing information with regards to time, distance,
      * arrival, etc. into the Tour and TourItems that have not yet been set during the optimization.
-     * @Default STRAIGHT_LINE
+     * @Default `STRAIGHT_LINE`
      */
     geojsonCreation?: 'NONE' | 'STRAIGHT_LINE' | 'ROUTING_SERVICE';
     /**
@@ -76,7 +76,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * not serviced orders will be filtered out. This can make sense if you expect that orders can be serviced by vehicles of a later
      * optimization run (with transports that were not yet available at the first run).
      * @Performance Enabling this option can lead to orders never being part of a tour if the deadline has already been passed.
-     * @Default false, i.e. no orders are removed due to a missed deadline.
+     * @Default `false`, i.e. no orders are removed due to a missed deadline.
      */
     filterOrdersWithMissedDeadline?: boolean;
     /**
@@ -89,7 +89,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * (with transports that were not yet available at the first run).
      * @Performance Enabling this option can lead to orders never being part of a tour if the latestArrivalTime of all
      * transports is set too early.
-     * @Default false, i.e. no orders are removed due to not fitting into the working hours of the transports.
+     * @Default `false`, i.e. no orders are removed due to not fitting into the working hours of the transports.
      */
     filterOrdersOutsideOfValidWorkingHours?: boolean;
     /*
@@ -104,12 +104,13 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * @General secondsToPenaltyRatioForDeadlineMissed is an optional configuration parameter, with which it can be specified, how
      * many seconds (rounded up) constitute a penalty point for missing the deadline when using the CONSTRAINT_SATISFACTION optimization.
      * @Format Time in seconds.
-     * @Example secondsToPenaltyRatioForDeadlineMissed = 60:
+     * @Example
+     * `secondsToPenaltyRatioForDeadlineMissed = 60;`
      * (1) Every order with no missed deadline will not cause a penalty;
      * (2) a deadline that was missed by one second constitutes one penalty point;
      * (3) a deadline that was missed by 123 seconds causes 3 penalty points.
      * @Min Greater than 0.
-     * @Default If secondsToPenaltyRatioForDeadlineMissed set to 'null' (which is also the default value if nothing was specified),
+     * @Default If secondsToPenaltyRatioForDeadlineMissed set to `null` (which is also the default value if nothing was specified),
      * that means that every missed deadline counts for exactly one penalty point regardless of the time passed between the deadline and
      * the expected delivery.
      */
@@ -118,12 +119,13 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * @General secondsToPenaltyRatioForOutOfWorkingHours is an optional configuration parameter, with which it can be specified, how
      * many seconds (rounded up) constitute a penalty point for missing the working hours using the CONSTRAINT_SATISFACTION optimization.
      * @Format Time in seconds.
-     * @Example secondsToPenaltyRatioForOutOfWorkingHours = 600:
+     * @Example
+     * `secondsToPenaltyRatioForOutOfWorkingHours = 600;`
      * (1) Every planned tour that stays within the working hours of a transport (i.e. tour is finished before latestArrivalTime)
      * will not cause a penalty;
      * (2) If a tour has missed the latestArrivalTime by one second that constitutes one penalty point;
      * (3) If a tour has missed the latestArrivalTime by 31 minutes that causes 4 penalty points.
-     * @Default If secondsToPenaltyRatioForOutOfWorkingHours set to 'null' (which is also the default value if nothing was specified),
+     * @Default If secondsToPenaltyRatioForOutOfWorkingHours set to `null` (which is also the default value if nothing was specified),
      * that means that every tour that exceeds its working hours counts for exactly one penalty point regardless of the time passed between
      * the lastArrivalTime and the planned tour end.
      */
@@ -147,7 +149,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * the optimization might be motivated to create badly optimized tours so that deadlines are deliberately missed since the overall route
      * will be shorter if they are missed. If deadlines are of no or little importance they should rather not be used.
      * @Min A sensible value should have at least three digits.
-     * @Default null
+     * @Default `null`
      */
     timeConstraintPenaltyToTravelCostRatio?: number;
 
@@ -156,7 +158,7 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * A value of 1.0 (default is 0.0) means that the longest tour is counted twice for the travel time penalty.
      * @Performance Warning: This parameter has to be used with caution since it creates local minima from which the optimization may not
      * progress.
-     * @Default 0
+     * @Default `0`
      */
     longestTourPenaltyFactor?: number;
 
@@ -167,14 +169,14 @@ export interface FpRequestOptions extends BaseRequestOptions {
      * "facility manager":"Max Mustermann" in their tags map and the nonParallelOrdersByTags was defined as ["facility manager"]
      * that means that those two orders cannot be serviced in parallel since for both visits the facility manager Max Mustermann has to be
      * present and he cannot be at two places at the same time.
-     * @Default []
+     * @Default `[]`
      */
     nonParallelOrdersByTags?: string[];
 
     /**
      * @General Enable the rush hour mode to simulate a more crowded street. Warning this is a paid feature so not
      * all plans are allowed to enable it.
-     * @Default false
+     * @Default `false`
      */
     rushHour?: boolean;
 }

@@ -40,7 +40,8 @@ export class FleetsClient {
    * All your usage statistics are accessible on https://account.targomo.com/statistics.
    * @Exceptions This function can return the same exceptions as described on https://docs.targomo.com/fleetplanner/
    * @Example
-   * ```const stores = [{ uuid: '1', address: { lat: 52.474257, lng: 13.378094 } }];
+   * ``` js
+   * const stores = [{ uuid: '1', address: { lat: 52.474257, lng: 13.378094 } }];
    * const orders = [{ storeUuid: '1', address: { lat: 52.4, lng: 13.4 } },
    *                 { storeUuid: '1', address: { lat: 52.6, lng: 13.6 } },
    *                 { storeUuid: '1', address: { lat: 52.6, lng: 13.3 } }];
@@ -52,20 +53,25 @@ export class FleetsClient {
    * ```
    *
    * @Param stores
-   * #General The stores, or otherwise called 'depots' from which their respective vehicles start their routes.
+   * # General
+   * The stores, or otherwise called 'depots' from which their respective vehicles start their routes.
    * A store has a relation with zero or more orders, and zero or more vehicles.
    * @Param orders
-   * #General The orders that need to be serviced by a vehicle from the store which is concerns this order.
+   * # General
+   * The orders that need to be serviced by a vehicle from the store which is concerns this order.
    * An order has a relation with one store.
-   * #Performance The amount of orders has a significant on the time it takes to optimize the routes.
+   * # Performance
+   * The amount of orders has a significant on the time it takes to optimize the routes.
    * When using the default settings for optimizationTime and unimprovedWaitingTime in combination with more than 100 orders,
    * you can expect the results to be less optimized.
    * In this case, the algorithm doesn't have enough time to completely finish the optimization for this amount of orders.
    * Raise the optimizationTime option when sending a request with a high amount of orders.
    * @Param transports
-   * #General The transports (vehicles). Each of which are assigned to a certain store.
+   * # General
+   * The transports (vehicles). Each of which are assigned to a certain store.
    * @Param options
-   * #Performance Various different options within this options object can have a significant noticable impact on the request duration.
+   * # Performance
+   * Various different options within this options object can have a significant noticable impact on the request duration.
    */
   async fetch(stores: FpStore[], orders: FpOrder[], transports: FpTransport[], options: FpRequestOptions): Promise<FpResult> {
 

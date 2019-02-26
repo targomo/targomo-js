@@ -507,11 +507,14 @@ export interface FpOrder {
    * @General The location of the order.
    * When specifying an order setting its address is mandatory.
    * However, for the optimization only the fields lat, lng, and avgHandlingTime are of relevance.
-   * @Example address = {
+   * @Example
+   * ``` js
+   * address = {
    *  lat: 13.380707532171671,
    *  lng: 52.532420302239096,
    *  avgHandlingTime: 300
    * }
+   * ```
    * @Performance It is sufficient to specify an order’s address without geo-coordinates.
    * The missing information is derived from the address details via geocoding.
    * This can lead to small runtime impairments for many addresses, since the geocoding accesses an external service.
@@ -532,16 +535,19 @@ export interface FpOrder {
    * The actual planned visits have to be within these time intervals - this includes the time at the premise (see address.avgHandlingTime).
    * The start of the first interval as well as the end of the last interval can be null or undefined, which means there are no total lower
    * or upper boundaries only breaks in which the order cannot be serviced.
-   * @Example visitingTimes = [{
+   * @Example
+   * ``` js
+   * visitingTimes = [{
    *  end: "2012-04-23T18:00:00.000Z"
    * },{
    *  start: "2012-04-24T08:00:00.000Z"
    * }]
+   * ```
    * means that the order cannot be serviced between 23.04.2012, 6pm and 24.04.2012, 8am but at any other time before or after.
    *
    * The user can also define just lower or upper boundaries for orders with only setting one or the other:
    * start or end of a single visiting time interval, e.g.
-   * visitingTimes = [{ end: "2012-04-23T18:00:00.000Z" }]
+   * `visitingTimes = [{ end: "2012-04-23T18:00:00.000Z" }]`
    * means that the order must have been serviced/visited before the specified time (including the handling time at the address).
    * @Alternative If only an upper boundary for the visit is important the user can also simply choose to define this via the deadline
    * parameter. The difference here is that the handling time at the address is not included in the specified time,
@@ -563,11 +569,13 @@ export interface FpOrder {
   /**
    * @General The user can define a respective load to specify the use case specific characteristics of the order.
    * @Example
+   * ``` js
    * load = {
    *  bottles: 12
    *  weight: 5
    *  crate: 1
    * }
+   * ```
    * @Min Greater than or equal to 0
    * It is not allowed to have a single Order whose single load is smaller than the smallest minSingle of all of the load's
    * loadRestrictions of the vehicles
@@ -575,7 +583,7 @@ export interface FpOrder {
    * It is not allowed to have a single Order whose single load is larger than the largest maxSingle of all of the load's
    * loadRestrictions of the vehicles (or maxSum if the former is not specified)
    * In addition, the total loads of all Orders of a Store must not exceed the total of all of the load's maxSum of its associated Vehicles.
-   * @Default If no value was defined for a load for which a load restriction exists that load is assumed to be 0.0.
+   * @Default If no value was defined for a load for which a load restriction exists, then that load is assumed to be 0.0.
    * If no restrictions for a load in any of the vehicles of the associated store exist the value is ignored (i.e. removed from the list).
    * @Format The physical units of the load values, e.g. for weight and volume, must match the units of the associated loadRestrictions
    * in the Vehicle.
@@ -612,7 +620,7 @@ export interface FpOrder {
    * vehicle, i.e. all demands of an order have to be contained in the list of the supplies of a vehicle for the vehicle to be eligible
    * to service this order.
    * @Example
-   * demands = ["dangerous_goods", "region_germany"]
+   * `demands = ["dangerous_goods", "region_germany"]`
    * Means that this order needs to be serviced by a transport that has at least "dangerous_goods" and "region_germany" in its list of
    * supplies.
    * @Default []
@@ -624,10 +632,12 @@ export interface FpOrder {
    * orders are not allowed to be serviced in parallel when they have the same values for the specified tags. Using tags for that purpose
    * makes sense if some orders share the same external resource which would have to be present at both locations.
    * @Example
+   * ``` js
    * "tags" : {
    *  "facility manager":"Max Mustermann",
    *  "owner": "Muster AG"
    * }
+   * ```
    * It means that if another order exists that has the same "facility manager":"Max Mustermann" or "owner": "Muster AG" (or both) then
    * they cannot be serviced in parallel since for both visits the same facility manager and/or owner has to be present.
    */
@@ -667,11 +677,13 @@ export interface FpVehicle {
   /**
    * @General For each use case specific load key, for instance "weight", "volume", "item", the user can define restrictions
    * @Example
+   * ``` js
    * loadRestrictions = {
    *  weight: { maxSum": 100 },
    *  volume: { maxSum": 2000, "minSingle": 100, "maxSingle": 200 },
    *  item: { minSum": 10, "maxSum": 20 }
    * }
+   * ```
    */
   loadRestrictions?: {
     [key: string]: {
@@ -697,7 +709,7 @@ export interface FpVehicle {
    * @General With supplies a vehicle can be annotated with a list of items or expertise that it provides so it can fulfil the demands of
    * orders, i.e. all demands of an order have to be contained in the list of the supplies of a vehicle for the vehicle to be eligible to
    * service this order.
-   * @Example supplies = ["dangerous_goods", "normal_goods", "region_germany", "region_benelux"]
+   * @Example `supplies = ["dangerous_goods", "normal_goods", "region_germany", "region_benelux"]`
    * Means that this vehicle can service any order that demands "normal_goods", "dangerous_goods", "region_germany", or
    * "region_benelux" or any combination of that, e.g. its tour can include an order with dangerous goods in Germany.
    */
@@ -725,6 +737,7 @@ export interface FpVehicle {
  * @General Metadata defining variable specifics for the vehicle/transports.
  * @Example The three parameters earliestDepartureTime, latestArrivalTime, and interruptionTimes constitute the transport's valid
  * working hours. In the example below the vehicle has a valid working hour from 8 to 18 with a 2 hour break from 12 to 14:
+ * ``` js
  * metadata = {
  *  earliestDepartureTime: "2012-04-23T08:00:00.000Z",
  *  latestArrivalTime: "2012-04-23T18:00:00.000Z",
@@ -733,6 +746,7 @@ export interface FpVehicle {
  *   end: "2012-04-23T14:00:00.000Z"
  *  }]
  * }
+ * ```
  */
 export interface FpTransportMetadata {
   /**
@@ -780,9 +794,9 @@ export interface FpTransportMetadata {
  * This may be necessary in certain areas where the travel time calculation is
  * almost always off by a certain factor, e.g. Paris rush hour.
  * Transit travel times are not affected by the travelTimeFactors
- * @Example "travelTimeFactors" : { "all":0.5, "motorway":1.5, .... (other specific edge classes possible) },..
- * @Min Minimum allowed cumulative travel time factor is 0.5;
- * @Max Maximum allowed cumulative travel time factor is 100.0
+ * @Example `"travelTimeFactors" : { "all":0.5, "motorway":1.5, .... (other specific edge classes possible) },..`
+ * @Min Minimum allowed cumulative travel time factor is `0.5`
+ * @Max Maximum allowed cumulative travel time factor is `100.0`
  * @Format
  * Travel time factor of 1.5 means 50% more time is needed
  * (on top of a specified one, e.g. for the example above 1.5*0.5=0.75 - the final applied travel time factor for 'motorway' edges)
