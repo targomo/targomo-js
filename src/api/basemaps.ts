@@ -56,7 +56,6 @@ export class BasemapsClient {
      * ```
      * @Return Url for mapbox-gl style.
      * @Param basemapName
-     * # General
      * A string of valid basemap name (which you can get from the basemapNames accessor)
     */
     getGLStyleURL(basemapName: string): string {
