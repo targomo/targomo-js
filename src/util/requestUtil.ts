@@ -3,9 +3,17 @@ import { TargomoClient } from '../api/index';
 
 const CACHE = new SimpleCache<any>()
 
+function logBody(body: any) {
+  if (body instanceof String || typeof body === 'string') {
+    console.log(body)
+  } else {
+    console.log(JSON.stringify(body, null, 2))
+  }
+}
+
 export class RequestsUtil {
 
-  constructor() {// private options: {timeout?: number}) {
+  constructor(private options?: {debug?: boolean, timeout?: number}) {
   }
 
   async fetch(url: string, method: string = 'GET', payload?: any, headers: { [index: string]: string } = {}) {
@@ -37,64 +45,65 @@ export class RequestsUtil {
     }
 
     const response: Response = await fetch(url, requestOptions)
+
+    if ((this.options && this.options.debug) || response.status >= 400) {
+      console.log('[TargomoClient Begin]')
+      console.log('[Request]', requestOptions.method, url)
+      console.log(`  [Headers]`)
+      ; (<Headers>requestOptions.headers).forEach((value, key) => {
+        console.log(`    ${key} = ${value}`)
+      })
+
+      if (requestOptions.body) {
+        console.log(`  [Body]`)
+        console.log(requestOptions.body)
+      }
+
+      console.log('[Response]')
+      console.log('    status = ', response.status)
+      console.log('    statusText = ', response.statusText)
+
+      console.log(`  [Headers]`)
+
+      response.headers.forEach((value, key) => {
+        console.log(`    ${key} = ${value}`)
+      })
+    }
+
     if (response.status >= 400) {
+      console.log(`  [Body]`)
+      const responseBody = response.headers.get('content-type') === 'application/json'
+                            ? JSON.stringify(await response.text(), null, 2)
+                            : await response.text()
 
-      const responseBody =
-        response.headers.get('content-type') === 'application/json' ? JSON.stringify(await response.text(), null, 2) : await response.text()
-
-      // VERBOSE LOGGING:
-      //       console.error(`
-      //                 FETCH ERROR
-      // ============================================
-
-      // --------------------------------------------
-      // REQUEST
-      // --------------------------------------------
-      // ${requestMethod} ${url}
-
-      // HEADERS
-      // ${JSON.stringify(headers)}
-
-      // BODY
-      // ${JSON.stringify(payload, null, 2)}
-
-      // --------------------------------------------
-      // RESPONSE
-      // --------------------------------------------
-      // ${response.status} ${response.statusText}
-
-      // Body used     ${response.bodyUsed}
-      // Type          ${response.type}
-      // Redirected    ${response.redirected}
-
-      // HEADERS
-      // ${JSON.stringify(response.headers.raw(), null, 2)}
-
-      // BODY
-      // ${responseBody}
-
-      // --------------------------------------------
-      //       `)
-      console.error(`[ERROR] in service request
-      status  = ${response.status} ${response.statusText}
-      url     = ${url}
-      body    = ${responseBody}`)
+      logBody(responseBody)
+      console.log('[TargomoClient End]')
 
       throw new Error(responseBody)
     } else {
+      let responseValue: any = null
       if (method === 'JSONP') {
         const data = await response.text()
         let start = data.indexOf('(')
         let end = data.lastIndexOf(')')
 
         if (start > -1 && end > -1) {
-          return JSON.parse(data.substring(start + 1, end))
+          responseValue = JSON.parse(data.substring(start + 1, end))
         } else {
-          return JSON.parse(data)
+          responseValue = JSON.parse(data)
         }
       } else {
-        return response.json()
+        responseValue = response.json()
       }
+
+
+      if (this.options && this.options.debug) {
+        console.log('  [Body]')
+        logBody(await responseValue)
+        console.log('[TargomoClient End]')
+      }
+
+      return responseValue
     }
   }
 
@@ -160,5 +169,5 @@ export class RequestsUtil {
 
 export function requests(client?: TargomoClient, options?: { requestTimeout?: number }): RequestsUtil {
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
-  return new RequestsUtil() // {timeout: requestTimeout})
+  return new RequestsUtil({debug: client && client.config && client.config.debug}) // {timeout: requestTimeout})
 }

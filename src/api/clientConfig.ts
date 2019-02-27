@@ -14,6 +14,7 @@ export interface ClientOptions {
   requestTimeout?: number
   version?: number
   routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
+  debug?: boolean
 }
 
 export class ClientConfig implements ClientOptions {
@@ -29,6 +30,7 @@ export class ClientConfig implements ClientOptions {
   basemapsUrl: string = 'https://maps.targomo.com/styles/'
   requestTimeout: 20000
   version: number = 1
+  debug: boolean = false
 
   // routeTypes  = [
   //   // non transit
