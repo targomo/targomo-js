@@ -47,14 +47,16 @@ export class BasemapsClient {
      * This error is thrown when the passed basremapName does not exist in basemapsLookup.
      * Make sure that you get the basemapName with the basemapNames accessor when this error is thrown.
      * @Example
+     * ``` js
      * const basemaps = targomoClient.basemaps;
      * const basemapNames = basemaps.basemapNames;
      * const name = basemapNames[0];
      * const styleURL = basemaps.getStyleURL(name);
      * yourMapboxMap.setStyle(styleUrl);
+     * ```
      * @Return Url for mapbox-gl style.
      * @Param basemapName
-     * #General A string of valid basemap name (which you can get from the basemapNames accessor)
+     * A string of valid basemap name (which you can get from the basemapNames accessor)
     */
     getGLStyleURL(basemapName: string): string {
         if (!basemapName || !this.basemapsLookup[basemapName]) {

@@ -118,10 +118,12 @@ export interface FpTour {
     /**
      * @General The sum of any load specified in the orders.
      * @Example
+     * ``` js
      * loadSum = {
      *   weight: 123.1,
      *   volume: 2005.0
      * }
+     * ```
      */
     loadSum?: {[key: string]: number}
     /**
