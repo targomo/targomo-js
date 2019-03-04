@@ -33,9 +33,10 @@ export class RequestsUtil {
       headers['Content-Type'] = 'application/json'
     }
 
+    const requestHeaders = new Headers(headers)
     const requestOptions: RequestInit = {
       method: requestMethod,
-      headers: new Headers(headers)
+      headers: requestHeaders
     }
 
     if (method === 'POST-RAW') {
@@ -50,7 +51,7 @@ export class RequestsUtil {
       console.log('[TargomoClient Begin]')
       console.log('[Request]', requestOptions.method, url)
       console.log(`  [Headers]`)
-      ; (<Headers>requestOptions.headers).forEach((value, key) => {
+      requestHeaders.forEach((value: string, key: string) => {
         console.log(`    ${key} = ${value}`)
       })
 
@@ -65,7 +66,7 @@ export class RequestsUtil {
 
       console.log(`  [Headers]`)
 
-      response.headers.forEach((value, key) => {
+      response.headers.forEach((value: string, key: string) => {
         console.log(`    ${key} = ${value}`)
       })
     }
