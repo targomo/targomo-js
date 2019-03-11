@@ -4,7 +4,8 @@ import { RouteRequestOptions } from '../types/options/routeRequestOptions';
 import { Route } from '../types/responses/route';
 import { requests } from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
-import { RouteRequestPayload } from './payload/routeRequestPayload';
+import { RouteRequestPayload, RouteGeoJsonOptions, RouteCompactOptions } from './payload/routeRequestPayload';
+import { FeatureCollection, LineString, Point, Feature } from 'geojson';
 
 /**
  * @Topic Routes
@@ -13,15 +14,36 @@ export class RoutesClient {
   constructor(private client: TargomoClient) {
   }
 
-  /**
-   *
-   * @param sources
-   * @param targets
-   * @param options
-   */
-  async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions): Promise<Route[]> {
-    const cfg = new RouteRequestPayload(this.client, sources, targets, options)
+  async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions):
+    Promise<FeatureCollection<LineString|Point>>;
 
+  async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteCompactOptions):
+    Promise<Route[]>;
+
+  async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions|RouteCompactOptions):
+    Promise<Route[] | FeatureCollection<LineString|Point>> {
+
+      const cfg = new RouteRequestPayload(this.client, sources, targets, options)
+      const result = await this._executeFetch(sources, targets, options, cfg);
+      if (options.pathSerializer === 'compact') {
+        return result.routes.map((meta: any) => {
+          return new Route(this.client, meta.travelTime, meta.segments, meta)
+        })
+      } else if (options.pathSerializer === 'geojson') {
+        const featureCollection: FeatureCollection<LineString|Point> = {
+          type: 'FeatureCollection',
+          features: []
+        };
+        result.routes.forEach((feature: Feature<LineString|Point>) => {
+          featureCollection.features.push(feature);
+        })
+        return featureCollection;
+      }
+
+  }
+
+  private async _executeFetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions, cfg: RouteRequestPayload):
+    Promise<{routes: any}> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -38,13 +60,7 @@ export class RoutesClient {
       'Accept': 'application/json,application/javascript,*/*'
     })
 
-    if (!result.routes) {
-      return null
-    }
-
-    return result.routes.map((meta: any) => {
-      return new Route(this.client, meta.travelTime, meta.segments, meta)
-    })
+    return result
   }
 }
 

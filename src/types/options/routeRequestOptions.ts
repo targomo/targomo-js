@@ -2,5 +2,4 @@ import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOption
 
 export interface RouteRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
   recommendations?: number | boolean
-  pathSerializer?: 'compact' | 'geojson'
 }
