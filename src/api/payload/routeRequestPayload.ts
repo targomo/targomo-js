@@ -3,11 +3,19 @@ import { TargomoClient } from '../targomoClient'
 import { RouteRequestOptions } from '../../types/options'
 import { TravelRequestPayload } from './travelRequestPayload';
 
+export interface RouteCompactOptions extends RouteRequestOptions {
+  pathSerializer: 'compact'
+}
+
+export interface RouteGeoJsonOptions extends RouteRequestOptions {
+  pathSerializer: 'geojson'
+}
+
 export class RouteRequestPayload extends TravelRequestPayload {
 
   pathSerializer?: 'compact' | 'geojson'
 
-  constructor(client: TargomoClient, sources: LatLngId[], targets: LatLngId[], options: RouteRequestOptions) {
+  constructor(client: TargomoClient, sources: LatLngId[], targets: LatLngId[], options: RouteCompactOptions|RouteGeoJsonOptions) {
     super(options)
     this.sources = this.buildSourcesCfg(sources)
     this.targets = this.buildTargetsCfg(targets)
