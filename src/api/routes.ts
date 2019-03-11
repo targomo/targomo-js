@@ -15,13 +15,13 @@ export class RoutesClient {
   }
 
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions):
-    Promise<FeatureCollection<LineString|Point>>;
+    Promise<FeatureCollection<LineString|Point>[]>;
 
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteCompactOptions):
     Promise<Route[]>;
 
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions|RouteCompactOptions):
-    Promise<Route[] | FeatureCollection<LineString|Point>> {
+    Promise<Route[] | FeatureCollection<LineString|Point>[]> {
 
       const cfg = new RouteRequestPayload(this.client, sources, targets, options)
       const result = await this._executeFetch(sources, targets, options, cfg);
@@ -30,14 +30,7 @@ export class RoutesClient {
           return new Route(this.client, meta.travelTime, meta.segments, meta)
         })
       } else if (options.pathSerializer === 'geojson') {
-        const featureCollection: FeatureCollection<LineString|Point> = {
-          type: 'FeatureCollection',
-          features: []
-        };
-        result.routes.forEach((feature: Feature<LineString|Point>) => {
-          featureCollection.features.push(feature);
-        })
-        return featureCollection;
+        return result.routes;
       }
 
   }

@@ -37,7 +37,7 @@ describe('TargomoClient route service', () => {
       pathSerializer: 'geojson'
     })
 
-    expect(result).toBeDefined()
-    expect(result.type).toEqual('FeatureCollection');
+    expect(result[0]).toBeDefined()
+    expect(result[0].type).toEqual('FeatureCollection');
   })
 })
