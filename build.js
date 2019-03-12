@@ -43,28 +43,29 @@ async function buildLibraries() {
 
   fsExtra.ensureDirSync(distFolder)
 
+  let bundle = null
 
   // --- BROWSER ---
 
   // Regular bundle
-  await rollup.rollup({
+  bundle = await rollup.rollup({
     input: './src/index.browser.ts',
     context: 'window',
     plugins: defaultPlugins,
-  }).then(bundle => {
-    bundle.write({
-      name: 'tgm',
-      sourcemap: true,
-      format: 'umd',
-      banner: getBanner(),
-      file: paths.join(distFolder, 'targomo-core.umd.js')
-    })
+  })
+    
+  await bundle.write({
+    name: 'tgm',
+    sourcemap: true,
+    format: 'umd',
+    banner: getBanner(),
+    file: paths.join(distFolder, 'targomo-core.umd.js')
   })
 
   let bannercomment0 = false;
 
   // Minified bundle
-  await rollup.rollup({
+  bundle = await rollup.rollup({
     input: './src/index.browser.ts',
     context: 'window',
     plugins: [
@@ -88,31 +89,31 @@ async function buildLibraries() {
         verbose: true
       })
     ],
-  }).then(bundle => {
-    bundle.write({
-      name: 'tgm',
-      sourcemap: true,
-      format: 'umd',
-      banner: getBanner(),
-      file: paths.join(distFolder, 'targomo-core.umd.min.js'),
-    })
+  })
+
+  await bundle.write({
+    name: 'tgm',
+    sourcemap: true,
+    format: 'umd',
+    banner: getBanner(),
+    file: paths.join(distFolder, 'targomo-core.umd.min.js'),
   })
 
   // --- NODE ---
 
   // Regular bundle
-  await rollup.rollup({
+  bundle = await rollup.rollup({
     input: './src/index.node.ts',
     external: ['isomorphic-fetch'],
     plugins: defaultPlugins,
-  }).then(bundle => {
-    bundle.write({
-      name: 'tgm',
-      sourcemap: true,
-      format: 'umd',
-      banner: getBanner(),
-      file: paths.join(distFolder, 'targomo-core.js'),
-    })
+  })
+    
+  await bundle.write({
+    name: 'tgm',
+    sourcemap: true,
+    format: 'umd',
+    banner: getBanner(),
+    file: paths.join(distFolder, 'targomo-core.js'),
   })
 }
 
