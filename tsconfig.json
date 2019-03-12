@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "declarationDir": "./dist/typings",
+    "declarationDir": "./dist/core/typings",
     "sourceMap": true,
     "declaration": true,
     "moduleResolution": "node",
