@@ -5,7 +5,7 @@ import { Route } from '../types/responses/route';
 import { requests } from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
 import { RouteRequestPayload, RouteGeoJsonOptions, RouteCompactOptions } from './payload/routeRequestPayload';
-import { FeatureCollection, LineString, Point, Feature } from 'geojson';
+import { FeatureCollection, LineString, Point } from 'geojson';
 
 /**
  * @Topic Routes
