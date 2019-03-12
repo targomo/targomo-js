@@ -30,8 +30,8 @@ build_release:
         exit 1
       fi
     - npm run build
-    - cp LICENSE README.md dist/
-    - cd dist
+    - cp LICENSE README.md dist/core/
+    - cd dist/core
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
     - npm publish --access=public
     - echo "email=developers@targomo.com" > .npmrc
@@ -48,7 +48,7 @@ build_pre_release:
   script:
     - npm run build
     - export CURRENT_VERSION=$(git rev-parse HEAD --short)
-    - cd dist
+    - cd dist/core
     - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
     - mv package.json.new package.json
     - echo "email=developers@targomo.com" > .npmrc
