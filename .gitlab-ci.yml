@@ -1,4 +1,4 @@
-image: code.route360.net:4567/docker/general-image/node8:0.0.3
+image: code.route360.net:4567/docker/general-image/node10:0.0.6
 
 variables:
   NODE_ENV: gitlab-ci
@@ -40,6 +40,10 @@ build_release:
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
+
+    - export ST_AUTH_VERSION=2.0
+    - cd ../releases
+    - swift upload releases core
   only:
     - tags
 
@@ -57,6 +61,12 @@ build_pre_release:
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
+
+    # For testing
+    - export ST_AUTH_VERSION=2.0
+    - cd ../releases
+    - swift upload releases core
+
   when: manual
   only: 
     - branches
