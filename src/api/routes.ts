@@ -23,16 +23,16 @@ export class RoutesClient {
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions|RouteCompactOptions):
     Promise<Route[] | FeatureCollection<LineString|Point>[]> {
 
-      const cfg = new RouteRequestPayload(this.client, sources, targets, options)
-      const result = await this._executeFetch(sources, targets, options, cfg);
-      if (options.pathSerializer === 'compact') {
-        return result.routes.map((meta: any) => {
-          return new Route(this.client, meta.travelTime, meta.segments, meta)
-        })
-      } else if (options.pathSerializer === 'geojson') {
-        return result.routes;
-      }
+    const cfg = new RouteRequestPayload(this.client, sources, targets, options)
+    const result = await this._executeFetch(sources, targets, options, cfg);
 
+    if (!options.pathSerializer || options.pathSerializer === 'compact') {
+      return result.routes.map((meta: any) => {
+        return new Route(this.client, meta.travelTime, meta.segments, meta)
+      })
+    } else if (options.pathSerializer === 'geojson') {
+      return result.routes;
+    }
   }
 
   private async _executeFetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions, cfg: RouteRequestPayload):
@@ -43,12 +43,9 @@ export class RoutesClient {
       .version()
       .part('/route')
       .key()
-      .params({
-        cfg: encodeURIComponent(JSON.stringify(cfg))
-      })
       .toString();
 
-    const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'GET', undefined, {
+    const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg, {
       // Headers are here because something needs to be fixed in the service endpoint
       'Accept': 'application/json,application/javascript,*/*'
     })
