@@ -51,8 +51,8 @@ export class BaseRequestOptions {
    * @Nullable All elements are optional
    */
   travelTimeFactors?: TravelTimeFactors;
-}
 
+}
 
 
 export class TravelRequestOptions extends BaseRequestOptions {
@@ -63,6 +63,9 @@ export class TravelRequestOptions extends BaseRequestOptions {
    */
   transitFrameDateTime?: string | number | Date;
 
+  /**
+   * Time-frame duration in seconds
+   */
   transitFrameDuration?: number = undefined
 
   /**
@@ -71,14 +74,25 @@ export class TravelRequestOptions extends BaseRequestOptions {
   transitFrameDate?: number = 20170801
 
   /**
-   * Time of the transit request in seconds from midnight
+   * Start time of the transit request in seconds from midnight
    */
   transitFrameTime?: number = 39600
 
   /**
    * Maximum transfer segements in a route
    */
-  transitMaxTransfers?: number = 5
+  transitMaxTransfers?: number = -1
+
+  /**
+   * Maximum time in seconds to walk to the first station
+   */
+  transitMaxWalkingTimeFromSource?: -1
+
+  /**
+   * Route types to avoid. https://developers.google.com/transit/gtfs/reference/#routestxt
+   */
+  transitAvoidTransitRouteTypes?: number[] = []
+
   travelType?: TravelType;
 
   /**
