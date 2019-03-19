@@ -20,6 +20,12 @@ export class StatisticsRequestPayload {
   travelType: TravelType
   edgeWeight: 'time' | 'distance'
   maxEdgeWeight: number
+  frame: number
+  time: number
+  date: number
+  maxTransfers: number
+  maxWalkingTimeFromSource: number
+  avoidTransitRouteTypes: number []
 
   constructor(client: TargomoClient, sources: LatLngId[], options: StatisticsRequestOptions | StatisticsTravelRequestOptions) {
 
@@ -31,6 +37,12 @@ export class StatisticsRequestPayload {
     this.travelType = options.travelType;
     this.edgeWeight = options.edgeWeight;
     this.maxEdgeWeight = options.maxEdgeWeight;
+    this.frame = options.transitFrameDuration;
+    this.time = options.transitFrameTime;
+    this.date = options.transitFrameDate;
+    this.maxTransfers = options.transitMaxTransfers;
+    this.maxWalkingTimeFromSource = options.transitMaxWalkingTimeFromSource;
+    this.avoidTransitRouteTypes = options.transitAvoidTransitRouteTypes;
 
     if (options.inactiveSources) {
       this.inactiveSources = options.inactiveSources.map(source => ({id: source.id, y: source.lat, x: source.lng}))
