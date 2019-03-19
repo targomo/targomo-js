@@ -40,7 +40,7 @@ describe('Stateful Multigraph', () => {
       console.log('multigraph error', e)
       expect(e).not.toBeDefined()
     }
-  })
+  }, 30000) // long timeout b/c this sometimes takes time
 
   test('get info for layer 42', async () => {
     try {
@@ -52,5 +52,5 @@ describe('Stateful Multigraph', () => {
       console.log('multigraph error', e)
       expect(e).not.toBeDefined()
     }
-  })
+  }, 30000) // long timeout b/c this sometimes takes time
 })
