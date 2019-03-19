@@ -1,4 +1,4 @@
-image: code.route360.net:4567/docker/general-image/node8:0.0.3
+image: code.route360.net:4567/docker/general-image/node10:0.0.6
 
 variables:
   NODE_ENV: gitlab-ci
@@ -30,8 +30,8 @@ build_release:
         exit 1
       fi
     - npm run build
-    - cp LICENSE README.md dist/
-    - cd dist
+    - cp LICENSE README.md dist/core/
+    - cd dist/core
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
     - npm publish --access=public
     - echo "email=developers@targomo.com" > .npmrc
@@ -40,6 +40,10 @@ build_release:
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
+
+    - export ST_AUTH_VERSION=2.0
+    - cd ../releases
+    - swift upload releases core
   only:
     - tags
 
@@ -48,7 +52,7 @@ build_pre_release:
   script:
     - npm run build
     - export CURRENT_VERSION=$(git rev-parse HEAD --short)
-    - cd dist
+    - cd dist/core
     - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
     - mv package.json.new package.json
     - echo "email=developers@targomo.com" > .npmrc
@@ -57,6 +61,7 @@ build_pre_release:
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
+
   when: manual
   only: 
     - branches
