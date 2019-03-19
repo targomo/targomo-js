@@ -62,11 +62,6 @@ build_pre_release:
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://repository.route360.net/repository/targomo/
 
-    # For testing
-    - export ST_AUTH_VERSION=2.0
-    - cd ../releases
-    - swift upload releases core
-
   when: manual
   only: 
     - branches
