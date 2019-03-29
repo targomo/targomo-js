@@ -1,4 +1,4 @@
-import { BoundingBox } from '../types';
+import { ProjectedBounds } from '../projectedPolygon';
 
 export interface PolygonData {
   area: number,
@@ -7,11 +7,8 @@ export interface PolygonData {
   innerBoundary: [number, number][][]
 }
 
-export interface MultipolygonData {
-  polygons: PolygonData[]
-}
-
-export interface PolygonSvgResult extends MultipolygonData {
+export interface PolygonSvgResult {
   area: number,
-  bounds3857: BoundingBox
+  polygons: PolygonData[],
+  bounds3857?: ProjectedBounds
 }

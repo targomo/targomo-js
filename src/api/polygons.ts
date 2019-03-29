@@ -35,20 +35,7 @@ export class PolygonsClient {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        const enhancedResult: PolygonSvgResult[] = (result as any[]).map(multipolygonData => {
-          let bounds3857: ProjectedBounds
-          multipolygonData.polygons.forEach((polygonData: PolygonData) => {
-            const polygon = new ProjectedPolygon(polygonData)
-            if (bounds3857) {
-              bounds3857.expand(polygon.bounds3857)
-            } else {
-              bounds3857 = polygon.bounds3857
-            }
-          })
-          multipolygonData.bounds3857 = bounds3857
-          return multipolygonData
-        })
-        return enhancedResult;
+        return PolygonsClient.addBoundsToPolygons(result as PolygonSvgResult[]);
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
       }
@@ -66,5 +53,22 @@ export class PolygonsClient {
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg);
     result.metadata = options
     return result
+  }
+
+  static addBoundsToPolygons(svgPolygonResults: PolygonSvgResult[]): PolygonSvgResult[] {
+    const enhancedResult: PolygonSvgResult[] = svgPolygonResults.map(multipolygonData => {
+      let bounds3857: ProjectedBounds
+      multipolygonData.polygons.forEach((polygonData: PolygonData) => {
+        const polygon = new ProjectedPolygon(polygonData)
+        if (bounds3857) {
+          bounds3857.expand(polygon.bounds3857)
+        } else {
+          bounds3857 = polygon.bounds3857
+        }
+      })
+      multipolygonData.bounds3857 = bounds3857
+      return multipolygonData
+    })
+    return enhancedResult
   }
 }
