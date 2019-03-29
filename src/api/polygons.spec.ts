@@ -60,6 +60,14 @@ describe('TargomoClient polygon service', () => {
     }
 
     const result4 = <PolygonSvgResult[]>await testClient.polygons.fetch(sources, options4)
-    expect(result4[0].area).toBeGreaterThan(0);
+    result4.forEach(result => {
+      expect(result).toHaveProperty('area')
+      expect(result.area).toBeGreaterThan(0)
+      expect(result).toHaveProperty('polygons')
+      expect(result.polygons).not.toHaveLength(0)
+      expect(result).toHaveProperty('bounds3857')
+      expect(result.bounds3857).toHaveProperty('southWest')
+      expect(result.bounds3857).toHaveProperty('northEast')
+    })
   });
 })

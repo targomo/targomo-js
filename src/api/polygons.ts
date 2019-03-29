@@ -4,8 +4,9 @@ import { PolygonRequestOptions } from '../types/options/polygonRequestOptions';
 import { PolygonRequestPayload, PolygonGeoJsonOptions, PolygonSvgOptions } from './payload/polygonRequestPayload';
 import { UrlUtil } from '../util/urlUtil';
 import { requests} from '../util/requestUtil';
-import { PolygonSvgResult } from '../types/responses/polygonSvgResult';
+import { PolygonSvgResult, PolygonData } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
+import { ProjectedPolygon, ProjectedBounds } from '../types/projectedPolygon';
 
 
 /**
@@ -34,7 +35,20 @@ export class PolygonsClient {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        return result as PolygonSvgResult[];
+        const enhancedResult: PolygonSvgResult[] = (result as any[]).map(multipolygonData => {
+          let bounds3857: ProjectedBounds
+          multipolygonData.polygons.forEach((polygonData: PolygonData) => {
+            const polygon = new ProjectedPolygon(polygonData)
+            if (bounds3857){
+              bounds3857.expand(polygon.bounds3857)
+            } else {
+              bounds3857 = polygon.bounds3857
+            }
+          })
+          multipolygonData.bounds3857 = bounds3857
+          return multipolygonData
+        })
+        return enhancedResult;
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
       }
