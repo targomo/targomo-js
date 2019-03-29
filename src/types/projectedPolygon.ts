@@ -215,7 +215,7 @@ export class ProjectedPolygon {
 export class ProjectedMultiPolygon {
     polygons: {[travelTime: number]: ProjectedPolygon[]} = {}
     bounds3857: ProjectedBounds = new ProjectedBounds()
-  
+
     constructor(data: MultipolygonData[]) {
       data.forEach(multipolygonData => {
         multipolygonData.polygons.forEach(polygonData => {
@@ -226,7 +226,7 @@ export class ProjectedMultiPolygon {
         })
       })
     }
-  
+
     forEach(callback: (travelTime: number, polygon: ProjectedPolygon[], i?: number) => void) {
       let keys = Object.keys(this.polygons).map(key => +key).sort((a, b) => b - a)
       keys.forEach((key, i) => callback(+key, this.polygons[<any>key], i))

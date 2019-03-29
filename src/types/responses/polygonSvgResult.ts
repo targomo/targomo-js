@@ -1,4 +1,4 @@
-import { BoundingBox } from "../types";
+import { BoundingBox } from '../types';
 
 export interface PolygonData {
   area: number,

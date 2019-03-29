@@ -39,7 +39,7 @@ export class PolygonsClient {
           let bounds3857: ProjectedBounds
           multipolygonData.polygons.forEach((polygonData: PolygonData) => {
             const polygon = new ProjectedPolygon(polygonData)
-            if (bounds3857){
+            if (bounds3857) {
               bounds3857.expand(polygon.bounds3857)
             } else {
               bounds3857 = polygon.bounds3857
