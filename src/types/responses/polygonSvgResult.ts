@@ -9,6 +9,5 @@ export interface PolygonData {
 
 export interface PolygonSvgResult {
   area: number,
-  polygons: PolygonData[],
-  bounds3857?: ProjectedBounds
+  polygons: PolygonData[]
 }

@@ -28,14 +28,14 @@ export class PolygonsClient {
    * @param sources
    * @param options
    */
-  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonSvgResult[]>;
+  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<BoundedPolygonSvgResult[]>;
 
   async fetch(sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions):
-    Promise<PolygonSvgResult[] | FeatureCollection<MultiPolygon>> {
+    Promise<BoundedPolygonSvgResult[] | FeatureCollection<MultiPolygon>> {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        return PolygonsClient.addBoundsToPolygons(result as PolygonSvgResult[]);
+        return (result as PolygonSvgResult[]).map(polygons => new BoundedPolygonSvgResult(polygons));
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
       }
@@ -54,21 +54,29 @@ export class PolygonsClient {
     result.metadata = options
     return result
   }
+}
 
-  static addBoundsToPolygons(svgPolygonResults: PolygonSvgResult[]): PolygonSvgResult[] {
-    const enhancedResult: PolygonSvgResult[] = svgPolygonResults.map(multipolygonData => {
-      let bounds3857: ProjectedBounds
-      multipolygonData.polygons.forEach((polygonData: PolygonData) => {
-        const polygon = new ProjectedPolygon(polygonData)
-        if (bounds3857) {
-          bounds3857.expand(polygon.bounds3857)
-        } else {
-          bounds3857 = polygon.bounds3857
-        }
-      })
-      multipolygonData.bounds3857 = bounds3857
-      return multipolygonData
+
+/**
+ * @Topic Polygons
+ */
+export class BoundedPolygonSvgResult implements PolygonSvgResult {
+  area: number;
+  polygons: PolygonData[];
+  bounds3857: ProjectedBounds;
+
+  constructor(private svgPolygonResult: PolygonSvgResult) {
+    this.area = svgPolygonResult.area;
+    this.polygons = svgPolygonResult.polygons;
+    let bounds3857: ProjectedBounds
+    this.polygons.forEach((polygonData: PolygonData) => {
+      const polygon = new ProjectedPolygon(polygonData)
+      if (bounds3857) {
+        bounds3857.expand(polygon.bounds3857)
+      } else {
+        bounds3857 = polygon.bounds3857
+      }
     })
-    return enhancedResult
+    this.bounds3857 = bounds3857
   }
 }
