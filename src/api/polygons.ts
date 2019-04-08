@@ -58,7 +58,7 @@ export class PolygonsClient {
 
 
 /**
- * @Topic Polygons
+ * Class to add bounds to each polygon ring
  */
 export class BoundedPolygonSvgResult implements PolygonSvgResult {
   area: number;
