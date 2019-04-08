@@ -59,8 +59,7 @@ export class ProjectedLineString {
   constructor(coordinates: [number, number][]) {
     this.points = coordinates.map(coordinate => {
       this.bounds3857.expandPoint(coordinate[0], coordinate[1])
-
-      const pair = geometry.webMercatorToLeaflet(coordinate[0], coordinate[1], 1)
+      const pair = geometry.sphericalMercator.project({ lat: coordinate[0], lng: coordinate[1] })
       return new ProjectedPoint(pair.x, pair.y)
     })
   }
