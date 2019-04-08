@@ -1,5 +1,3 @@
-import { ProjectedBounds } from '../projectedPolygon';
-
 export interface PolygonData {
   area: number,
   travelTime: number,

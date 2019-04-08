@@ -65,7 +65,7 @@ export class BoundedPolygonSvgResult implements PolygonSvgResult {
   polygons: PolygonData[];
   bounds3857: ProjectedBounds;
 
-  constructor(private svgPolygonResult: PolygonSvgResult) {
+  constructor(svgPolygonResult: PolygonSvgResult) {
     this.area = svgPolygonResult.area;
     this.polygons = svgPolygonResult.polygons;
     let bounds3857: ProjectedBounds
