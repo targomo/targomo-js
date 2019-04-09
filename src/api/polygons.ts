@@ -4,8 +4,9 @@ import { PolygonRequestOptions } from '../types/options/polygonRequestOptions';
 import { PolygonRequestPayload, PolygonGeoJsonOptions, PolygonSvgOptions } from './payload/polygonRequestPayload';
 import { UrlUtil } from '../util/urlUtil';
 import { requests} from '../util/requestUtil';
-import { PolygonSvgResult } from '../types/responses/polygonSvgResult';
+import { PolygonSvgResult, PolygonData } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
+import { ProjectedPolygon, ProjectedBounds } from '../types/projectedPolygon';
 
 
 /**
@@ -27,14 +28,14 @@ export class PolygonsClient {
    * @param sources
    * @param options
    */
-  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonSvgResult[]>;
+  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<BoundedPolygonSvgResult[]>;
 
   async fetch(sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions):
-    Promise<PolygonSvgResult[] | FeatureCollection<MultiPolygon>> {
+    Promise<BoundedPolygonSvgResult[] | FeatureCollection<MultiPolygon>> {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        return result as PolygonSvgResult[];
+        return (result as PolygonSvgResult[]).map(polygons => new BoundedPolygonSvgResult(polygons));
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
       }
@@ -52,5 +53,30 @@ export class PolygonsClient {
     const result = await requests(this.client, options).fetchCachedData(options.useClientCache, url, 'POST', cfg);
     result.metadata = options
     return result
+  }
+}
+
+
+/**
+ * Class to add bounds to each polygon ring
+ */
+export class BoundedPolygonSvgResult implements PolygonSvgResult {
+  area: number;
+  polygons: PolygonData[];
+  bounds3857: ProjectedBounds;
+
+  constructor(svgPolygonResult: PolygonSvgResult) {
+    this.area = svgPolygonResult.area;
+    this.polygons = svgPolygonResult.polygons;
+    let bounds3857: ProjectedBounds
+    this.polygons.forEach((polygonData: PolygonData) => {
+      const polygon = new ProjectedPolygon(polygonData)
+      if (bounds3857) {
+        bounds3857.expand(polygon.bounds3857)
+      } else {
+        bounds3857 = polygon.bounds3857
+      }
+    })
+    this.bounds3857 = bounds3857
   }
 }

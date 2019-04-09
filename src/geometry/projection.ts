@@ -6,7 +6,7 @@ export interface Projection {
 }
 
 export const sphericalMercator: Projection = new class {
-  private R = 6378137
+  private R = 6378137 // constant for Earth's radius
 
   project(latlng: LatLng) {
     let d = Math.PI / 180
@@ -27,10 +27,4 @@ export const sphericalMercator: Projection = new class {
       lng: point.x * d / this.R
     }
   }
-
-  // bounds: (function () {
-  //     var d = 6378137 * Math.PI
-  //     return r360.bounds([-d, -d], [d, d])
-  // })()
-  // }
 }
