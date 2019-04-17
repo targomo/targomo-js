@@ -6,7 +6,9 @@ import { UrlUtil } from '../util/urlUtil';
 import { requests} from '../util/requestUtil';
 import { PolygonSvgResult, PolygonData } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
-import { ProjectedPolygon, ProjectedBounds } from '../types/projectedPolygon';
+import { ProjectedPolygon, ProjectedBounds, ProjectedBoundsData, ProjectedPoint } from '../types/projectedPolygon';
+import { webMercatorToLatLng, boundingBoxFromLocationArray } from '../geometry';
+import { BoundingBox } from '../types';
 
 
 /**
@@ -28,20 +30,22 @@ export class PolygonsClient {
    * @param sources
    * @param options
    */
-  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<BoundedPolygonSvgResult[]>;
+  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonArray<BoundedPolygonSvgResult>>;
 
   async fetch(sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions):
-    Promise<BoundedPolygonSvgResult[] | FeatureCollection<MultiPolygon>> {
+    Promise<PolygonArray<BoundedPolygonSvgResult> | FeatureCollection<MultiPolygon>> {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        return (result as PolygonSvgResult[]).map(polygons => new BoundedPolygonSvgResult(polygons));
+        const boundedPolys = PolygonArray.create<BoundedPolygonSvgResult>(result.metadata);
+        (result as PolygonSvgResult[]).forEach((polygons: any) => boundedPolys.push(new BoundedPolygonSvgResult(polygons)))
+        return boundedPolys;
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
       }
   }
 
-  private async _executeFetch(sources: LatLngId[], options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<{}> {
+  private async _executeFetch(sources: LatLngId[], options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<any> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -78,5 +82,27 @@ export class BoundedPolygonSvgResult implements PolygonSvgResult {
       }
     })
     this.bounds3857 = bounds3857
+  }
+}
+
+class PolygonArray<BoundedPolygonSvgResult> extends Array<BoundedPolygonSvgResult> {
+  private constructor(items?: Array<BoundedPolygonSvgResult>) {
+    super(...items)
+  }
+  static create<T>(metadata: any): PolygonArray<T> {
+    const newProto = Object.create(PolygonArray.prototype);
+    newProto.metadata = metadata;
+    return newProto;
+  }
+
+  getMaxBounds(): BoundingBox {
+    let boundsPoints: any = []
+    this.forEach((polygons: any) => {
+      const bounds: ProjectedBoundsData = polygons.bounds3857;
+      boundsPoints.push(webMercatorToLatLng(bounds.northEast, null));
+      boundsPoints.push(webMercatorToLatLng(bounds.southWest, null));
+    });
+    return boundingBoxFromLocationArray(boundsPoints);
+    // do bounds stuff, return it
   }
 }
