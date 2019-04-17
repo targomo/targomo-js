@@ -1,9 +1,8 @@
 # targomo-js
 
-> Note: This library is not yet finished and may be subject to breaking changes. Feel free to use it, though. If you are looking for our stable JS library please go [this way](https://github.com/route360/r360-js). 
-
 The Targomo Typescript API is a modern, open-source, isomorphic TypeScript library designed to consume the Targomo services. The project is maintained by [Targomo](https://www.targomo.com/). The lib can also be used in non-typescript environments.
 
+> Looking for the historical Route360 JS library? You can find it [here](https://github.com/route360/r360-js). 
 
 # API Key
 
@@ -50,7 +49,7 @@ const polygons = await tgmClient.polygons.fetch(sources, {
 })
 ```
 
-> TODO: High level documentation of all methods
+3. Read more about it on the Targomo [developers site](https://targomo.com/developers/)
 
 ## Usage in ES5 Environments
 
@@ -58,4 +57,6 @@ const polygons = await tgmClient.polygons.fetch(sources, {
 
 # Docs
 
-Documentation is available at [https://targomo.com/developers/guide/](https://targomo.com/developers/guide/), although this still contains the documentation for the r360-js lib, until the docs are finished for this lib.
+More detailed overviews of Targomo's services, along with code examples and demos is available at [https://targomo.com/developers/languages/javascript/](https://targomo.com/developers/languages/javascript/).
+
+Reference docs available [here](https://app.targomo.com/tsdocs/).
