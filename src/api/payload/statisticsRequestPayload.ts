@@ -25,7 +25,8 @@ export class StatisticsRequestPayload {
   date: number
   maxTransfers: number
   maxWalkingTimeFromSource: number
-  avoidTransitRouteTypes: number []
+  avoidTransitRouteTypes: number[]
+  rushHour: boolean
 
   constructor(client: TargomoClient, sources: LatLngId[], options: StatisticsRequestOptions | StatisticsTravelRequestOptions) {
 
@@ -43,6 +44,7 @@ export class StatisticsRequestPayload {
     this.maxTransfers = options.transitMaxTransfers;
     this.maxWalkingTimeFromSource = options.transitMaxWalkingTimeFromSource;
     this.avoidTransitRouteTypes = options.transitAvoidTransitRouteTypes;
+    this.rushHour = options.rushHour;
 
     if (options.inactiveSources) {
       this.inactiveSources = options.inactiveSources.map(source => ({id: source.id, y: source.lat, x: source.lng}))
