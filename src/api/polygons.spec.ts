@@ -1,7 +1,7 @@
 import { PolygonGeoJsonOptions, PolygonSvgOptions } from './payload/polygonRequestPayload';
 import { TargomoClient } from './index';
 import { FeatureCollection, MultiPolygon } from 'geojson';
-import { BoundedPolygonSvgResult } from './polygons';
+import { BoundedPolygonSvgResult, PolygonArray } from './polygons';
 
 
 describe('TargomoClient polygon service', () => {
@@ -59,7 +59,7 @@ describe('TargomoClient polygon service', () => {
       useClientCache: false
     }
 
-    const result4 = <BoundedPolygonSvgResult[]>await testClient.polygons.fetch(sources, options4)
+    const result4 = <PolygonArray>await testClient.polygons.fetch(sources, options4)
     result4.forEach(result => {
       expect(result).toHaveProperty('area')
       expect(result.area).toBeGreaterThan(0)
@@ -69,5 +69,9 @@ describe('TargomoClient polygon service', () => {
       expect(result.bounds3857).toHaveProperty('southWest')
       expect(result.bounds3857).toHaveProperty('northEast')
     })
+    expect(result4).toHaveProperty('metadata')
+    const result4Bounds = result4.getMaxBounds()
+    expect(result4Bounds).toHaveProperty('northEast')
+    expect(result4Bounds).toHaveProperty('southWest')
   });
 })

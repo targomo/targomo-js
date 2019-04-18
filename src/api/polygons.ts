@@ -30,10 +30,10 @@ export class PolygonsClient {
    * @param sources
    * @param options
    */
-  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonArray<BoundedPolygonSvgResult>>;
+  async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonArray>;
 
   async fetch(sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions):
-    Promise<PolygonArray<BoundedPolygonSvgResult> | FeatureCollection<MultiPolygon>> {
+    Promise<PolygonArray | FeatureCollection<MultiPolygon>> {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
@@ -89,11 +89,11 @@ export class BoundedPolygonSvgResult implements PolygonSvgResult {
 /**
  * Class to extend Array for polygons result to add maxBounds method to array results
  */
-class PolygonArray<T extends BoundedPolygonSvgResult> extends Array<T> {
-  private constructor(items?: Array<T>) {
+export class PolygonArray extends Array<BoundedPolygonSvgResult> {
+  private constructor(items?: Array<BoundedPolygonSvgResult>) {
     super(...items)
   }
-  static create(metadata: any): PolygonArray<BoundedPolygonSvgResult> {
+  static create(metadata: any): PolygonArray {
     const newProto = Object.create(PolygonArray.prototype);
     newProto.metadata = metadata;
     return newProto;
