@@ -6,9 +6,9 @@ import { UrlUtil } from '../util/urlUtil';
 import { requests} from '../util/requestUtil';
 import { PolygonSvgResult, PolygonData } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
-import { ProjectedPolygon, ProjectedBounds, ProjectedBoundsData, ProjectedPoint } from '../types/projectedPolygon';
+import { ProjectedPolygon, ProjectedBounds, ProjectedBoundsData } from '../types/projectedPolygon';
 import { webMercatorToLatLng, boundingBoxFromLocationArray } from '../geometry';
-import { BoundingBox } from '../types';
+import { BoundingBox, LatLng } from '../types';
 
 
 /**
@@ -37,7 +37,7 @@ export class PolygonsClient {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        const boundedPolys = PolygonArray.create<BoundedPolygonSvgResult>(result.metadata);
+        const boundedPolys = PolygonArray.create(result.metadata);
         (result as PolygonSvgResult[]).forEach((polygons: any) => boundedPolys.push(new BoundedPolygonSvgResult(polygons)))
         return boundedPolys;
       } else if (options.serializer === 'geojson') {
@@ -85,24 +85,27 @@ export class BoundedPolygonSvgResult implements PolygonSvgResult {
   }
 }
 
-class PolygonArray<BoundedPolygonSvgResult> extends Array<BoundedPolygonSvgResult> {
-  private constructor(items?: Array<BoundedPolygonSvgResult>) {
+
+/**
+ * Class to extend Array for polygons result to add maxBounds method to array results
+ */
+class PolygonArray<T extends BoundedPolygonSvgResult> extends Array<T> {
+  private constructor(items?: Array<T>) {
     super(...items)
   }
-  static create<T>(metadata: any): PolygonArray<T> {
+  static create(metadata: any): PolygonArray<BoundedPolygonSvgResult> {
     const newProto = Object.create(PolygonArray.prototype);
     newProto.metadata = metadata;
     return newProto;
   }
 
   getMaxBounds(): BoundingBox {
-    let boundsPoints: any = []
-    this.forEach((polygons: any) => {
+    let boundsPoints: LatLng[] = []
+    this.forEach((polygons: BoundedPolygonSvgResult) => {
       const bounds: ProjectedBoundsData = polygons.bounds3857;
       boundsPoints.push(webMercatorToLatLng(bounds.northEast, null));
       boundsPoints.push(webMercatorToLatLng(bounds.southWest, null));
     });
     return boundingBoxFromLocationArray(boundsPoints);
-    // do bounds stuff, return it
   }
 }
