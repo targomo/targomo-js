@@ -37,8 +37,8 @@ export class PolygonsClient {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        const boundedPolys = PolygonArray.create(result.metadata);
-        (result as PolygonSvgResult[]).forEach((polygons: any) => boundedPolys.push(new BoundedPolygonSvgResult(polygons)))
+        const boundedResults = (result as PolygonSvgResult[]).map((polygons: any) => new BoundedPolygonSvgResult(polygons))
+        const boundedPolys = PolygonArray.create(boundedResults, result.metadata);
         return boundedPolys;
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
@@ -93,8 +93,9 @@ export class PolygonArray extends Array<BoundedPolygonSvgResult> {
   private constructor(items?: Array<BoundedPolygonSvgResult>) {
     super(...items)
   }
-  static create(metadata?: any): PolygonArray {
+  static create(items: Array<BoundedPolygonSvgResult>, metadata?: any): PolygonArray {
     const newProto = Object.create(PolygonArray.prototype);
+    (items as PolygonSvgResult[]).forEach((polygons: any) => newProto.push(new BoundedPolygonSvgResult(polygons)))
     if (metadata) {
       newProto.metadata = metadata;
     }
