@@ -93,9 +93,11 @@ export class PolygonArray extends Array<BoundedPolygonSvgResult> {
   private constructor(items?: Array<BoundedPolygonSvgResult>) {
     super(...items)
   }
-  static create(metadata: any): PolygonArray {
+  static create(metadata?: any): PolygonArray {
     const newProto = Object.create(PolygonArray.prototype);
-    newProto.metadata = metadata;
+    if (metadata) {
+      newProto.metadata = metadata;
+    }
     return newProto;
   }
 
