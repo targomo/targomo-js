@@ -6,7 +6,7 @@ import { UrlUtil } from '../util/urlUtil';
 import { requests} from '../util/requestUtil';
 import { PolygonSvgResult, PolygonData } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
-import { ProjectedPolygon, ProjectedBounds, ProjectedBoundsData } from '../types/projectedPolygon';
+import { ProjectedPolygon, ProjectedBounds } from '../types/projectedPolygon';
 import { webMercatorToLatLng, boundingBoxFromLocationArray } from '../geometry';
 import { BoundingBox, LatLng } from '../types';
 
@@ -37,8 +37,8 @@ export class PolygonsClient {
       const cfg = new PolygonRequestPayload(this.client, sources, options)
       const result = await this._executeFetch(sources, options, cfg);
       if (options.serializer === 'json') {
-        const boundedResults = (result as PolygonSvgResult[]).map((polygons: any) => new BoundedPolygonSvgResult(polygons))
-        const boundedPolys = PolygonArray.create(boundedResults, result.metadata);
+        // const boundedResults = (result as PolygonSvgResult[]).map((polygons: any) => new BoundedPolygonSvgResult(polygons))
+        const boundedPolys = PolygonArray.create(result, result.metadata);
         return boundedPolys;
       } else if (options.serializer === 'geojson') {
         return result as FeatureCollection<MultiPolygon>;
@@ -60,42 +60,16 @@ export class PolygonsClient {
   }
 }
 
-
-/**
- * Class to add bounds to each polygon ring
- */
-export class BoundedPolygonSvgResult implements PolygonSvgResult {
-  area: number;
-  polygons: PolygonData[];
-  bounds3857: ProjectedBounds;
-
-  constructor(svgPolygonResult: PolygonSvgResult) {
-    this.area = svgPolygonResult.area;
-    this.polygons = svgPolygonResult.polygons;
-    let bounds3857: ProjectedBounds
-    this.polygons.forEach((polygonData: PolygonData) => {
-      const polygon = new ProjectedPolygon(polygonData)
-      if (bounds3857) {
-        bounds3857.expand(polygon.bounds3857)
-      } else {
-        bounds3857 = polygon.bounds3857
-      }
-    })
-    this.bounds3857 = bounds3857
-  }
-}
-
-
 /**
  * Class to extend Array for polygons result to add maxBounds method to array results
  */
-export class PolygonArray extends Array<BoundedPolygonSvgResult> {
-  private constructor(items?: Array<BoundedPolygonSvgResult>) {
+export class PolygonArray extends Array<PolygonSvgResult> {
+  private constructor(items?: Array<PolygonSvgResult>) {
     super(...items)
   }
-  static create(items: Array<BoundedPolygonSvgResult>, metadata?: any): PolygonArray {
+  static create(items: Array<PolygonSvgResult>, metadata?: any): PolygonArray {
     const newProto = Object.create(PolygonArray.prototype);
-    (items as PolygonSvgResult[]).forEach((polygons: any) => newProto.push(new BoundedPolygonSvgResult(polygons)))
+    (items as PolygonSvgResult[]).forEach((polygons: any) => newProto.push(polygons))
     if (metadata) {
       newProto.metadata = metadata;
     }
@@ -104,10 +78,19 @@ export class PolygonArray extends Array<BoundedPolygonSvgResult> {
 
   getMaxBounds(): BoundingBox {
     let boundsPoints: LatLng[] = []
-    this.forEach((polygons: BoundedPolygonSvgResult) => {
-      const bounds: ProjectedBoundsData = polygons.bounds3857;
-      boundsPoints.push(webMercatorToLatLng(bounds.northEast, null));
-      boundsPoints.push(webMercatorToLatLng(bounds.southWest, null));
+    this.forEach((svgPolygons: PolygonSvgResult) => {
+      let bounds3857: ProjectedBounds;
+      svgPolygons.polygons.forEach((polygonData: PolygonData) => {
+        const polygon = new ProjectedPolygon(polygonData)
+        if (bounds3857) {
+          bounds3857.expand(polygon.bounds3857)
+        } else {
+          bounds3857 = polygon.bounds3857
+        }
+      })
+
+      boundsPoints.push(webMercatorToLatLng(bounds3857.northEast, null));
+      boundsPoints.push(webMercatorToLatLng(bounds3857.southWest, null));
     });
     return boundingBoxFromLocationArray(boundsPoints);
   }
