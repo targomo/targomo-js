@@ -48,6 +48,9 @@ export class StatisticsRequestPayload {
   bikeSpeed?: number
   bikeUphill?: number
 
+  trafficJunctionPenalty?: number
+  trafficSignalPenalty?: number
+
   // tslint:disable-next-line:variable-name
   omitIndividualStatistics: boolean
 
@@ -109,6 +112,14 @@ export class StatisticsRequestPayload {
       this.walkDownhill = options.walkSpeed.downhill
       this.walkSpeed = options.walkSpeed.speed
       this.walkUphill = options.walkSpeed.uphill
+    }
+
+    if (options.trafficJunctionPenalty != null) {
+      this.trafficJunctionPenalty = options.trafficJunctionPenalty
+    }
+
+    if (options.trafficSignalPenalty != null) {
+      this.trafficSignalPenalty = options.trafficSignalPenalty
     }
 
     if (options.bikeSpeed) {

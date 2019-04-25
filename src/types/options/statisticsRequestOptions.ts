@@ -7,6 +7,9 @@ export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
   inactiveSources?: LatLngId[]
   closestSources?: boolean
   intersectionMode?: string
+
+  trafficJunctionPenalty?: number
+  trafficSignalPenalty?: number
 }
 
 export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions {
