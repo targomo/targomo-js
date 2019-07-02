@@ -19,6 +19,7 @@ export class RouteSegment {
 
   readonly routeType: any
   readonly routeShortName: string
+  readonly routeLongName: string
   readonly departureTime: number
   readonly arrivalTime: number
   readonly tripHeadSign: string
@@ -50,6 +51,7 @@ export class RouteSegment {
       this.transitSegment = true
       this.routeType      = segment.routeType
       this.routeShortName = segment.routeShortName
+      this.routeLongName  = segment.routeLongName
       this.startName      = segment.startname
       this.endName        = segment.endname
       this.departureTime  = segment.departureTime
