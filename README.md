@@ -21,9 +21,38 @@ Or you can access our CDN with the following urls.
 - Targomo-js-extensions for Leaflet: `https://releases.targomo.com/leaflet/latest.js`
 - Targomo-js-extensions for Google Maps: `https://releases.targomo.com/googlemaps/latest.js`
 
-Once installed, initialize the Targomo client using:
+Once installed, initialize the Targomo client.
+
+When using the CDN in a script tag, 'tgm' is automatically added to the global scope.
+In this case initialize the client like so:
 ``` js
 const client = new tgm.TargomoClient('westcentraleurope', 'your API key');
+```
+
+Otherwise, when using npm in combination with TS/ES6:
+``` js
+import { TargomoClient } from '@targomo/core' 
+const client = new TargomoClient('westcentraleurope', 'your API key');
+```
+
+Use the client. For example for requesting geojson travel time polygons:
+
+``` js
+const sources = [{ 
+    lng: 13.3786431, 
+    lat: 52.4668237, 
+    id: 1
+}, {
+    lng: 52.388166,
+    lat: 13.120117,
+    id: 2
+}]
+
+const polygons = await tgmClient.polygons.fetch(sources, {
+  travelType: 'walk',                   // Either 'walk', 'bike', 'car' or 'transit'
+  travelEdgeWeights: [300, 600, 900],   // Array of distinct travel times in seconds
+  serializer: 'geojson'               
+})
 ```
 
 Get your own Targomo API key [here](https://www.targomo.com/products/pricing/?package=free#api), and check out our [availability map](https://targomo.com/developers/resources/availability/), to see which regions you can choose from.
