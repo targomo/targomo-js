@@ -24,12 +24,37 @@ export class StatefulMultigraphClient {
       .host(this.client.config.statisticsUrl)
       .part('multigraph')
       .key()
+      .params({'serviceUrl': this.client.serviceUrl})
       .toString();
 
     const cfg = new StatefulMultigraphRequestPayload(this.client, sources, options);
 
     const result = await requests(this.client, options)
-      .fetchCachedData(options.useClientCache, url, 'POST', cfg, { 'Accept': 'text/plain' })
+      .fetchCachedData(options.useClientCache, url, 'POST-RAW', JSON.stringify(cfg), { 'Accept': 'text/plain' })
+    return result
+  }
+
+  /**
+   * Runs a "monolith" multigraph request for the given sources and parameters.
+   * This performs the usual routing and then performs a global aggregation
+   * into a single value per layer.
+   *
+   * @param sources
+   * @param options
+   */
+  async monolith(sources: LatLngId[], options: MultigraphRequestOptions): Promise<number> {
+
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.statisticsUrl)
+      .part('multigraph/monolith')
+      .key()
+      .params({'serviceUrl': this.client.serviceUrl})
+      .toString();
+
+    const cfg = new StatefulMultigraphRequestPayload(this.client, sources, options);
+
+    const result = await requests(this.client, options)
+      .fetchCachedData(options.useClientCache, url, 'POST', cfg, { 'Accept': 'application/json' })
     return result
   }
 
@@ -43,13 +68,14 @@ export class StatefulMultigraphClient {
    * 4. AGGREGATING
    * 5. COMPLETED / FAILED
    *
-   * @param multigaphId Id of the multigraph
+   * @param multigraphId UUID of the multigraph
    */
-  async info(multigaphId: number): Promise<MultigraphInfo> {
+  async info(multigraphId: string): Promise<MultigraphInfo> {
     const url = new UrlUtil.TargomoUrl(this.client)
     .host(this.client.config.statisticsUrl)
-    .part('multigraph/' + multigaphId)
+    .part('multigraph/' + multigraphId)
     .key()
+    .params({'serviceUrl': this.client.serviceUrl})
     .toString();
 
     const result = await requests(this.client).fetch(url, 'GET')
@@ -71,18 +97,31 @@ export class StatefulMultigraphClient {
   }
 
   /**
-   * Redo Multigraph with id `multigraphId`
+   * Redo Multigraph with UUID `multigraphId`
    *
-   * @param multigaphId
+   * @param multigraphId
    */
-  async redo(multigaphId: number): Promise<void> {
+  async redo(multigraphId: string): Promise<void> {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
-      .part('multigraph/' + multigaphId + '/update')
+      .part('multigraph/' + multigraphId + '/update')
       .key()
+      .params({'serviceUrl': this.client.serviceUrl})
       .toString();
 
     const result = await requests(this.client).fetch(url, 'PATCH')
     return result
+  }
+
+  getTiledMultigraphUrl(
+      multigraphId: string,
+      format: 'geojson' | 'json' | 'mvt'
+  ): string {
+    return new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.statisticsUrl)
+      .part('multigraph/' + multigraphId + '/{z}/{x}/{y}.' + format)
+      .key()
+      .params({'serviceUrl': this.client.serviceUrl})
+      .toString();
   }
 }
