@@ -70,7 +70,8 @@ export class PointsOfInterestClient {
    * @param query
    */
   async queryRaw(query: string): Promise<OSMLatLng[]> {
-    const result = await requests(this.client).fetch(this.client.config.overpassUrl + '/api/interpreter', 'POST-RAW', query)
+    let result = await requests(this.client).fetch(this.client.config.overpassUrl + '/api/interpreter', 'POST-RAW', query)
+    result = JSON.parse(result)
     return result.elements.filter((item: any) => !!item.tags).map((item: any) => parseOSMLocation(item))
   }
 
