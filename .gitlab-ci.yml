@@ -1,4 +1,4 @@
-image: code.route360.net:4567/docker/general-image/node10:0.0.6
+image: $CI_REGISTRY/docker/debian/node:10_ci
 
 variables:
   NODE_ENV: gitlab-ci
