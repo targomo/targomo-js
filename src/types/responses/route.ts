@@ -148,7 +148,7 @@ export class Route {
       let segment = this.routeSegments[i]
 
       if (segment.arrivalTime != null) {
-        return (segment.arrivalTime - travelTime)
+        return (segment.arrivalTime + travelTime)
       } else {
         travelTime += (segment.travelTime || 0)
       }
