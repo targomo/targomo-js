@@ -18,7 +18,7 @@ export class StatefulMultigraphClient {
    * @param sources
    * @param options
    */
-  async create(sources: LatLngId[], options: MultigraphRequestOptions): Promise<number> {
+  async create(sources: LatLngId[], options: MultigraphRequestOptions): Promise<string> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
