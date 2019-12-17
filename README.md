@@ -55,7 +55,7 @@ const polygons = await tgmClient.polygons.fetch(sources, {
 })
 ```
 
-Get your own Targomo API key [here](https://www.targomo.com/products/pricing/?package=free#api), and check out our [availability map](https://targomo.com/developers/resources/availability/), to see which regions you can choose from.
+Get your own Targomo API key [here](https://targomo.com/developers/pricing/), and check out our [availability map](https://targomo.com/developers/resources/availability/), to see which regions you can choose from.
 
 If you installed either the Leaflet or Google Maps extensions, then they will be available under the following context in your JavaScript/TypeScript app.
 `tgm.leaflet` or `tgm.googlemaps`.
