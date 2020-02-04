@@ -1,9 +1,13 @@
-import { StatisticsRequestPayload } from './statisticsRequestPayload';
-import { LatLngId, MultigraphRequestOptions, MultigraphRequestAggregation, MultigraphAggregationOptions} from '../../types';
-import { TargomoClient } from '../targomoClient';
+import { StatisticsRequestPayload } from './statisticsRequestPayload'
+import {
+  LatLngId,
+  MultigraphRequestOptions,
+  MultigraphRequestAggregation,
+  MultigraphAggregationOptions,
+} from '../../types'
+import { TargomoClient } from '../targomoClient'
 
 export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
-
   multiGraphPreAggregationPipeline: {
     [pipelineName: string]: MultigraphAggregationOptions
   }
@@ -12,14 +16,17 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
     [parameterName: string]: number
   }
 
-  multiGraphAggregationType: MultigraphRequestAggregation;
-  multiGraphAggregationIgnoreOutlier: boolean
+  multiGraphAggregationType: MultigraphRequestAggregation
+  multiGraphAggregationIgnoreOutliers: boolean
   multiGraphAggregationOutlierPenalty: number
   multiGraphAggregationMinSourcesRatio: number
   multiGraphAggregationMinSourcesCount: number
   multiGraphAggregationMaxResultValueRatio: number
   multiGraphAggregationMaxResultValue: number
   multiGraphAggregationFilterValuesForSourceOrigins: string[]
+  multiGraphAggregationMathExpression: string
+  multiGraphAggregationGravitationExponent: number
+  multiGraphAggregationPostAggregationFactor: number
   multiGraphAggregationInputParameters: {
     [parameterName: string]: {
       inputFactor?: number
@@ -27,7 +34,6 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
       gravitationPositiveInfluence?: number
     }
   }
-
 
   multiGraphSerializationFormat: 'geojson' | 'json' | 'mvt'
   multiGraphSerializationDecimalPrecision: number
@@ -55,7 +61,6 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
     delete this.useCache
 
     if (options) {
-
       if (options.multigraph.preAggregationPipeline) {
         this.multiGraphPreAggregationPipeline = options.multigraph.preAggregationPipeline
       }
@@ -66,14 +71,18 @@ export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
 
       if (options.multigraph.aggregation) {
         this.multiGraphAggregationType = options.multigraph.aggregation.type || null
-        this.multiGraphAggregationIgnoreOutlier = options.multigraph.aggregation.ignoreOutliers || null
+        this.multiGraphAggregationIgnoreOutliers = options.multigraph.aggregation.ignoreOutliers || null
         this.multiGraphAggregationOutlierPenalty = options.multigraph.aggregation.outlierPenalty || null
         this.multiGraphAggregationMinSourcesRatio = options.multigraph.aggregation.minSourcesRatio || null
         this.multiGraphAggregationMinSourcesCount = options.multigraph.aggregation.minSourcesCount || null
         this.multiGraphAggregationMaxResultValueRatio = options.multigraph.aggregation.maxResultValueRatio || null
         this.multiGraphAggregationMaxResultValue = options.multigraph.aggregation.maxResultValue || null
-        this.multiGraphAggregationFilterValuesForSourceOrigins = options.multigraph.aggregation.filterValuesForSourceOrigins || null
+        this.multiGraphAggregationFilterValuesForSourceOrigins =
+          options.multigraph.aggregation.filterValuesForSourceOrigins || null
         this.multiGraphAggregationInputParameters = options.multigraph.aggregation.aggregationInputParameters || null
+        this.multiGraphAggregationMathExpression = options.multigraph.aggregation.mathExpression || null
+        this.multiGraphAggregationGravitationExponent = options.multigraph.aggregation.gravitationExponent || null
+        this.multiGraphAggregationPostAggregationFactor = options.multigraph.aggregation.postAggregationFactor || null
       }
 
       this.multiGraphSerializationFormat = options.multigraph.serialization.format
