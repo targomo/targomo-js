@@ -2,12 +2,7 @@ import { MultigraphRequestAggregation, MultigraphRequestLayer } from '../types';
 import { TargomoClient } from './targomoClient';
 
 describe('Stateful Multigraph', () => {
-  const testClient = new TargomoClient(
-    'https://dev.route360.net/tests/',
-    process.env.TGM_TEST_API_KEY,
-    {
-      statisticsUrl: 'https://dev.route360.net/statistics/'
-    })
+  const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
 
   test('create new mg layer', async () => {
     const sources = [
@@ -18,10 +13,13 @@ describe('Stateful Multigraph', () => {
     try {
 
       const result = await testClient.statefulMultigraph.create(sources, {
-        maxEdgeWeight: 3600,
+        maxEdgeWeight: 300,
         travelType: 'car',
         useClientCache: false,
         multigraph: {
+          preAggregationPipeline: {},
+          referencedStatisticIds: {},
+          domain: {type: 'edge'},
           aggregation: {
             type: MultigraphRequestAggregation.MEDIAN,
             ignoreOutliers: true,
@@ -35,19 +33,14 @@ describe('Stateful Multigraph', () => {
           }
         }
       })
-      expect(typeof result).toBe('number')
-    } catch (e) {
-      console.log('multigraph error', e)
-      expect(e).not.toBeDefined()
-    }
-  }, 30000) // long timeout b/c this sometimes takes time
 
-  test('get info for layer 42', async () => {
-    try {
-      const result = await testClient.statefulMultigraph.info(42)
-      expect(result.amountSources).toBeDefined()
-      expect(result.status).toBeDefined()
-      expect(result.routingProgress).toBeDefined()
+      expect(typeof result).toBe('string')
+
+      const resultInfo = await testClient.statefulMultigraph.info(result)
+      expect(resultInfo).toBeDefined()
+      expect(resultInfo.status).toBeDefined()
+      expect(resultInfo.routingProgress).toBeDefined()
+
     } catch (e) {
       console.log('multigraph error', e)
       expect(e).not.toBeDefined()

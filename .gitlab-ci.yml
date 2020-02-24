@@ -1,4 +1,4 @@
-image: code.route360.net:4567/docker/general-image/node10:0.0.6
+image: $CI_REGISTRY/docker/debian/node:10_ci
 
 variables:
   NODE_ENV: gitlab-ci
@@ -35,11 +35,11 @@ build_release:
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
     - npm publish --access=public
     - echo "email=developers@targomo.com" > .npmrc
-    - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> .npmrc
-    - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
+    - echo "@targomo:registry=https://nexus.app.k8sdev.eu.targomo.com/repository/targomo/" >> .npmrc
+    - echo "//nexus.app.k8sdev.eu.targomo.com/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
-    - npm publish --registry https://repository.route360.net/repository/targomo/
+    - npm publish --registry https://nexus.app.k8sdev.eu.targomo.com/repository/targomo/
 
     - export ST_AUTH_VERSION=2.0
     - cd ../releases
@@ -56,11 +56,11 @@ build_pre_release:
     - node -e "let p = require('./package.json'); p.version = p.version + '-dev$CURRENT_VERSION'; console.log(JSON.stringify(p))" > package.json.new
     - mv package.json.new package.json
     - echo "email=developers@targomo.com" > .npmrc
-    - echo "@targomo:registry=https://repository.route360.net/repository/targomo/" >> .npmrc
-    - echo "//repository.route360.net/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
+    - echo "@targomo:registry=https://nexus.app.k8sdev.eu.targomo.com/repository/targomo/" >> .npmrc
+    - echo "//nexus.app.k8sdev.eu.targomo.com/repository/targomo/:_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - echo "always-auth=true" >> .npmrc
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
-    - npm publish --registry https://repository.route360.net/repository/targomo/
+    - npm publish --registry https://nexus.app.k8sdev.eu.targomo.com/repository/targomo/
 
   when: manual
   only: 

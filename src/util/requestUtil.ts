@@ -93,6 +93,8 @@ export class RequestsUtil {
         } else {
           responseValue = JSON.parse(data)
         }
+      } else if (method === 'POST-RAW') {
+        responseValue = await response.text()
       } else {
         responseValue = response.json()
       }

@@ -40,4 +40,30 @@ describe('TargomoClient route service', () => {
     expect(result[0]).toBeDefined()
     expect(result[0].type).toEqual('FeatureCollection');
   })
+
+  test('route service request transit', async () => {
+    const sources: LatLngIdTravelMode[] = [
+      { lat: 52.5060, lng: 13.44, id: 1 },
+    ]
+
+    const targets: LatLngId[] = [
+      { lat: 52.52, lng: 13.390, id: 10 },
+    ]
+
+    const result = await testClient.routes.fetch(sources, targets, {
+      travelType: 'transit',
+      maxEdgeWeight: 1800,
+      useClientCache: false,
+      pathSerializer: 'compact'
+    })
+
+    expect(result[0]).toBeDefined();
+    expect(result[0].points.length).toBeGreaterThan(0)
+    expect(result[0].arrivalTime).toBeDefined()
+    expect(result[0].departureTime).toBeDefined()
+
+    expect(result[0].arrivalTime).toBeGreaterThan(result[0].departureTime)
+    expect(result[0].arrivalTime).toBeGreaterThan(result[0].routeSegments[result[0].routeSegments.length - 3].arrivalTime)
+    expect(result[0].departureTime).toBeLessThan(result[0].routeSegments[2].departureTime)
+  })
 })
