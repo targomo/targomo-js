@@ -60,4 +60,4 @@ Get your own Targomo API key [here](https://targomo.com/developers/pricing/), an
 If you installed either the Leaflet or Google Maps extensions, then they will be available under the following context in your JavaScript/TypeScript app.
 `tgm.leaflet` or `tgm.googlemaps`.
 
-Take a look at our [JavaScript code examples](https://targomo.com/developers/libraries/javascript/code_example/) for a more detailed look on how to use our libraries.
+Take a look at our [JavaScript code examples](https://targomo.com/developers/documentation/javascript/code_example/) for a more detailed look on how to use our libraries.
