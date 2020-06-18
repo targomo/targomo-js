@@ -286,6 +286,12 @@ export interface StatisticsItemMeta {
   descriptions: { [langCode: string]: string }
 
   /**
+   * Topic of the StatisticsItem in different languages
+   */
+  topic?: { en?: string, de?: string }
+
+
+  /**
    * Breakpoints based on different statistical clustering approaches
    */
   breakpoints: {
@@ -316,6 +322,8 @@ export interface StatisticsItemMeta {
 export interface StatisticsGroupMeta {
 
   id: number
+
+  ensembleId?: number
 
   /**
    * Minimum map zoom level to display the group on a map
