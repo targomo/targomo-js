@@ -16,18 +16,9 @@ describe('TargomoClient poi service', () => {
   })
 
 
-  test('poi overpass query', async () => {
-    const sources = { lat: 52.5330232, lng: 13.356626, id: 1}
-    const bounds = geometry.boundingBox(sources, 1)
+  test('poi tiled URL', async () => {
+    const url = await testClient.pois.getTiledUrl( { osmTypes: [ { key: 'amenity', value:'bank' } ] }, 'mvt')
 
-    const result = await testClient.pois.query( [{type: 'amenity', tag: 'bank'}], [bounds])
-
-    expect(result).toBeDefined()
-    expect(result.length).toBeGreaterThan(0)
-    expect(result[0]).toBeDefined()
-    expect(result[0].id).toBeDefined()
-    expect(result[0].lat).toBeDefined()
-    expect(result[0].lng).toBeDefined()
-    expect(result[0].properties).toBeDefined()
+    expect(url).toBeDefined()
   })
 })
