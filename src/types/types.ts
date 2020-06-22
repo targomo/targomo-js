@@ -288,7 +288,7 @@ export interface StatisticsItemMeta {
   /**
    * Topic of the StatisticsItem in different languages
    */
-  topic?: { en?: string, de?: string }
+  topic?: { [langCode: string]: string }
 
 
   /**
