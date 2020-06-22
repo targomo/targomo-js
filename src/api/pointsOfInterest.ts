@@ -1,4 +1,4 @@
-import { BoundingBox, LatLngId, LatLngIdProperties, LatLngProperties } from '../types';
+import { LatLngId, LatLngIdProperties, LatLngProperties } from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
 import { requests } from '../util/requestUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
