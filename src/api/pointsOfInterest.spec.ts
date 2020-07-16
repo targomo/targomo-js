@@ -13,4 +13,16 @@ describe.only('TargomoClient poi service', () => {
     })
     expect(result).toBeDefined()
   })
+
+  test('hierarchy request', async () => {
+    const result = await testClient.pois.hierarchy()
+
+    expect(result).toBeDefined()
+    expect(result.length).toBeGreaterThan(0)
+    expect(result[0]).toBeDefined()
+    expect(result[0].name).toBeDefined()
+    expect(result[0].description).toBeDefined()
+    expect(result[0].type).toBeDefined()
+    expect(result[0].contents).toBeDefined()
+  })
 })

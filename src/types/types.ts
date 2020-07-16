@@ -420,6 +420,7 @@ export interface ReachabilityResult {
   id: string
   source: string
   travelTime: number
+  length?: number
 }
 
 export interface TimeResult {  /**
@@ -431,6 +432,7 @@ export interface TimeResult {  /**
   targets: {
     id: string
     travelTime: number
+    length?: number
   }[]
 }
 
@@ -839,3 +841,42 @@ export interface TravelTimeFactors {
   steps: number,
   unknown: number
 }
+
+////
+
+export interface Poi extends LatLngId {
+  edgeWeight: number
+  osmType: string
+  tags: {
+    name?: string
+    [key: string]: string
+  }
+  type: 'node'
+}
+
+export interface PoiOverview {
+  clusterIdCount: {
+    [clusterId: string]: number
+  }
+  groupIdCount: { [key: string]: number }
+  osmTypesCount: { [key: string]: number }
+  totalPoi: number
+}
+
+export interface ClusterPoi {
+  mainGroupId: string
+  numOfPois: number
+  [category: string]: number | string
+}
+
+export interface PoiType {
+  id: string
+  name: string
+  description: string
+  type: 'CATEGORY' | 'TAG' | 'COMPOSITE_TAG'
+  key?: string
+  value?: any
+  contents?: PoiType[]
+}
+
+export type PoiHiearachy = PoiType[]

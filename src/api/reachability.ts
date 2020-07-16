@@ -5,7 +5,6 @@ import { TimeRequestOptions } from '../types/options/timeRequestOptions';
 import { TimeRequestPayload } from './payload/timeRequestPayload';
 import { UrlUtil } from '../util/urlUtil';
 
-// TODO: decide on method names...or keep previous names
 /**
  * @Topic Reachability
  */
@@ -58,10 +57,9 @@ export class ReachabilityClient {
    * @param sources
    * @param targets
    * @param options
+   * @deprecated
    */
   async count(sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptions): Promise<number> {
-    // TODO: sopmething like this was used somewhere think
-    // (maybe autoprop)....however since it is trivial...maybe we should not have it anymore
     return (await this.locations(sources, targets, options)).length
   }
 
@@ -71,6 +69,7 @@ export class ReachabilityClient {
    * @param sources
    * @param targets
    * @param options
+   * @deprecated
    */
   async locations<T extends LatLngIdTravelTime>(sources: LatLngId[],
                                                             targets: T[],
@@ -100,5 +99,4 @@ export class ReachabilityClient {
       return map[id] > -1
     })
   }
-
 }

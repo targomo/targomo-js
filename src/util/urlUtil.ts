@@ -54,8 +54,8 @@ export namespace UrlUtil {
       }
     }
 
-    key() {
-      return this.params({key: this.client.serviceKey});
+    key(keyName = 'key') {
+      return this.params({[keyName]: this.client.serviceKey});
     }
 
     toString(): string {
