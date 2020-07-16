@@ -46,11 +46,13 @@ export namespace UrlUtil {
     }
 
     private param(name: string, value: any) {
-      if (!this.firstParamPlaced) {
-        this.firstParamPlaced = true;
-        this.url += '?' + name + '=' + value;
-      } else {
-        this.url += '&' + name + '=' + value;
+      if (value !== undefined) {
+        if (!this.firstParamPlaced) {
+          this.firstParamPlaced = true;
+          this.url += '?' + name + '=' + value;
+        } else {
+          this.url += '&' + name + '=' + value;
+        }
       }
     }
 

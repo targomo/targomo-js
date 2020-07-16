@@ -1,4 +1,5 @@
-import { LatLngId, LatLngIdProperties, LatLngProperties, TimeRequestOptions, LatLngIdTravelMode, PoiOverview, PoiHiearachy } from '../types';
+import { LatLngId, LatLngIdProperties, LatLngProperties, TimeRequestOptions, 
+         LatLngIdTravelMode, PoiOverview, PoiHiearachy, BoundingBox, Poi } from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
 import { requests } from '../util/requestUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
@@ -100,9 +101,7 @@ export class PointsOfInterestClient {
       url.part(hash)
     }
 
-    url
-      .key()
-      .params({apiKey: this.client.serviceKey})
+    url.key('apiKey')
 
     return await requests(this.client).fetch(url.toString())
   }
@@ -187,6 +186,64 @@ export class PointsOfInterestClient {
     return requests(this.client).fetch(url)
   }
 
+  /**
+   * Returns a list of OSM keys that the service accepts in its requests.
+   */
+  async osmTypes(): Promise<string[]> {
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.poiUrl)
+      .part('osmTypes')
+      .key('apiKey')
+      .toString()
+
+    return requests(this.client).fetch(url)
+  }
+
+  /**
+   * Returns all OSM tag values of the requested tagKey that exist in the POI service database.
+   */
+  async osmTagValues(osmType: string, filter?: string, limit?: number): Promise<{name: string, count: number}[]> {
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.poiUrl)
+      .part('osmTagValues/')
+      .part(osmType)
+      .key('apiKey')
+      .params({text: filter || undefined, limit})
+      .toString()
+
+    return requests(this.client).fetch(url)
+  }
+
+  /**
+   * Retrieves all POIs that match the requested POI groups or OSM types inside a bounding box
+   *
+   * @param options
+   */
+  async boundingBox(bounds: BoundingBox, options: {
+    group?: string[],
+    osmType?: {[key: string]: string},
+    exclude?: string[],
+    match?: 'any' | 'all'
+  }): Promise<Poi[]> {
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.poiUrl)
+      .part('boundingBox')
+      .key('apiKey')
+      .params({
+        northEastX: bounds.northEast.lng,
+        northEastY: bounds.northEast.lat,
+        southWestX: bounds.southWest.lng,
+        southWestY: bounds.southWest.lat,
+        group: options && options.group,
+        exclude: options && options.exclude,
+        match: options && options.match,
+      })
+      .toString()
+
+    return requests(this.client).fetch(url)
+  }
+
+
   // info(osmIds: string | string[]): Observable<Cp3oPoi[]> {
   //   if (!(osmIds instanceof Array)) {
   //     osmIds = [osmIds]
@@ -195,11 +252,6 @@ export class PointsOfInterestClient {
   //   return this.http.get<Cp3oPoi[]>(`${this.baseUrl}info/${osmIds.join(',')}?apiKey=${this.apiKey}`)
   // }
 
-
-
   // /pointofinterest/info/{poiIds}
-  // /pointofinterest/osmTypes
-  // /pointofinterest/osmTagValues/{tagKey}
-  // /pointofinterest/poiHierarchy
 }
 

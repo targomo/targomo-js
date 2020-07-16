@@ -847,11 +847,13 @@ export interface TravelTimeFactors {
 export interface Poi extends LatLngId {
   edgeWeight: number
   osmType: string
+  bounded?: boolean
   tags: {
     name?: string
     [key: string]: string
   }
   type: 'node'
+  groupIds?: string[]
 }
 
 export interface PoiOverview {
