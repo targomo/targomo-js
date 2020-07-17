@@ -845,7 +845,7 @@ export interface TravelTimeFactors {
 ////
 
 export interface Poi extends LatLngId {
-  edgeWeight: number
+  edgeWeight?: number
   osmType: string
   bounded?: boolean
   tags: {

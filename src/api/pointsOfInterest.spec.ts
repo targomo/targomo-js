@@ -34,6 +34,21 @@ describe.only('TargomoClient poi service', () => {
     expect(result.length).toBeGreaterThan(0)
   })
 
+  test('info request', async () => {
+    const result = await testClient.pois.info(['0_502545685'])
+
+    expect(result).toBeDefined()
+    expect(result.length).toBeGreaterThan(0)
+    expect(result[0]).toBeDefined()
+    expect(result[0].lat).toBeDefined()
+    expect(result[0].lng).toBeDefined()
+    expect(result[0].type).toEqual('node')
+    expect(result[0].osmType).toBeDefined()
+    expect(result[0].tags).toBeDefined()
+    expect(result[0].groupIds).toBeDefined()
+  })
+
+
   test('osmTagValues request', async () => {
     const result = await testClient.pois.osmTagValues('amenity', undefined, 10)
 

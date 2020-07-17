@@ -217,6 +217,26 @@ export class PointsOfInterestClient {
   }
 
   /**
+   * Retrieves the info of a list of POIs thanks to their Ids.
+   *
+   * Nomenclature of the ids:
+   * 0_ means that the requested POI is a node.
+   * 1_ means that the requested POI is a way (a line or a polygon).
+   * Theses prefixes are followed by the id of the object in the OSM database.
+   * If the id is negative, it means that the node or the way derives from a relation.
+   */
+  async info(poiIds: string[]): Promise<Poi[]> {
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.poiUrl)
+      .part('info/')
+      .part(poiIds.map(encodeURIComponent).join(','))
+      .key('apiKey')
+      .toString()
+
+    return requests(this.client).fetch(url)
+  }
+
+  /**
    * Retrieves all POIs that match the requested POI groups or OSM types inside a bounding box
    *
    * @param options
