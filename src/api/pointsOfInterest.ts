@@ -1,10 +1,11 @@
-import { LatLngId, LatLngIdProperties, LatLngProperties, TimeRequestOptions, 
+import { LatLngId, LatLngIdProperties, LatLngProperties, TimeRequestOptions,
          LatLngIdTravelMode, PoiOverview, PoiHiearachy, BoundingBox, Poi } from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
 import { requests } from '../util/requestUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
 import { TargomoClient } from './targomoClient';
 import { UrlUtil } from '../util/urlUtil';
+import { Geometry, FeatureCollection } from 'geojson';
 
 /**
  * An object representing a point (poi/marker) which is returned from overpass queries in this module
@@ -112,8 +113,8 @@ export class PointsOfInterestClient {
    */
   async requestReachabilityHash(
     sources: LatLngIdTravelMode[],
+    osmTypes: {key: string, value: string}[],
     options: TimeRequestOptions,
-    osmTypes: {key: string, value: string}[]
   ) {
     const url = new UrlUtil.TargomoUrl(this.client)
     .host(this.client.config.poiUrl)
@@ -244,14 +245,81 @@ export class PointsOfInterestClient {
   }
 
 
-  // info(osmIds: string | string[]): Observable<Cp3oPoi[]> {
-  //   if (!(osmIds instanceof Array)) {
-  //     osmIds = [osmIds]
-  //   }
+  /**
+   *
+   * @param geometry
+   * @param osmTypes
+   * @param format
+   */
+  async geometry(
+    geometry: Geometry,
+    osmTypes: {key: string, value: string}[],
+    format: 'json'
+  ): Promise<{[id: string]: Poi}>
+  async geometry(
+    geometry: Geometry,
+    osmTypes: {key: string, value: string}[],
+    format: 'geojson'
+  ): Promise<FeatureCollection>
+  async geometry(
+    geometry: Geometry,
+    osmTypes: {key: string, value: string}[],
+    format: 'json' | 'geojson' = 'geojson'
+  ) {
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.poiUrl)
+      .part('geometry')
+      .key()
+      .toString()
 
-  //   return this.http.get<Cp3oPoi[]>(`${this.baseUrl}info/${osmIds.join(',')}?apiKey=${this.apiKey}`)
-  // }
+    const payload = {
+      osmTypes,
+      serviceKey: this.client.serviceKey,
+      serviceUrl: this.client.serviceUrl,
+      filterGeometry: {
+        'crs': 4326,
+        'type': 'geojson',
+        'data': JSON.stringify(geometry)
+      },
+      format
+    }
 
-  // /pointofinterest/info/{poiIds}
+    return requests(this.client).fetch(url, 'POST', payload)
+  }
+
+  async geometrySummary(hash?: string): Promise<PoiOverview> {
+    const url = new UrlUtil.TargomoUrl(this.client)
+      .host(this.client.config.poiUrl)
+      .part('geometry/summary/')
+
+    if (hash) {
+      url.part(hash)
+    }
+
+    url.key('apiKey')
+
+    return await requests(this.client).fetch(url.toString())
+  }
+
+  async requestGeometryHash(
+    geometry: Geometry,
+    osmTypes: {key: string, value: string}[],
+  ) {
+    const url = new UrlUtil.TargomoUrl(this.client)
+    .host(this.client.config.poiUrl)
+    .part('geometry/register')
+    .key()
+
+    const payload = {
+      osmTypes,
+      serviceKey: this.client.serviceKey,
+      serviceUrl: this.client.serviceUrl,
+      filterGeometry: geometry
+    }
+
+    return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
+      'Accept': 'application/json, text/plain, */*'
+    })
+  }
 }
 
