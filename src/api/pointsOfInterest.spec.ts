@@ -90,6 +90,24 @@ describe.only('TargomoClient poi service', () => {
     ]
 
     const result = await testClient.pois.geometry(geometry, osmTypes)
+    expect(result).toBeDefined()
+  })
+
+  test('geometry poi hash request', async () => {
+    // tslint:disable-next-line: max-line-length
+    const geometry = {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+    const osmTypes = [
+      {
+        'key': 'amenity',
+        'value': 'bar'
+      },
+      {
+        'key': 'group',
+        'value': 'g_shop'
+      }
+    ]
+
+    const result = await testClient.pois.requestGeometryHash(geometry, {osmTypes, format: 'geojson'})
     console.log(result)
     expect(result).toBeDefined()
   })

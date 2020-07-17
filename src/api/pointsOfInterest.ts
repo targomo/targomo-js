@@ -55,7 +55,6 @@ function parseOSMLocation(item: any): OSMLatLng {
 /**
  *
  */
-// TODO: better method names
 /**
  * @Topic Points of Interest
  */
@@ -155,11 +154,11 @@ export class PointsOfInterestClient {
    *
    * @param hash
    */
-  tileRoute(hash: string, reachability: boolean) {
+  tileRoute(hash: string, type?: 'reachability' | 'geometry') {
     const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl)
 
-    if (reachability) {
-      url.part('reachability/')
+    if (type === 'reachability' || type === 'geometry') {
+      url.part(type + '/')
     }
 
     if (hash) {
@@ -175,7 +174,9 @@ export class PointsOfInterestClient {
   }
 
   /**
-   *
+   * Returns the POI hierarchy supported by the service.
+   * The POI Hierarchy is a hierarchy tree of POI groups.
+   * Thanks to this hierarchy, one can request groups of POI by their ids.
    */
   async hierarchy(): Promise<PoiHiearachy> {
     const url = new UrlUtil.TargomoUrl(this.client)
@@ -246,6 +247,7 @@ export class PointsOfInterestClient {
 
 
   /**
+   * Returns a list of reachable points of interest (POIs) within a given geometry.
    *
    * @param geometry
    * @param osmTypes
@@ -259,7 +261,7 @@ export class PointsOfInterestClient {
   async geometry(
     geometry: Geometry,
     osmTypes: {key: string, value: string}[],
-    format: 'geojson'
+    format?: 'geojson'
   ): Promise<FeatureCollection>
   async geometry(
     geometry: Geometry,
@@ -287,6 +289,10 @@ export class PointsOfInterestClient {
     return requests(this.client).fetch(url, 'POST', payload)
   }
 
+  /**
+   *
+   * @param hash
+   */
   async geometrySummary(hash?: string): Promise<PoiOverview> {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.poiUrl)
@@ -301,9 +307,15 @@ export class PointsOfInterestClient {
     return await requests(this.client).fetch(url.toString())
   }
 
+  /**
+   *
+   * @param geometry
+   * @param osmTypes
+   * @param format
+   */
   async requestGeometryHash(
     geometry: Geometry,
-    osmTypes: {key: string, value: string}[],
+    options: POIRequestOptions
   ) {
     const url = new UrlUtil.TargomoUrl(this.client)
     .host(this.client.config.poiUrl)
@@ -311,10 +323,15 @@ export class PointsOfInterestClient {
     .key()
 
     const payload = {
-      osmTypes,
       serviceKey: this.client.serviceKey,
       serviceUrl: this.client.serviceUrl,
-      filterGeometry: geometry
+      filterGeometry: {
+        'crs': 4326,
+        'type': 'geojson',
+        'data': JSON.stringify(geometry)
+      },
+      osmTypes: options && options.osmTypes,
+      format: options && options.format || 'geojson'
     }
 
     return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
