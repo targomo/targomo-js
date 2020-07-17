@@ -4,7 +4,7 @@ import { BoundingBox } from '../types';
 describe.only('TargomoClient poi service', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
 
-  test('poi service request', async () => {
+  test('poi service reachable request', async () => {
     const sources = { lat: 52.5330232, lng: 13.356626, id: 1}
 
     const result = await testClient.pois.reachable(sources, {
@@ -12,7 +12,16 @@ describe.only('TargomoClient poi service', () => {
         maxEdgeWeight: 600,
         osmTypes: [{key: 'amenity', value: 'bank'}]
     })
+
     expect(result).toBeDefined()
+    const key = Object.keys(result)[0]
+    expect(key).toBeDefined()
+    expect(result[key].lat).toBeDefined()
+    expect(result[key].lng).toBeDefined()
+    expect(result[key].type).toEqual('node')
+    expect(result[key].osmType).toBeDefined()
+    expect(result[key].tags).toBeDefined()
+    expect(result[key].groupIds).toBeDefined()
   })
 
   test('hierarchy request', async () => {
@@ -122,9 +131,63 @@ describe.only('TargomoClient poi service', () => {
       }
     ]
 
-    const result = await testClient.pois.requestGeometryHash(geometry, {osmTypes, format: 'geojson'})
-    console.log(result)
+    const hashResult = await testClient.pois.requestGeometryHash(geometry, {osmTypes, format: 'geojson'})
+    expect(hashResult).toBeDefined()
+
+    const result = await testClient.pois.geometrySummary(hashResult)
     expect(result).toBeDefined()
+    expect(result.totalPoi).toBeDefined()
+    expect(result.groupIdCount).toBeDefined()
+    expect(result.osmTypesCount).toBeDefined()
+    expect(result.clusterIdCount).toBeDefined()
+  })
+
+  test('reachability poi hash request', async () => {
+    const sources = [{ lat: 52.5330232, lng: 13.356626, id: 1}]
+    const osmTypes = [
+      {
+        'key': 'amenity',
+        'value': 'bar'
+      },
+      {
+        'key': 'group',
+        'value': 'g_shop'
+      }
+    ]
+
+    const hashResult = await testClient.pois.requestReachabilityHash(sources, {
+      travelType: 'car',
+      maxEdgeWeight: 600,
+      osmTypes,
+    })
+
+    expect(hashResult).toBeDefined()
+
+    const result = await testClient.pois.reachabilitySummary(hashResult)
+    expect(result).toBeDefined()
+    expect(result.totalPoi).toBeDefined()
+    expect(result.groupIdCount).toBeDefined()
+    expect(result.osmTypesCount).toBeDefined()
+    expect(result.clusterIdCount).toBeDefined()
+  })
+
+  test('general poi hash request', async () => {
+    const osmTypes = [
+      {
+        'key': 'amenity',
+        'value': 'bar'
+      },
+      {
+        'key': 'group',
+        'value': 'g_shop'
+      }
+    ]
+
+    const hashResult = await testClient.pois.requestHash({
+      osmTypes,
+    })
+
+    expect(hashResult).toBeDefined()
   })
 })
 

@@ -1,5 +1,5 @@
 import { LatLngId, LatLngIdProperties, LatLngProperties, TimeRequestOptions,
-         LatLngIdTravelMode, PoiOverview, PoiHiearachy, BoundingBox, Poi } from '../types';
+         LatLngIdTravelMode, PoiOverview, PoiHiearachy, BoundingBox, Poi, OSMType } from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
 import { requests } from '../util/requestUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
@@ -69,7 +69,6 @@ export class PointsOfInterestClient {
    *
    * @deprecated
    */
-  // TODO: ...this was used in GH...think what shape of this make best sense for a public library
   async queryGetCustom(url: string): Promise<OSMLatLng[]> {
     const result = await requests(this.client).fetch(url)
     return result.elements.map((item: any) => parseOSMLocation(item))
@@ -80,12 +79,12 @@ export class PointsOfInterestClient {
    * Returns a list of OSMLatLng locations of the categories specified by `osmTypes` that are reachable within the given travel options
    */
   async reachable(
-    source: LatLngId, /// LatLng
+    sources: LatLngId | LatLngId[], /// LatLng
     options: POIRequestOptions,
-  ): Promise<{[index: string]: LatLngIdProperties}> {
-     // TODO:different return type (todo: check server doesn't return array)
+  ): Promise<{[index: string]: Poi}> {
     const url = `${this.client.config.poiUrl}/reachability`
-    return await requests(this.client, options).fetch(url, 'POST', new POIRequestPayload(this.client, source, options))
+
+    return await requests(this.client, options).fetch(url, 'POST', new POIRequestPayload(this.client, sources, options))
   }
 
   /**
@@ -110,41 +109,44 @@ export class PointsOfInterestClient {
    *
    * @param hash
    */
+  async requestHash(
+    options: {
+      osmTypes: OSMType[]
+      format?: 'json' | 'geojson'
+    }
+  ) {
+    const url = new UrlUtil.TargomoUrl(this.client)
+    .host(this.client.config.poiUrl)
+    .part('register')
+    .key()
+
+    const payload = {
+      osmTypes: options && options.osmTypes,
+      serviceKey: this.client.serviceKey,
+      serviceUrl: this.client.serviceUrl,
+      format: options && options.format
+    }
+
+    return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
+      'Accept': 'application/json, text/plain, */*'
+    })
+  }
+
+
+  /**
+   *
+   * @param hash
+   */
   async requestReachabilityHash(
     sources: LatLngIdTravelMode[],
-    osmTypes: {key: string, value: string}[],
-    options: TimeRequestOptions,
+    options: POIRequestOptions
   ) {
     const url = new UrlUtil.TargomoUrl(this.client)
     .host(this.client.config.poiUrl)
     .part('reachability/register')
     .key()
 
-    const payload = {
-      edgeWeight: options.edgeWeight,
-      elevation: options.elevation,
-      maxEdgeWeight: options.maxEdgeWeight,
-      osmTypes,
-      serviceKey: this.client.serviceKey,
-      serviceUrl: this.client.serviceUrl,
-      sources: sources.map(source => {
-        return {
-          ...source,
-          tm: source.tm || {
-            [options.travelType]: {
-              rushHour: options.rushHour,
-              maxTransfers: options.transitMaxTransfers,
-              frame: options.travelType === 'transit' ? {
-                duration: options.transitFrameDuration,
-                maxWalkingTimeFromSource: options.transitMaxWalkingTimeFromSource,
-                time: options.transitFrameTime
-              } : undefined
-            }
-          }
-        }
-      })
-    }
-
+    const payload = new POIRequestPayload(this.client, sources, options)
     return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
       'Accept': 'application/json, text/plain, */*'
     })

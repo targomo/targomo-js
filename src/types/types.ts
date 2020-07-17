@@ -854,6 +854,7 @@ export interface Poi extends LatLngId {
   }
   type: 'node'
   groupIds?: string[]
+  closestSource?: string
 }
 
 export interface PoiOverview {
