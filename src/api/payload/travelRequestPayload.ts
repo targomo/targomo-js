@@ -97,7 +97,7 @@ export class TravelRequestPayload extends TravelRequestOptions {
 
     return sources.map(original => {
       const source = {
-        geometry: JSON.stringify(original.geometry),
+        data: JSON.stringify(original.geometry),
         crs: original.crs || 4326,
         id: '' + original.id,
         tm: original.tm

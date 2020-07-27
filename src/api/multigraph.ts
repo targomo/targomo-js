@@ -21,6 +21,7 @@ export class MultigraphClient {
     targets?: LatLngId[]
   ): Promise<MgResult> {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
+    options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -42,8 +43,7 @@ export class MultigraphClient {
     targets?: LatLngId[]
   ): Promise<MgOverviewResult> {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
-
-  // async fetchOverview(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgOverviewResult> {
+    options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -71,12 +71,7 @@ export class MultigraphClient {
     targets?: LatLngId[]
   ): Promise<string> {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
-
-  // async getTiledMultigraphUrl(
-  //   sources: LatLngIdTravelMode[],
-  //   options: MultigraphRequestOptions,
-  //   format: 'geojson' | 'json' | 'mvt',
-  //   targets?: LatLngId[]): Promise<string> {
+    options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)

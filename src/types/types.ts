@@ -406,7 +406,7 @@ export interface GeometryIdTravelMode {
 
 export interface GeometryIdTravelModePayload {
   id: string,
-  geometry: string
+  data: string
   crs: number
   tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
 }

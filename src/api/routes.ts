@@ -38,12 +38,13 @@ export class RoutesClient {
     Promise<Route[] | FeatureCollection<LineString|Point>[]> {
 
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
+    options = options || <RouteGeoJsonOptionsSourcesTargets | RouteCompactOptionsSourcesTargets>sourcesOrOptions
 
     const cfg = new RouteRequestPayload(
       this.client,
       sources,
       targets,
-      options || <RouteGeoJsonOptionsSourcesTargets | RouteCompactOptionsSourcesTargets>sourcesOrOptions
+      options
     )
 
     const result = await this._executeFetch(options, cfg);

@@ -50,11 +50,12 @@ export class PolygonsClient {
     options?: PolygonSvgOptions | PolygonGeoJsonOptions
   ): Promise<PolygonArray | FeatureCollection<MultiPolygon>> {
     const sources = options ? <LatLngId[]>sourcesOrOptions : null
+    options = options || <PolygonGeoJsonOptionsSources | PolygonSvgOptionsSources>sourcesOrOptions
 
     const cfg = new PolygonRequestPayload(
       this.client,
       sources,
-      options || <PolygonGeoJsonOptionsSources | PolygonSvgOptionsSources>sourcesOrOptions
+      options
     )
 
     const result = await this._executeFetch(options, cfg);
