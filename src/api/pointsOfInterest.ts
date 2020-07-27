@@ -10,6 +10,15 @@ import { UrlUtil } from '../util/urlUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
 import { TargomoClient } from './targomoClient';
 
+export interface PoiTileParameters {
+  loadAllTags?: boolean
+  layerType?: 'node' | 'hexagon'
+  layerGeometryDetailPerTile?: number
+  layerMinGeometryDetailLevel?: number
+  layerMaxGeometryDetailLevel?: number
+  maxGeometryCount?: number
+}
+
 /**
  * An object representing a point (poi/marker) which is returned from overpass queries in this module
  * @deprecated
@@ -158,8 +167,35 @@ export class PointsOfInterestClient {
   /**
    *
    * @param hash
+   * @param options
    */
-  tileRoute(hash: string, type?: 'reachability' | 'geometry') {
+  reachabilityTileRoute(hash: string, options?: PoiTileParameters) {
+    return this.tileRouteImpl(hash, options, 'reachability')
+  }
+
+  /**
+   *
+   * @param hash
+   * @param options
+   */
+  geometryTileRoute(hash: string, options?: PoiTileParameters) {
+    return this.tileRouteImpl(hash, options, 'geometry')
+  }
+
+  /**
+   *
+   * @param hash
+   * @param options
+   */
+  tileRoute(hash: string, options?: PoiTileParameters) {
+    return this.tileRouteImpl(hash, options)
+  }
+
+  /**
+   *
+   * @param hash
+   */
+  private tileRouteImpl(hash: string, options?: PoiTileParameters, type?: 'reachability' | 'geometry') {
     const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl)
 
     if (type === 'reachability' || type === 'geometry') {
@@ -173,7 +209,7 @@ export class PointsOfInterestClient {
 
     url
     .part('{z}/{x}/{y}.mvt')
-    .params({apiKey: this.client.serviceKey, layerType: 'node'})
+    .params({layerType: 'node', ...options, apiKey: this.client.serviceKey})
 
     return url.toString()
   }
