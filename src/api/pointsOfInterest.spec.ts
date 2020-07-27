@@ -131,7 +131,7 @@ describe.only('TargomoClient poi service', () => {
       }
     ]
 
-    const hashResult = await testClient.pois.requestGeometryHash(geometry, {osmTypes, format: 'geojson'})
+    const hashResult = await testClient.pois.geometryRegister(geometry, {osmTypes, format: 'geojson'})
     expect(hashResult).toBeDefined()
 
     const result = await testClient.pois.geometrySummary(hashResult)
@@ -155,7 +155,7 @@ describe.only('TargomoClient poi service', () => {
       }
     ]
 
-    const hashResult = await testClient.pois.requestReachabilityHash(sources, {
+    const hashResult = await testClient.pois.reachabilityRegister(sources, {
       travelType: 'car',
       maxEdgeWeight: 600,
       osmTypes,
@@ -183,7 +183,7 @@ describe.only('TargomoClient poi service', () => {
       }
     ]
 
-    const hashResult = await testClient.pois.requestHash({
+    const hashResult = await testClient.pois.register({
       osmTypes,
     })
 

@@ -121,7 +121,7 @@ export class PointsOfInterestClient {
    *
    * @param hash
    */
-  async requestHash(
+  async register(
     options: {
       osmTypes: OSMType[]
       format?: 'json' | 'geojson'
@@ -149,7 +149,7 @@ export class PointsOfInterestClient {
    *
    * @param hash
    */
-  async requestReachabilityHash(
+  async reachabilityRegister(
     sources: LatLngIdTravelMode[],
     options: POIRequestOptions
   ) {
@@ -374,7 +374,7 @@ export class PointsOfInterestClient {
    * @param osmTypes
    * @param format
    */
-  async requestGeometryHash(
+  async geometryRegister(
     geometry: Geometry,
     options: POIRequestOptions
   ) {
