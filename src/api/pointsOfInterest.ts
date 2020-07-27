@@ -1,11 +1,14 @@
-import { LatLngId, LatLngIdProperties, LatLngProperties, TimeRequestOptions,
-         LatLngIdTravelMode, PoiOverview, PoiHiearachy, BoundingBox, Poi, OSMType } from '../types';
+import { FeatureCollection, Geometry } from 'geojson';
+import {
+  BoundingBox, LatLngId,
+  LatLngIdTravelMode, LatLngProperties,
+  OSMType, Poi, PoiHiearachy, PoiOverview
+} from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
 import { requests } from '../util/requestUtil';
+import { UrlUtil } from '../util/urlUtil';
 import { POIRequestPayload } from './payload/poiRequestPayload';
 import { TargomoClient } from './targomoClient';
-import { UrlUtil } from '../util/urlUtil';
-import { Geometry, FeatureCollection } from 'geojson';
 
 /**
  * An object representing a point (poi/marker) which is returned from overpass queries in this module

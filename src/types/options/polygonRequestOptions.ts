@@ -1,5 +1,5 @@
-import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOptions';
-import { SRID, LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types'
+import { GeometryIdTravelMode, LatLngId, SRID } from '../types';
+import { TravelRequestOptions, UseCacheRequestOptions } from './../requestOptions';
 
 export interface PolygonRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
   minPolygonHoleSize?: number

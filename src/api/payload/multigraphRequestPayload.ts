@@ -1,11 +1,9 @@
-import { TravelRequestPayload } from './travelRequestPayload';
 import {
-  LatLngIdTravelMode,
-  MultigraphSpecificRequestOptions,
-  LatLngId,
-  MultigraphRequestOptions
+  LatLngId, LatLngIdTravelMode,
+  MultigraphSpecificRequestOptions
 } from '../..';
 import { MultigraphRequestOptionsSourcesTargets } from '../../types';
+import { TravelRequestPayload } from './travelRequestPayload';
 
 
 export class MultigraphRequestPayload extends TravelRequestPayload {

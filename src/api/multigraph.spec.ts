@@ -217,4 +217,42 @@ describe('Multigraph', () => {
       expect(e).not.toBeDefined()
     }
   });
+
+  test('get multigraph overview geometry', async () => {
+    const sourceGeometries = [
+      {
+        id: 1,
+        geometry: {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+      }
+    ]
+
+    try {
+      const options: MultigraphRequestOptions = {
+        maxEdgeWeight: 3600,
+        travelType: 'car',
+        useClientCache: false,
+        multigraph: {
+          aggregation: {
+            type: MultigraphRequestAggregation.MEDIAN,
+            ignoreOutliers: true,
+            minSourcesRatio: 0.5
+          },
+          serialization: {
+            format: 'geojson'
+          },
+          layer: {
+            type: MultigraphRequestLayer.HEXAGON
+          }
+        },
+        sourceGeometries
+      }
+      const result = await testClient.multigraph.fetchOverview(options);
+      expect(result.data.minValue).toBe(1);
+      expect(result.data.maxValue).toBe(3599);
+
+    } catch (e) {
+      console.log('multigraph error', e)
+      expect(e).not.toBeDefined()
+    }
+  });
 })
