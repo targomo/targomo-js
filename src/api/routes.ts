@@ -1,11 +1,15 @@
-import { TargomoClient } from './targomoClient'
-import { LatLngIdTravelMode, LatLngId } from '../index';
+import { FeatureCollection, LineString, Point } from 'geojson';
+import { LatLngId, LatLngIdTravelMode } from '../index';
 import { RouteRequestOptions } from '../types/options/routeRequestOptions';
 import { Route } from '../types/responses/route';
 import { requests } from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
-import { RouteRequestPayload, RouteGeoJsonOptions, RouteCompactOptions, RouteGeoJsonOptionsSourcesTargets, RouteCompactOptionsSourcesTargets } from './payload/routeRequestPayload';
-import { FeatureCollection, LineString, Point } from 'geojson';
+import {
+  RouteCompactOptions,
+  RouteCompactOptionsSourcesTargets, RouteGeoJsonOptions,
+  RouteGeoJsonOptionsSourcesTargets, RouteRequestPayload
+} from './payload/routeRequestPayload';
+import { TargomoClient } from './targomoClient';
 
 /**
  * @Topic Routes
@@ -26,11 +30,23 @@ export class RoutesClient {
   async fetch(options: RouteCompactOptionsSourcesTargets):
     Promise<Route[]>;
 
-  async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions|RouteCompactOptions):
+  async fetch(
+    sourcesOrOptions: LatLngIdTravelMode[] | RouteGeoJsonOptionsSourcesTargets | RouteCompactOptionsSourcesTargets,
+    targets?: LatLngId[],
+    options?: RouteGeoJsonOptions | RouteCompactOptions
+  ):
     Promise<Route[] | FeatureCollection<LineString|Point>[]> {
 
-    const cfg = new RouteRequestPayload(this.client, sources, targets, options)
-    const result = await this._executeFetch(sources, targets, options, cfg);
+    const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
+
+    const cfg = new RouteRequestPayload(
+      this.client,
+      sources,
+      targets,
+      options || <RouteGeoJsonOptionsSourcesTargets | RouteCompactOptionsSourcesTargets>sourcesOrOptions
+    )
+
+    const result = await this._executeFetch(options, cfg);
 
     if (!options.pathSerializer || options.pathSerializer === 'compact') {
       return result.routes.map((meta: any) => {
@@ -41,7 +57,7 @@ export class RoutesClient {
     }
   }
 
-  private async _executeFetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteRequestOptions, cfg: RouteRequestPayload):
+  private async _executeFetch(options: RouteRequestOptions, cfg: RouteRequestPayload):
     Promise<{routes: any}> {
 
     const url = new UrlUtil.TargomoUrl(this.client)

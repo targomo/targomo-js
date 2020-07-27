@@ -23,10 +23,26 @@ export class RouteRequestPayload extends TravelRequestPayload {
 
   pathSerializer?: 'compact' | 'geojson'
 
-  constructor(client: TargomoClient, sources: LatLngId[], targets: LatLngId[], options: RouteCompactOptions|RouteGeoJsonOptions) {
+  constructor(
+    client: TargomoClient,
+    sources: LatLngId[],
+    targets: LatLngId[],
+    options: RouteCompactOptions | RouteGeoJsonOptions | RouteCompactOptionsSourcesTargets | RouteGeoJsonOptionsSourcesTargets
+  ) {
     super(options)
-    this.sources = this.buildSourcesCfg(sources)
-    this.targets = this.buildTargetsCfg(targets)
+
+    if (sources) {
+      this.sources = this.buildSourcesCfg(sources)
+    } else {
+      this.sources = this.buildSourcesCfg((<RouteRequestOptionsSourcesTargets>options).sources)
+    }
+
+    if (targets) {
+      this.targets = this.buildTargetsCfg(targets)
+    } else {
+      this.targets = this.buildTargetsCfg((<RouteRequestOptionsSourcesTargets>options).targets)
+    }
+
     this.pathSerializer = options.pathSerializer;
 
     if (typeof options.recommendations === 'boolean') {
