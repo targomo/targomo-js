@@ -6,6 +6,6 @@ export interface TimeRequestOptions extends TravelRequestOptions, UseCacheReques
 
 export interface TimeRequestOptionsSourcesTargets extends TravelRequestOptions, UseCacheRequestOptions {
   sources?: LatLngIdTravelMode[]
-  geometrySources?: LatLngIdTravelMode[]
+  sourceGeometries?: LatLngIdTravelMode[]
   targets?: LatLngId[]
 }
