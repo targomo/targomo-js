@@ -51,6 +51,7 @@ export class PolygonRequestPayload extends TravelRequestPayload {
       this.sources = this.buildSourcesCfg(sources)
     } else {
       this.sources = this.buildSourcesCfg(options.sources)
+      this.sourceGeometries = this.buildSourceGeometriesCfg(options.sourceGeometries)
     }
 
     this.polygon.values = options.travelEdgeWeights

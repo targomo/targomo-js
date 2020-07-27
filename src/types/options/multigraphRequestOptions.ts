@@ -1,4 +1,5 @@
 import { TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
+import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types';
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',
@@ -81,5 +82,11 @@ export interface MultigraphSpecificRequestOptions {
 
 export interface MultigraphRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
   multigraph: MultigraphSpecificRequestOptions;
+}
 
+export interface MultigraphRequestOptionsSourcesTargets extends MultigraphRequestOptions {
+  sources?: LatLngIdTravelMode[]
+  sourceGeometries?: GeometryIdTravelMode[]
+  targets?: LatLngId[]
+  format?: 'geojson' | 'json' | 'mvt'
 }

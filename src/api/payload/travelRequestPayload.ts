@@ -7,6 +7,7 @@ import { GeometryIdTravelMode, GeometryIdTravelModePayload } from '../../types';
  */
 export class TravelRequestPayload extends TravelRequestOptions {
   sources: LatLngIdTravelMode[];
+  sourceGeometries: GeometryIdTravelModePayload[];
   targets: LatLngId[];
 
   constructor(options?: TravelRequestOptions) {
@@ -40,6 +41,10 @@ export class TravelRequestPayload extends TravelRequestOptions {
   }
 
   protected buildSourcesCfg(sources: LatLngIdTravelMode[]): LatLngIdTravelMode[] {
+    if (!sources) {
+      return undefined
+    }
+
     return sources.map(original => {
       const source = {
         lat: original.lat,
@@ -86,6 +91,10 @@ export class TravelRequestPayload extends TravelRequestOptions {
   }
 
   protected buildSourceGeometriesCfg(sources: GeometryIdTravelMode[]): GeometryIdTravelModePayload[] {
+    if (!sources) {
+      return undefined
+    }
+
     return sources.map(original => {
       const source = {
         geometry: JSON.stringify(original.geometry),

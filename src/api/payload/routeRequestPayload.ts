@@ -35,6 +35,7 @@ export class RouteRequestPayload extends TravelRequestPayload {
       this.sources = this.buildSourcesCfg(sources)
     } else {
       this.sources = this.buildSourcesCfg((<RouteRequestOptionsSourcesTargets>options).sources)
+      this.sourceGeometries = this.buildSourceGeometriesCfg((<RouteRequestOptionsSourcesTargets>options).sourceGeometries)
     }
 
     if (targets) {

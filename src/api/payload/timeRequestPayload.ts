@@ -12,6 +12,7 @@ export class TimeRequestPayload extends TravelRequestPayload {
       this.sources = this.buildSourcesCfg(sources)
     } else {
       this.sources = this.buildSourcesCfg(options.sources)
+      this.sourceGeometries = this.buildSourceGeometriesCfg(options.sourceGeometries)
     }
 
     if (targets) {
