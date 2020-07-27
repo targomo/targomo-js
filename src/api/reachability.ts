@@ -1,7 +1,7 @@
 import { TargomoClient } from './targomoClient'
 import { LatLngId, LatLngIdTravelTime, LatLngIdTravelMode, TimeResult, ReachabilityResult } from '../index';
 import { requests} from '../util/requestUtil';
-import { TimeRequestOptions } from '../types/options/timeRequestOptions';
+import { TimeRequestOptions, TimeRequestOptionsSourcesTargets } from '../types/options/timeRequestOptions';
 import { TimeRequestPayload } from './payload/timeRequestPayload';
 import { UrlUtil } from '../util/urlUtil';
 
@@ -18,7 +18,16 @@ export class ReachabilityClient {
    * @param targets
    * @param options
    */
-  async individual(sources: LatLngIdTravelMode[], targets: LatLngId[], options: TimeRequestOptions): Promise<TimeResult[]> {
+  async individual(sources: LatLngIdTravelMode[], targets: LatLngId[], options: TimeRequestOptions): Promise<TimeResult[]>
+  async individual(options: TimeRequestOptionsSourcesTargets): Promise<TimeResult[]>
+  async individual(
+    sourcesOrOptions: TimeRequestOptionsSourcesTargets | LatLngIdTravelMode[],
+    targets?: LatLngId[],
+    options?: TimeRequestOptionsSourcesTargets
+  ): Promise<TimeResult[]> {
+    let sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
+    options = options || <any>sourcesOrOptions
+
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
@@ -38,7 +47,16 @@ export class ReachabilityClient {
    * @param targets
    * @param options
    */
-  async combined(sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptions): Promise<ReachabilityResult[]> {
+  async combined(sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptions): Promise<ReachabilityResult[]>
+  async combined(options: TimeRequestOptionsSourcesTargets): Promise<ReachabilityResult[]>
+  async combined(
+    sourcesOrOptions: TimeRequestOptionsSourcesTargets | LatLngId[],
+    targets?: LatLngId[],
+    options?: TimeRequestOptionsSourcesTargets
+  ): Promise<ReachabilityResult[]> {
+    let sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
+    options = options || <any>sourcesOrOptions
+
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
@@ -59,8 +77,14 @@ export class ReachabilityClient {
    * @param options
    * @deprecated
    */
-  async count(sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptions): Promise<number> {
-    return (await this.locations(sources, targets, options)).length
+  async count(sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptions): Promise<number>
+  async count(options: TimeRequestOptionsSourcesTargets): Promise<number>
+  async count(
+    sources: TimeRequestOptionsSourcesTargets | LatLngId[],
+    targets?: LatLngId[],
+    options?: TimeRequestOptionsSourcesTargets
+  ): Promise<number> {
+    return (await this.locations(<any>sources, targets, options)).length
   }
 
   /**
@@ -71,9 +95,22 @@ export class ReachabilityClient {
    * @param options
    * @deprecated
    */
-  async locations<T extends LatLngIdTravelTime>(sources: LatLngId[],
-                                                            targets: T[],
-                                                            options: TimeRequestOptions): Promise<T[]> {
+  async locations<T extends LatLngIdTravelTime>(
+    sources: LatLngId[],
+    targets: T[],
+    options: TimeRequestOptions
+  ): Promise<T[]>
+
+  async locations<T extends LatLngIdTravelTime>(options: TimeRequestOptionsSourcesTargets): Promise<T[]>
+
+  async locations<T extends LatLngIdTravelTime>(
+    sourcesOrOptions: TimeRequestOptionsSourcesTargets | LatLngId[],
+    targets?: T[],
+    options?: TimeRequestOptionsSourcesTargets
+  ): Promise<T[]> {
+    let sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
+    options = options || <any>sourcesOrOptions
+
     const map: any = {}
     targets.forEach(place => map[String(place.id)] = -1)
 

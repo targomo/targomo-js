@@ -1,3 +1,5 @@
+import { Geometry } from 'geojson'
+
 /**
  * A map coordinate
  */
@@ -394,6 +396,13 @@ export interface PaddingObject {
 export interface SetBoundsOptions {
   padding?: PaddingObject
 }
+
+export interface GeometryIdTravelMode {
+  id: any,
+  geometry: Geometry
+  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+}
+
 
 /**
  * Object that will be passed to a request as source

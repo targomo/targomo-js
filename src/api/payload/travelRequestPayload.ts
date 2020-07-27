@@ -9,7 +9,8 @@ export class TravelRequestPayload extends TravelRequestOptions {
   targets: LatLngId[];
 
   constructor(options?: TravelRequestOptions) {
-    super();
+    super()
+
     Object.assign(this, options)
 
     if (options.transitFrameDateTime != null) {
