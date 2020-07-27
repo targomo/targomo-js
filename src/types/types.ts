@@ -400,9 +400,16 @@ export interface SetBoundsOptions {
 export interface GeometryIdTravelMode {
   id: any,
   geometry: Geometry
+  crs?: number
   tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
 }
 
+export interface GeometryIdTravelModePayload {
+  id: string,
+  geometry: string
+  crs: number
+  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+}
 
 /**
  * Object that will be passed to a request as source
