@@ -4,7 +4,7 @@ import { RouteRequestOptions } from '../types/options/routeRequestOptions';
 import { Route } from '../types/responses/route';
 import { requests } from '../util/requestUtil';
 import { UrlUtil } from '../util/urlUtil';
-import { RouteRequestPayload, RouteGeoJsonOptions, RouteCompactOptions } from './payload/routeRequestPayload';
+import { RouteRequestPayload, RouteGeoJsonOptions, RouteCompactOptions, RouteGeoJsonOptionsSourcesTargets, RouteCompactOptionsSourcesTargets } from './payload/routeRequestPayload';
 import { FeatureCollection, LineString, Point } from 'geojson';
 
 /**
@@ -18,6 +18,12 @@ export class RoutesClient {
     Promise<FeatureCollection<LineString|Point>[]>;
 
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteCompactOptions):
+    Promise<Route[]>;
+
+  async fetch(options: RouteGeoJsonOptionsSourcesTargets):
+    Promise<FeatureCollection<LineString|Point>[]>;
+
+  async fetch(options: RouteCompactOptionsSourcesTargets):
     Promise<Route[]>;
 
   async fetch(sources: LatLngIdTravelMode[], targets: LatLngId[], options: RouteGeoJsonOptions|RouteCompactOptions):

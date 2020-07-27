@@ -1,6 +1,6 @@
 import { LatLngId} from '../../types'
 import { TargomoClient } from '../targomoClient'
-import { RouteRequestOptions } from '../../types/options'
+import { RouteRequestOptions, RouteRequestOptionsSourcesTargets } from '../../types/options'
 import { TravelRequestPayload } from './travelRequestPayload';
 
 export interface RouteCompactOptions extends RouteRequestOptions {
@@ -8,6 +8,14 @@ export interface RouteCompactOptions extends RouteRequestOptions {
 }
 
 export interface RouteGeoJsonOptions extends RouteRequestOptions {
+  pathSerializer: 'geojson'
+}
+
+export interface RouteCompactOptionsSourcesTargets extends RouteRequestOptionsSourcesTargets {
+  pathSerializer: 'compact'
+}
+
+export interface RouteGeoJsonOptionsSourcesTargets extends RouteRequestOptionsSourcesTargets {
   pathSerializer: 'geojson'
 }
 

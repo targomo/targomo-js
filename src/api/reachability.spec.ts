@@ -45,7 +45,7 @@ describe('TargomoClient time service', () => {
     expect(result[0].targets).toBeDefined()
     expect(result[0].targets[0].id).toBeDefined()
     expect(result[0].targets[0].travelTime).toBeDefined()
-    expect(result[0].targets[0].length).toBeUndefined()
+    expect(result[0].targets[0].length).toBeDefined()
   })
 
   test('time service request alt', async () => {

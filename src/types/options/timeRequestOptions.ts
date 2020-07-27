@@ -1,11 +1,11 @@
 import { UseCacheRequestOptions, TravelRequestOptions } from '../requestOptions';
-import { LatLngIdTravelMode, LatLngId } from '../types';
+import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types';
 
 export interface TimeRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
 }
 
 export interface TimeRequestOptionsSourcesTargets extends TravelRequestOptions, UseCacheRequestOptions {
   sources?: LatLngIdTravelMode[]
-  sourceGeometries?: LatLngIdTravelMode[]
+  sourceGeometries?: GeometryIdTravelMode[]
   targets?: LatLngId[]
 }

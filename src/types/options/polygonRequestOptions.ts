@@ -1,5 +1,5 @@
 import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOptions';
-import { SRID, LatLngIdTravelMode, LatLngId } from '../types'
+import { SRID, LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types'
 
 export interface PolygonRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
   minPolygonHoleSize?: number
@@ -14,5 +14,5 @@ export interface PolygonRequestOptions extends TravelRequestOptions, UseCacheReq
 
 export interface PolygonRequestOptionsSources extends PolygonRequestOptions {
   sources?: LatLngId[]
-  sourceGeometries?: LatLngIdTravelMode[]
+  sourceGeometries?: GeometryIdTravelMode[]
 }
