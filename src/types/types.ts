@@ -397,10 +397,13 @@ export interface SetBoundsOptions {
   padding?: PaddingObject
 }
 
-export interface GeometryIdTravelMode {
+export interface GeometryId {
   id: any,
   geometry: Geometry
   crs?: number
+}
+
+export interface GeometryIdTravelMode extends GeometryId {
   tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
 }
 

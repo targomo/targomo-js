@@ -19,6 +19,7 @@ import { requests } from '../util/requestUtil';
 import { SimpleLRU } from '../util/cache';
 import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload';
 import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult';
+import { StatisticsRequestOptionsSources, StatisticsTravelRequestOptionsSources } from '../types';
 
 /**
  * @Topic Statistics
@@ -35,18 +36,28 @@ export class StatisticsClient {
    * @param sources
    * @param options
    */
-  async combined(sources: LatLngId[], // sources: LatLng[],
-    options: StatisticsRequestOptions): Promise<StatisticsList> {
-    const result = await this.dependent(sources, options)
+  // async combined(sources: LatLngId[], // sources: LatLng[],
+//   options: StatisticsRequestOptions): Promise<StatisticsList> {
+  async combined(sources: LatLngId[], options: StatisticsRequestOptions): Promise<StatisticsList>
+  async combined(options: StatisticsRequestOptionsSources): Promise<StatisticsList>
+  async combined(
+    sourcesOrOptions: LatLngId[] | StatisticsRequestOptionsSources,
+    options?: StatisticsRequestOptionsSources
+  ): Promise<StatisticsList> {
+    const result = await this.dependent(<any>sourcesOrOptions, options)
     return result && result.statistics
   }
 
   /**
   * Make a statistics request to the r360 services
   */
-  async individual(sources: LatLngId[], // sources: LatLng[],
-    options: StatisticsRequestOptions): Promise<{ [id: string]: StatisticsList }> {
-    const result = await this.dependent(sources, options)
+  async individual(sources: LatLngId[], options: StatisticsRequestOptions): Promise<{ [id: string]: StatisticsList }>
+  async individual(options: StatisticsRequestOptionsSources): Promise<{ [id: string]: StatisticsList }>
+  async individual(
+    sourcesOrOptions: LatLngId[] | StatisticsRequestOptionsSources,
+    options?: StatisticsRequestOptionsSources
+  ): Promise<{ [id: string]: StatisticsList }> {
+    const result = await this.dependent(<any>sourcesOrOptions, options)
     return result && result.individualStatistics
   }
 
@@ -54,10 +65,14 @@ export class StatisticsClient {
   /**
   * Make a statistics request to the r360 services
   */
-  async travelTimes(sources: LatLngId[], options: StatisticsTravelRequestOptions): Promise<ReachableTile> {
-    if (!sources.length) {
-      return null
-    }
+  async travelTimes(sources: LatLngId[], options: StatisticsTravelRequestOptions): Promise<ReachableTile>
+  async travelTimes(options: StatisticsTravelRequestOptionsSources): Promise<ReachableTile>
+  async travelTimes(
+    sourcesOrOptions: LatLngId[] | StatisticsTravelRequestOptionsSources,
+    options?: StatisticsTravelRequestOptionsSources
+  ): Promise<ReachableTile> {
+    const sources = options !== undefined ? <LatLngId[]>sourcesOrOptions : null
+    options = options || <StatisticsRequestOptionsSources>sourcesOrOptions
 
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
@@ -67,7 +82,12 @@ export class StatisticsClient {
       })
       .toString();
 
-    return await requests(this.client, options).fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
+    const payload = new StatisticsRequestPayload(this.client, sources, options)
+    if ((!payload.sources || payload.sources.length == 0) && (!payload.sourceGeometries || payload.sourceGeometries.length == 0)) {
+      return null
+    }
+
+    return await requests(this.client, options).fetch(url, 'POST', payload)
   }
 
   /**
@@ -75,12 +95,14 @@ export class StatisticsClient {
    * @param sources
    * @param options
    */
-  async dependent(sources: LatLngId[], // was LatLng[]
-    options: StatisticsRequestOptions): Promise<StatisticsResult> {
-
-    if (!sources.length) {
-      return null
-    }
+  async dependent(sources: LatLngId[], options: StatisticsRequestOptions): Promise<StatisticsResult>
+  async dependent(options: StatisticsRequestOptionsSources): Promise<StatisticsResult>
+  async dependent(
+    sourcesOrOptions: LatLngId[] | StatisticsRequestOptionsSources,
+    options?: StatisticsRequestOptionsSources
+  ): Promise<StatisticsResult> {
+    const sources = options !== undefined ? <LatLngId[]>sourcesOrOptions : null
+    options = options || <StatisticsRequestOptionsSources>sourcesOrOptions
 
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
@@ -90,8 +112,13 @@ export class StatisticsClient {
       })
       .toString();
 
+    const payload = new StatisticsRequestPayload(this.client, sources, options)
+    if ((!payload.sources || payload.sources.length == 0) && (!payload.sourceGeometries || payload.sourceGeometries.length == 0)) {
+      return null
+    }
+
     const result = await requests(this.client, options)
-      .fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
+      .fetch(url, 'POST', payload)
     return new StatisticsResult(result, options.statistics)
   }
 
