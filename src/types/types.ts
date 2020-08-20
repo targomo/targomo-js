@@ -439,7 +439,6 @@ export interface ReachabilityResult {
   id: string
   source: string
   travelTime: number
-  length?: number
 }
 
 export interface TimeResult {  /**
@@ -451,7 +450,7 @@ export interface TimeResult {  /**
   targets: {
     id: string
     travelTime: number
-    length?: number
+    length: number
   }[]
 }
 
