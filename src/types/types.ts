@@ -1,3 +1,5 @@
+import { Geometry } from 'geojson'
+
 /**
  * A map coordinate
  */
@@ -395,6 +397,23 @@ export interface SetBoundsOptions {
   padding?: PaddingObject
 }
 
+export interface GeometryId {
+  id: any,
+  geometry: Geometry
+  crs?: number
+}
+
+export interface GeometryIdTravelMode extends GeometryId {
+  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+}
+
+export interface GeometryIdTravelModePayload {
+  id: string,
+  data: string
+  crs: number
+  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+}
+
 /**
  * Object that will be passed to a request as source
  */
@@ -431,6 +450,7 @@ export interface TimeResult {  /**
   targets: {
     id: string
     travelTime: number
+    length: number
   }[]
 }
 
@@ -839,3 +859,45 @@ export interface TravelTimeFactors {
   steps: number,
   unknown: number
 }
+
+////
+
+export interface Poi extends LatLngId {
+  edgeWeight?: number
+  osmType: string
+  bounded?: boolean
+  tags: {
+    name?: string
+    [key: string]: string
+  }
+  type: 'node'
+  groupIds?: string[]
+  closestSource?: string
+}
+
+export interface PoiOverview {
+  clusterIdCount: {
+    [clusterId: string]: number
+  }
+  groupIdCount: { [key: string]: number }
+  osmTypesCount: { [key: string]: number }
+  totalPoi: number
+}
+
+export interface ClusterPoi {
+  mainGroupId: string
+  numOfPois: number
+  [category: string]: number | string
+}
+
+export interface PoiType {
+  id: string
+  name: string
+  description: string
+  type: 'CATEGORY' | 'TAG' | 'COMPOSITE_TAG'
+  key?: string
+  value?: any
+  contents?: PoiType[]
+}
+
+export type PoiHiearachy = PoiType[]

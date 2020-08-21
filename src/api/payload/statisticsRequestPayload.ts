@@ -1,5 +1,9 @@
-import { LatLngId, TravelType } from '../../types';
-import { StatisticsRequestOptions, StatisticsTravelRequestOptions } from '../../types/options/statisticsRequestOptions'
+import { GeometryIdTravelModePayload, LatLngId, TravelType } from '../../types';
+import {
+  StatisticsRequestOptions,
+  StatisticsRequestOptionsSources, StatisticsTravelRequestOptions,
+  StatisticsTravelRequestOptionsSources
+} from '../../types/options/statisticsRequestOptions';
 import { TargomoClient } from '../targomoClient';
 
 function isStatisticsRequestOptions(value: StatisticsRequestOptions | StatisticsTravelRequestOptions): value is StatisticsRequestOptions {
@@ -17,6 +21,7 @@ export class StatisticsRequestPayload {
   iFeelLucky: boolean
   omitIndividualStatistics: boolean
   sources: { id: string, x: number, y: number }[]
+  sourceGeometries: GeometryIdTravelModePayload[]
   travelType: TravelType
   edgeWeight: 'time' | 'distance'
   maxEdgeWeight: number
@@ -28,12 +33,34 @@ export class StatisticsRequestPayload {
   avoidTransitRouteTypes: number[]
   rushHour: boolean
 
-  constructor(client: TargomoClient, sources: LatLngId[], options: StatisticsRequestOptions | StatisticsTravelRequestOptions) {
+  constructor(
+    client: TargomoClient,
+    sources: LatLngId[],
+    options: StatisticsRequestOptionsSources | StatisticsTravelRequestOptionsSources
+  ) {
 
     this.serviceUrl = client.serviceUrl;
     this.serviceKey = client.serviceKey;
     this.useCache = options.useCache == undefined ? true : options.useCache
-    this.sources = sources.map(source => ({id: source.id, y: source.lat, x: source.lng}))
+
+    if (sources) {
+      this.sources = sources.map(source => ({id: source.id, y: source.lat, x: source.lng}))
+    } else {
+      if (options.sources) {
+        this.sources = options.sources.map(source => ({id: source.id, y: source.lat, x: source.lng}))
+      }
+
+      if (options.sourceGeometries) {
+        this.sourceGeometries = options.sourceGeometries.map(source => {
+          return {
+            data: JSON.stringify(source.geometry),
+            crs: source.crs || 4326,
+            id: source.id,
+          }
+        })
+      }
+    }
+
     this.iFeelLucky = options.iFeelLucky;
     this.travelType = options.travelType;
     this.edgeWeight = options.edgeWeight;

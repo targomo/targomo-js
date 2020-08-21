@@ -1,6 +1,6 @@
 import { LatLngId, SRID} from '../../types';
 import { TargomoClient } from '../targomoClient';
-import { PolygonRequestOptions } from '../../types/options/polygonRequestOptions';
+import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../../types/options/polygonRequestOptions';
 import {TravelRequestPayload} from './travelRequestPayload'
 
 export interface PolygonSvgOptions extends PolygonRequestOptions {
@@ -10,6 +10,16 @@ export interface PolygonSvgOptions extends PolygonRequestOptions {
 export interface PolygonGeoJsonOptions extends PolygonRequestOptions {
   serializer: 'geojson'
 }
+
+
+export interface PolygonSvgOptionsSources extends PolygonRequestOptionsSources {
+  serializer: 'json'
+}
+
+export interface PolygonGeoJsonOptionsSources extends PolygonRequestOptionsSources {
+  serializer: 'geojson'
+}
+
 
 export class PolygonPayloadOptions {
   minPolygonHoleSize: number = 10000000
@@ -30,10 +40,20 @@ export class PolygonPayloadOptions {
 export class PolygonRequestPayload extends TravelRequestPayload {
   polygon = new PolygonPayloadOptions()
 
-  constructor(client: TargomoClient, sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions) {
+  constructor(
+    client: TargomoClient,
+    sources: LatLngId[],
+    options: PolygonSvgOptionsSources | PolygonGeoJsonOptionsSources
+  ) {
     super(<any>options)
 
-    this.sources = this.buildSourcesCfg(sources)
+    if (sources) {
+      this.sources = this.buildSourcesCfg(sources)
+    } else {
+      this.sources = this.buildSourcesCfg(options.sources)
+      this.sourceGeometries = this.buildSourceGeometriesCfg(options.sourceGeometries)
+    }
+
     this.polygon.values = options.travelEdgeWeights
     this.polygon.serializer = options.serializer
     this.polygon.simplify = options.simplify

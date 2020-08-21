@@ -46,16 +46,18 @@ export namespace UrlUtil {
     }
 
     private param(name: string, value: any) {
-      if (!this.firstParamPlaced) {
-        this.firstParamPlaced = true;
-        this.url += '?' + name + '=' + value;
-      } else {
-        this.url += '&' + name + '=' + value;
+      if (value !== undefined) {
+        if (!this.firstParamPlaced) {
+          this.firstParamPlaced = true;
+          this.url += '?' + name + '=' + value;
+        } else {
+          this.url += '&' + name + '=' + value;
+        }
       }
     }
 
-    key() {
-      return this.params({key: this.client.serviceKey});
+    key(keyName = 'key') {
+      return this.params({[keyName]: this.client.serviceKey});
     }
 
     toString(): string {

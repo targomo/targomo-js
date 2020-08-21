@@ -1,6 +1,6 @@
-import { StatisticsGroupId,  StatisticsItem} from '../index'
-import { LatLngId, TravelType } from '../types'
+import { StatisticsGroupId, StatisticsItem } from '../index';
 import { TravelRequestOptions } from '../requestOptions';
+import { GeometryId, LatLngId, TravelType } from '../types';
 
 export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
   statisticsGroup: StatisticsGroupId
@@ -11,9 +11,19 @@ export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
   iFeelLucky?: boolean
 }
 
+export interface StatisticsTravelRequestOptionsSources extends StatisticsTravelRequestOptions {
+  sources?: LatLngId[]
+  sourceGeometries?: GeometryId[]
+}
+
 export interface StatisticsRequestOptions extends StatisticsTravelRequestOptions {
   statistics: StatisticsItem[]
   omitIndividualStatistics?: boolean
+}
+
+export interface StatisticsRequestOptionsSources extends StatisticsRequestOptions {
+  sources?: LatLngId[]
+  sourceGeometries?: GeometryId[]
 }
 
 export interface StatisticsGeometryRequestOptions {

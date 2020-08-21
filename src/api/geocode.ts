@@ -13,6 +13,7 @@ export class GeocodeEsriClient {
    * @param language
    * @param country
    * @param magicKey
+   * @deprecated
    */
   async geocode(
     query: string,
@@ -62,6 +63,7 @@ export class GeocodeEsriClient {
    * @param language
    * @param country
    * @param suggestionsCount
+   * @deprecated
    */
   async suggest(query: string, center?: LatLng, language?: string, country?: string, suggestionsCount: number = 5): Promise<any[]> {
     const params: any = {
@@ -92,6 +94,7 @@ export class GeocodeEsriClient {
    *
    * @param location
    * @param language
+   * @deprecated
    */
   async reverseGeocode(location: LatLng, language?: string): Promise<any> {
     const params: any = {

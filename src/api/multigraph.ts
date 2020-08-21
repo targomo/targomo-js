@@ -1,5 +1,5 @@
 import { TargomoClient } from '.';
-import { UrlUtil, LatLngIdTravelMode, LatLngId, requests, MultigraphRequestOptions } from '..';
+import { UrlUtil, LatLngIdTravelMode, LatLngId, requests, MultigraphRequestOptions, MultigraphRequestOptionsSourcesTargets } from '..';
 import { MgResult, MgOverviewResult } from '../types/responses/multigraphResult';
 import { MultigraphRequestPayload } from './payload/multigraphRequestPayload';
 
@@ -13,7 +13,15 @@ export class MultigraphClient {
   /**
 
    */
-  async fetch(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgResult> {
+  async fetch(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgResult>
+  async fetch(options: MultigraphRequestOptionsSourcesTargets): Promise<MgResult>
+  async fetch(
+    sourcesOrOptions: LatLngIdTravelMode[] | MultigraphRequestOptionsSourcesTargets,
+    options?: MultigraphRequestOptions,
+    targets?: LatLngId[]
+  ): Promise<MgResult> {
+    const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
+    options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -27,7 +35,15 @@ export class MultigraphClient {
     return result;
   }
 
-  async fetchOverview(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgOverviewResult> {
+  async fetchOverview(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgOverviewResult>
+  async fetchOverview(options: MultigraphRequestOptionsSourcesTargets): Promise<MgOverviewResult>
+  async fetchOverview(
+    sourcesOrOptions: LatLngIdTravelMode[] | MultigraphRequestOptionsSourcesTargets,
+    options?: MultigraphRequestOptions,
+    targets?: LatLngId[]
+  ): Promise<MgOverviewResult> {
+    const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
+    options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -45,7 +61,17 @@ export class MultigraphClient {
     sources: LatLngIdTravelMode[],
     options: MultigraphRequestOptions,
     format: 'geojson' | 'json' | 'mvt',
-    targets?: LatLngId[]): Promise<string> {
+    targets?: LatLngId[]
+  ): Promise<string>
+  async getTiledMultigraphUrl(options: MultigraphRequestOptionsSourcesTargets): Promise<string>
+  async getTiledMultigraphUrl(
+    sourcesOrOptions: LatLngIdTravelMode[] | MultigraphRequestOptionsSourcesTargets,
+    options?: MultigraphRequestOptions,
+    format?: 'geojson' | 'json' | 'mvt',
+    targets?: LatLngId[]
+  ): Promise<string> {
+    const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
+    options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
     let url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
@@ -60,7 +86,7 @@ export class MultigraphClient {
     return new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('/multigraph/{z}/{x}/{y}.' + format)
+      .part('/multigraph/{z}/{x}/{y}.' + (format || (<MultigraphRequestOptionsSourcesTargets>sourcesOrOptions).format || 'mvt'))
       .key()
       .params({
         cfgUuid: objectCache.uuid

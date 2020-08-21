@@ -41,6 +41,28 @@ describe('TargomoClient route service', () => {
     expect(result[0].type).toEqual('FeatureCollection');
   })
 
+  test('route service request geojson alt', async () => {
+    const sources: LatLngIdTravelMode[] = [
+      { lat: 52.5330232, lng: 13.356626, id: 1 },
+    ]
+    const targets: LatLngId[] = [
+      { lat: 52.510801, lng: 13.401207, id: 10 },
+      { lat: 52.517066, lng: 13.408370, id: 11 }
+    ]
+    const result = await testClient.routes.fetch({
+      sources,
+      targets,
+      travelType: 'car',
+      maxEdgeWeight: 1800,
+      useClientCache: false,
+      pathSerializer: 'geojson'
+    })
+
+    expect(result[0]).toBeDefined()
+    expect(result[0].type).toEqual('FeatureCollection');
+  })
+
+
   test('route service request transit', async () => {
     const sources: LatLngIdTravelMode[] = [
       { lat: 52.5060, lng: 13.44, id: 1 },

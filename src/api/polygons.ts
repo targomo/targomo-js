@@ -1,14 +1,15 @@
-import { TargomoClient } from './targomoClient'
-import { LatLngId } from '../index';
-import { PolygonRequestOptions } from '../types/options/polygonRequestOptions';
-import { PolygonRequestPayload, PolygonGeoJsonOptions, PolygonSvgOptions } from './payload/polygonRequestPayload';
-import { UrlUtil } from '../util/urlUtil';
-import { requests} from '../util/requestUtil';
-import { PolygonSvgResult, PolygonData } from '../types/responses/polygonSvgResult';
 import { FeatureCollection, MultiPolygon } from 'geojson';
-import { ProjectedPolygon, ProjectedBounds } from '../types/projectedPolygon';
-import { webMercatorToLatLng, boundingBoxFromLocationArray } from '../geometry';
+import { boundingBoxFromLocationArray, webMercatorToLatLng } from '../geometry';
+import { LatLngId } from '../index';
 import { BoundingBox, LatLng } from '../types';
+import { PolygonRequestOptions } from '../types/options/polygonRequestOptions';
+import { ProjectedBounds, ProjectedPolygon } from '../types/projectedPolygon';
+import { PolygonData, PolygonSvgResult } from '../types/responses/polygonSvgResult';
+import { requests } from '../util/requestUtil';
+import { UrlUtil } from '../util/urlUtil';
+import { PolygonGeoJsonOptions, PolygonGeoJsonOptionsSources,
+         PolygonRequestPayload, PolygonSvgOptions, PolygonSvgOptionsSources } from './payload/polygonRequestPayload';
+import { TargomoClient } from './targomoClient';
 
 
 /**
@@ -24,7 +25,6 @@ export class PolygonsClient {
    */
   async fetch(sources: LatLngId[], options: PolygonGeoJsonOptions): Promise<FeatureCollection<MultiPolygon>>;
 
-
   /**
    * Request svg polygons for one or more sources from r360 service
    * @param sources
@@ -32,20 +32,42 @@ export class PolygonsClient {
    */
   async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonArray>;
 
-  async fetch(sources: LatLngId[], options: PolygonSvgOptions|PolygonGeoJsonOptions):
-    Promise<PolygonArray | FeatureCollection<MultiPolygon>> {
-      const cfg = new PolygonRequestPayload(this.client, sources, options)
-      const result = await this._executeFetch(sources, options, cfg);
-      if (options.serializer === 'json') {
-        // const boundedResults = (result as PolygonSvgResult[]).map((polygons: any) => new BoundedPolygonSvgResult(polygons))
-        const boundedPolys = PolygonArray.create(result, result.metadata);
-        return boundedPolys;
-      } else if (options.serializer === 'geojson') {
-        return result as FeatureCollection<MultiPolygon>;
-      }
+  /**
+   * Request geojson polygons for one or more sources from r360 service
+   * @param options
+   */
+  async fetch(options: PolygonGeoJsonOptionsSources): Promise<FeatureCollection<MultiPolygon>>;
+
+  /**
+   * Request svg polygons for one or more sources from r360 service
+   * @param options
+   */
+  async fetch(options: PolygonSvgOptionsSources): Promise<PolygonArray>;
+
+
+  async fetch(
+    sourcesOrOptions: LatLngId[] | PolygonGeoJsonOptionsSources | PolygonSvgOptionsSources,
+    options?: PolygonSvgOptions | PolygonGeoJsonOptions
+  ): Promise<PolygonArray | FeatureCollection<MultiPolygon>> {
+    const sources = options ? <LatLngId[]>sourcesOrOptions : null
+    options = options || <PolygonGeoJsonOptionsSources | PolygonSvgOptionsSources>sourcesOrOptions
+
+    const cfg = new PolygonRequestPayload(
+      this.client,
+      sources,
+      options
+    )
+
+    const result = await this._executeFetch(options, cfg);
+    if (options.serializer === 'json') {
+      const boundedPolys = PolygonArray.create(result, result.metadata);
+      return boundedPolys;
+    } else if (options.serializer === 'geojson') {
+      return result as FeatureCollection<MultiPolygon>;
+    }
   }
 
-  private async _executeFetch(sources: LatLngId[], options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<any> {
+  private async _executeFetch(options: PolygonRequestOptions, cfg: PolygonRequestPayload): Promise<any> {
 
     const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)

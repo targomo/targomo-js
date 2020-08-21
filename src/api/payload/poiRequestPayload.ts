@@ -9,9 +9,9 @@ export class POIRequestPayload extends TravelRequestPayload {
   serviceUrl: string
   format: 'json' | 'geojson'
 
-  constructor(client: TargomoClient, source: LatLngId, options: POIRequestOptions) {
+  constructor(client: TargomoClient, sources: LatLngId | LatLngId[], options: POIRequestOptions) {
     super(options)
-    this.sources = this.buildSourcesCfg([source])
+    this.sources = this.buildSourcesCfg(sources instanceof Array ? sources : [sources])
     this.osmTypes = options.osmTypes
     this.format = options.format;
     this.serviceKey = client.serviceKey

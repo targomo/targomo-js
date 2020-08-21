@@ -1,6 +1,6 @@
 import { LatLngId} from '../../types'
 import { TargomoClient } from '../targomoClient'
-import { RouteRequestOptions } from '../../types/options'
+import { RouteRequestOptions, RouteRequestOptionsSourcesTargets } from '../../types/options'
 import { TravelRequestPayload } from './travelRequestPayload';
 
 export interface RouteCompactOptions extends RouteRequestOptions {
@@ -11,14 +11,39 @@ export interface RouteGeoJsonOptions extends RouteRequestOptions {
   pathSerializer: 'geojson'
 }
 
+export interface RouteCompactOptionsSourcesTargets extends RouteRequestOptionsSourcesTargets {
+  pathSerializer: 'compact'
+}
+
+export interface RouteGeoJsonOptionsSourcesTargets extends RouteRequestOptionsSourcesTargets {
+  pathSerializer: 'geojson'
+}
+
 export class RouteRequestPayload extends TravelRequestPayload {
 
   pathSerializer?: 'compact' | 'geojson'
 
-  constructor(client: TargomoClient, sources: LatLngId[], targets: LatLngId[], options: RouteCompactOptions|RouteGeoJsonOptions) {
+  constructor(
+    client: TargomoClient,
+    sources: LatLngId[],
+    targets: LatLngId[],
+    options: RouteCompactOptions | RouteGeoJsonOptions | RouteCompactOptionsSourcesTargets | RouteGeoJsonOptionsSourcesTargets
+  ) {
     super(options)
-    this.sources = this.buildSourcesCfg(sources)
-    this.targets = this.buildTargetsCfg(targets)
+
+    if (sources) {
+      this.sources = this.buildSourcesCfg(sources)
+    } else {
+      this.sources = this.buildSourcesCfg((<RouteRequestOptionsSourcesTargets>options).sources)
+      this.sourceGeometries = this.buildSourceGeometriesCfg((<RouteRequestOptionsSourcesTargets>options).sourceGeometries)
+    }
+
+    if (targets) {
+      this.targets = this.buildTargetsCfg(targets)
+    } else {
+      this.targets = this.buildTargetsCfg((<RouteRequestOptionsSourcesTargets>options).targets)
+    }
+
     this.pathSerializer = options.pathSerializer;
 
     if (typeof options.recommendations === 'boolean') {

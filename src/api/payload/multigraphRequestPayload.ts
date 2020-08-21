@@ -1,23 +1,31 @@
-import { TravelRequestPayload } from './travelRequestPayload';
 import {
-  LatLngIdTravelMode,
-  MultigraphSpecificRequestOptions,
-  LatLngId,
-  MultigraphRequestOptions
+  LatLngId, LatLngIdTravelMode,
+  MultigraphSpecificRequestOptions
 } from '../..';
+import { MultigraphRequestOptionsSourcesTargets } from '../../types';
+import { TravelRequestPayload } from './travelRequestPayload';
 
 
 export class MultigraphRequestPayload extends TravelRequestPayload {
-    multigraph: MultigraphSpecificRequestOptions;
+  multigraph: MultigraphSpecificRequestOptions;
 
-    constructor(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]) {
-        super(options);
-        this.sources = this.buildSourcesCfg(sources);
-        if (targets) {
-            this.targets = this.buildTargetsCfg(targets);
-        }
+  constructor(sources: LatLngIdTravelMode[], options: MultigraphRequestOptionsSourcesTargets, targets?: LatLngId[]) {
+    super(options);
 
-        this.multigraph = options.multigraph;
 
+    if (sources) {
+      this.sources = this.buildSourcesCfg(sources);
+    } else {
+      this.sources = this.buildSourcesCfg(options.sources);
+      this.sourceGeometries = this.buildSourceGeometriesCfg(options.sourceGeometries);
     }
+
+    if (targets) {
+      this.targets = this.buildTargetsCfg(targets);
+    } else if (options && options.targets) {
+      this.targets = this.buildTargetsCfg(options.targets);
+    }
+
+    this.multigraph = options.multigraph;
+  }
 }
