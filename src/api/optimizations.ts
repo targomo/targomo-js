@@ -30,7 +30,7 @@ export class OptimizationsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('simulation/start/')
-      .key()
+      .key('apiKey')
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl)
       })
@@ -55,7 +55,7 @@ export class OptimizationsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('simulation/ready/')
-      .key()
+      .key('apiKey')
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl),
         simulationId: optimizationId
@@ -75,7 +75,7 @@ export class OptimizationsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('simulation/' + optimizationId + '/')
-      .key()
+      .key('apiKey')
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl)
       })

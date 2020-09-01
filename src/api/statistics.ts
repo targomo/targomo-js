@@ -77,6 +77,7 @@ export class StatisticsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('traveltimes')
+      .key('apiKey')
       .params({
         serviceUrl: this.client.serviceUrl
       })
@@ -107,6 +108,7 @@ export class StatisticsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('charts/dependent')
+      .key('apiKey')
       .params({
         serviceUrl: this.client.serviceUrl
       })
@@ -136,6 +138,7 @@ export class StatisticsClient {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('values/geometry')
+      .key('apiKey')
       .params({
         serviceUrl: this.client.serviceUrl
       })
