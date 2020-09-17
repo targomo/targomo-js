@@ -5,7 +5,7 @@ import { geometry } from '../index';
 describe('TargomoClient poi service', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
 
-  test('poi service request', async () => {
+  test.skip('poi service request', async () => {
     const sources = { lat: 52.5330232, lng: 13.356626, id: 1}
 
     const result = await testClient.pois.reachable(sources, {
@@ -18,7 +18,7 @@ describe('TargomoClient poi service', () => {
   })
 
 
-  test('poi overpass query', async () => {
+  test.skip('poi overpass query', async () => {
     const sources = { lat: 52.5330232, lng: 13.356626, id: 1}
     const bounds = geometry.boundingBox(sources, 1)
 

@@ -45,7 +45,9 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/traveltimes?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = this.client.config.statisticsUrl + '/traveltimes?serviceUrl='
+      + encodeURIComponent(this.client.serviceUrl)
+      + '&apiKey=' + encodeURIComponent(this.client.serviceKey)
     return await requests(this.client, options).fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
   }
 
@@ -61,7 +63,10 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/charts/dependent?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = this.client.config.statisticsUrl + '/charts/dependent?serviceUrl='
+      + encodeURIComponent(this.client.serviceUrl)
+      + '&apiKey=' + encodeURIComponent(this.client.serviceKey)
+
     const result = await requests(this.client, options)
                         .fetch(url, 'POST', new StatisticsRequestPayload(this.client, sources, options))
     return new StatisticsResult(result, options.statistics)
@@ -78,7 +83,10 @@ export class StatisticsClient {
       return null
     }
 
-    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl=' + encodeURIComponent(this.client.serviceUrl)
+    const url = this.client.config.statisticsUrl + '/values/geometry?serviceUrl='
+      + encodeURIComponent(this.client.serviceUrl)
+      + '&apiKey=' + encodeURIComponent(this.client.serviceKey)
+
     const result = await requests(this.client, options)
                          .fetch(url, 'POST', new StatisticsGeometryRequestPayload(this.client, geometry, options))
     return new StatisticsGeometryResult(result, options.statistics)
@@ -94,7 +102,7 @@ export class StatisticsClient {
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
-      const result = await requests(this.client).fetch(`${server}/statistics/meta/v1/${key}`)
+      const result = await requests(this.client).fetch(`${server}/statistics/meta/v1/${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
       }

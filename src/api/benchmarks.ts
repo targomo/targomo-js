@@ -29,7 +29,7 @@ export class BenchmarksClient {
       }))
     }
 
-    const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v1/${encodeURIComponent('' + group)}`
+    const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v1/${encodeURIComponent('' + group)}?&key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url, 'POST', data)
   }
 
@@ -37,7 +37,7 @@ export class BenchmarksClient {
    *
    */
   async metadata(key: StatisticsSet): Promise<any[]> {
-    const url = `${this.client.config.tilesUrl}/benchmarks/meta/v1/${encodeURIComponent('' + key)}`
+    const url = `${this.client.config.tilesUrl}/benchmarks/meta/v1/${encodeURIComponent('' + key)}?&key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url)
   }
 }
