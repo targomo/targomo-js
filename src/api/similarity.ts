@@ -11,6 +11,7 @@ export class SimilarityClient {
    *
    */
   async metadata(key: StatisticsSet): Promise<any[]> {
+    // tslint:disable-next-line: max-line-length
     const url = `${this.client.config.tilesUrl}/similarity/meta/v1/${encodeURIComponent('' + key)}?&key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url)
   }
@@ -43,6 +44,7 @@ export class SimilarityClient {
     }
 
     const normalizeParam = normalizeOnViewport ? `?normalizeOnViewport=${!!normalizeOnViewport}` : ''
+    // tslint:disable-next-line: max-line-length
     const url = `${this.client.config.tilesUrl}/similarity/scores_cumulative/v1/${encodeURIComponent('' + group)}${normalizeParam}?&key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url, 'POST', data)
   }

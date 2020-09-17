@@ -29,6 +29,7 @@ export class BenchmarksClient {
       }))
     }
 
+    // tslint:disable-next-line: max-line-length
     const url = `${this.client.config.tilesUrl}/benchmarks/scores_cumulative/v1/${encodeURIComponent('' + group)}?&key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url, 'POST', data)
   }
@@ -37,6 +38,7 @@ export class BenchmarksClient {
    *
    */
   async metadata(key: StatisticsSet): Promise<any[]> {
+    // tslint:disable-next-line: max-line-length
     const url = `${this.client.config.tilesUrl}/benchmarks/meta/v1/${encodeURIComponent('' + key)}?&key=${encodeURIComponent(this.client.serviceKey)}`
     return await requests(this.client).fetch(url)
   }

@@ -102,6 +102,7 @@ export class StatisticsClient {
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
+      // tslint:disable-next-line: max-line-length
       const result = await requests(this.client).fetch(`${server}/statistics/meta/v1/${key}?key=${encodeURIComponent(this.client.serviceKey)}`)
       if (!result.name && result.names && result.names.en) {
         result.name = result.names.en
