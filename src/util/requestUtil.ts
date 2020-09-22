@@ -1,5 +1,6 @@
 import { Cache, SimpleCache } from '../util/cache'
 import { TargomoClient } from '../api/index';
+import { TargomoEnvironment, TARGOMO_ENVIRONMENT_HEADER } from '../constants';
 
 const CACHE = new SimpleCache<any>()
 
@@ -12,11 +13,11 @@ function logBody(body: any) {
 }
 
 export class RequestsUtil {
-
-  constructor(private options?: {debug?: boolean, timeout?: number}) {
-  }
+  constructor(private options?: { debug?: boolean; timeout?: number; environment?: TargomoEnvironment }) {}
 
   async fetch(url: string, method: string = 'GET', payload?: any, headers: { [index: string]: string } = {}) {
+    headers[TARGOMO_ENVIRONMENT_HEADER] = this.options.environment
+
     let requestMethod = method
 
     if (method !== 'JSONP') {
@@ -49,6 +50,8 @@ export class RequestsUtil {
 
     if ((this.options && this.options.debug) || response.status >= 400) {
       console.log('[TargomoClient Begin]')
+      console.log('[ENVIRONMENT]')
+      console.log(this.options.environment)
       console.log('[Request]', requestOptions.method, url)
       console.log(`  [Headers]`)
       requestHeaders.forEach((value: string, key: string) => {
@@ -98,7 +101,6 @@ export class RequestsUtil {
       } else {
         responseValue = response.json()
       }
-
 
       if (this.options && this.options.debug) {
         console.log('  [Body]')
@@ -172,5 +174,8 @@ export class RequestsUtil {
 
 export function requests(client?: TargomoClient, options?: { requestTimeout?: number }): RequestsUtil {
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
-  return new RequestsUtil({debug: client && client.config && client.config.debug}) // {timeout: requestTimeout})
+  return new RequestsUtil({
+    debug: client && client.config && client.config.debug,
+    environment: client.config.environment,
+  }) // {timeout: requestTimeout})
 }

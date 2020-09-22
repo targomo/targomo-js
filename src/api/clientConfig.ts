@@ -1,6 +1,8 @@
 // TODO: or rename to ClientDefaults maybe to make it more clear
 // TODO: add more defaults here ...ex same stuff as in r360-js
 
+import { TargomoEnvironment } from '../constants'
+
 
 export interface ClientOptions {
   serverUrl?: string
@@ -15,6 +17,7 @@ export interface ClientOptions {
   version?: number
   routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
   debug?: boolean
+  environment?: TargomoEnvironment
 }
 
 export class ClientConfig implements ClientOptions {
@@ -31,6 +34,7 @@ export class ClientConfig implements ClientOptions {
   requestTimeout: 20000
   version: number = 1
   debug: boolean = false
+  environment: TargomoEnvironment.prod
 
   // routeTypes  = [
   //   // non transit
