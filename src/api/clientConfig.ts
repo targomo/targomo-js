@@ -34,7 +34,7 @@ export class ClientConfig implements ClientOptions {
   requestTimeout: 20000
   version: number = 1
   debug: boolean = false
-  environment: TargomoEnvironment.prod
+  environment: TargomoEnvironment.PROD
 
   // routeTypes  = [
   //   // non transit
