@@ -32,7 +32,7 @@ describe('Targomo Client Interceptor', () => {
   })
 
   test('should include environment header on every request donde to A-Team services', async () => {
-    const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.prod })
+    const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.staging })
     await testClient.statistics.metadata(0)
     scope.done()
   })
