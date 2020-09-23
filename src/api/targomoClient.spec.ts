@@ -15,7 +15,7 @@ describe('TargomoClient client', () => {
 })
 
 describe('Targomo Client Interceptor', () => {
-  const environments = [TargomoEnvironment.review, TargomoEnvironment.staging, TargomoEnvironment.prod]
+  const environments = [TargomoEnvironment.REVIEW, TargomoEnvironment.STAGING, TargomoEnvironment.PROD]
 
   let scope
 
@@ -32,13 +32,13 @@ describe('Targomo Client Interceptor', () => {
   })
 
   test('should include environment header on every request donde to A-Team services', async () => {
-    const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.staging })
+    const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.STAGING })
     await testClient.statistics.metadata(0)
     scope.done()
   })
 
   test('should include environment header when calling point of interests', async () => {
-    const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.review })
+    const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.REVIEW })
     await testClient.pois.reachabilitySummary('')
     scope.done()
   })
