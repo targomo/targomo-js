@@ -1,6 +1,6 @@
 import { TargomoClient } from './targomoClient'
 import * as nock from 'nock'
-import { TargomoEnvironment } from '../constants'
+import { TargomoEnvironment } from '../util/constants'
 
 describe('TargomoClient client', () => {
   const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)

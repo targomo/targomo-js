@@ -1,7 +1,7 @@
 // TODO: or rename to ClientDefaults maybe to make it more clear
 // TODO: add more defaults here ...ex same stuff as in r360-js
 
-import { TargomoEnvironment } from '../constants'
+import { TargomoEnvironment } from '../util/constants'
 
 
 export interface ClientOptions {
