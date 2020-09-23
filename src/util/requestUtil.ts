@@ -16,7 +16,9 @@ export class RequestsUtil {
   constructor(private options?: { debug?: boolean; timeout?: number; environment?: TargomoEnvironment }) {}
 
   async fetch(url: string, method: string = 'GET', payload?: any, headers: { [index: string]: string } = {}) {
-    headers[TARGOMO_ENVIRONMENT_HEADER] = this.options.environment
+    if (!!this.options.environment) {
+      headers[TARGOMO_ENVIRONMENT_HEADER] = this.options.environment
+    }
 
     let requestMethod = method
 
@@ -176,6 +178,6 @@ export function requests(client?: TargomoClient, options?: { requestTimeout?: nu
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
   return new RequestsUtil({
     debug: client && client.config && client.config.debug,
-    environment: (!!client && !!client.config) ? client.config.environment : TargomoEnvironment.prod,
+    environment: (!!client && !!client.config && !!client.config.environment) ? client.config.environment : TargomoEnvironment.prod,
   }) // {timeout: requestTimeout})
 }
