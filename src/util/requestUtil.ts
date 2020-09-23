@@ -1,6 +1,6 @@
 import { Cache, SimpleCache } from '../util/cache'
 import { TargomoClient } from '../api/index';
-import { TargomoEnvironment, TARGOMO_ENVIRONMENT_HEADER } from './constants';
+import { TargomoEnvironment, TARGOMO_ENVIRONMENT_HEADER } from '../constants';
 
 const CACHE = new SimpleCache<any>()
 
