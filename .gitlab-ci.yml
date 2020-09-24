@@ -41,7 +41,6 @@ build_release:
     - echo "_auth=$NEXUS_REPOSITORY_AUTH_KEY" >> .npmrc
     - npm publish --registry https://nexus.app.k8sdev.eu.targomo.com/repository/targomo/
 
-    - export ST_AUTH_VERSION=2.0
     - cd ../releases
     - swift upload releases core
   only:
