@@ -42,6 +42,9 @@ export class TravelRequestPayload implements TravelRequestOptions {
   constructor(options?: TravelRequestOptions) {
     Object.assign(this, options)
 
+    this.date = options.transitFrameDate !== undefined ? (options.transitFrameDate || null) : 20170801
+    this.time = options.transitFrameTime !== undefined ? (options.transitFrameTime || null) : 39600
+
     if (options.transitFrameDateTime != null) {
       const date = new Date(<any>options.transitFrameDateTime)
       const transitFrameDate = date ? ((date.getFullYear() * 10000) + (date.getMonth() + 1) * 100 + date.getDate()) : undefined

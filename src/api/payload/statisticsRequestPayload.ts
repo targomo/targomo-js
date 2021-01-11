@@ -58,8 +58,8 @@ export class StatisticsRequestPayload {
     // super(options)
 
     // FIXME: ... should be done in superclass
-    this.date = options.transitFrameDate || 20170801
-    this.time = options.transitFrameTime || 39600
+    this.date = options.transitFrameDate !== undefined ? (options.transitFrameDate || null) : 20170801
+    this.time = options.transitFrameTime !== undefined ? (options.transitFrameTime || null) : 39600
 
     if (options.transitFrameDateTime != null) {
       const date = new Date(<any>options.transitFrameDateTime)
