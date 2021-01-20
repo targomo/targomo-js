@@ -1,6 +1,8 @@
 // TODO: or rename to ClientDefaults maybe to make it more clear
 // TODO: add more defaults here ...ex same stuff as in r360-js
 
+import { TargomoEnvironment } from '../types'
+
 
 export interface ClientOptions {
   serverUrl?: string
@@ -14,6 +16,7 @@ export interface ClientOptions {
   requestTimeout?: number
 
   routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
+  environment?: TargomoEnvironment
 }
 
 export class ClientConfig implements ClientOptions {
@@ -27,6 +30,7 @@ export class ClientConfig implements ClientOptions {
   overpassUrl: string = 'https://api.targomo.com/overpass'
 
   requestTimeout: 20000
+  environment: TargomoEnvironment.PROD
 
 
   // routeTypes  = [
