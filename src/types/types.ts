@@ -127,8 +127,9 @@ export interface StatisticsItem {
 }
 
 export interface StatisticsGroupEnsemble {
-  id: number
+  id: string
   name: string
+  countries: string[];
   groups: {
     id: number,
     hierarchy: number,
