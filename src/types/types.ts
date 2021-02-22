@@ -129,6 +129,7 @@ export interface StatisticsItem {
 export interface StatisticsGroupEnsemble {
   id: string
   name: string
+  region: string;
   countries: string[];
   groups: {
     id: number,
