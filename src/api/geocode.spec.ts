@@ -1,6 +1,6 @@
 import { TargomoClient } from './index';
 
-describe('TargomoClient geocoding', () => {
+describe.skip('TargomoClient geocoding', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
 
 
