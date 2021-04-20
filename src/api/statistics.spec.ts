@@ -1,6 +1,8 @@
 import { StatisticsGroups } from '../index';
 import { TargomoClient } from './targomoClient';
 
+const GERMANY_ZENSUS_500M_STATISTICS = 102
+
 describe('TargomoClient statistics service', () => {
   const testClient = new TargomoClient('westcentraleurope', process.env.TGM_TEST_API_KEY)
 
@@ -8,7 +10,7 @@ describe('TargomoClient statistics service', () => {
     const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 1}]
     const result = await testClient.statistics.dependent(sources, {
       statistics: [{id: 0, name: 'population'}],
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk'
     })
@@ -22,7 +24,7 @@ describe('TargomoClient statistics service', () => {
     const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 1}]
     const result = await testClient.statistics.dependent({
       statistics: [{id: 0, name: 'population'}],
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk',
       sources
@@ -45,7 +47,7 @@ describe('TargomoClient statistics service', () => {
 
     const result = await testClient.statistics.dependent({
       statistics: [{id: 0, name: 'population'}],
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk',
       sourceGeometries,
@@ -61,7 +63,7 @@ describe('TargomoClient statistics service', () => {
   test('statistic service request null', async () => {
     const result = await testClient.statistics.dependent({
       statistics: [{id: 0, name: 'population'}],
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk',
     })
@@ -70,7 +72,7 @@ describe('TargomoClient statistics service', () => {
 
     const result2 = await testClient.statistics.dependent(null, {
       statistics: [{id: 0, name: 'population'}],
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk',
     })
@@ -79,7 +81,7 @@ describe('TargomoClient statistics service', () => {
 
     const result3 = await testClient.statistics.dependent([], {
       statistics: [{id: 0, name: 'population'}],
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk',
     })
@@ -93,7 +95,7 @@ describe('TargomoClient statistics service', () => {
     const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 1}]
 
     const result = await testClient.statistics.travelTimes(sources, {
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk'
     })
@@ -105,7 +107,7 @@ describe('TargomoClient statistics service', () => {
     const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 1}]
 
     const result = await testClient.statistics.travelTimes({
-      statisticsGroup: StatisticsGroups.GERMANY_ZENSUS_500M_STATISTICS,
+      statisticsGroup: GERMANY_ZENSUS_500M_STATISTICS,
       maxEdgeWeight: 600,
       travelType: 'walk',
       sources,

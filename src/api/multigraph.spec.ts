@@ -173,7 +173,7 @@ describe('Multigraph', () => {
         }
       }
       const result = await testClient.multigraph.fetchOverview(sources, options);
-      expect(result.data.minValue).toBe(134);
+      expect(result.data.minValue).toBe(261);
       expect(result.data.maxValue).toBe(3599);
 
     } catch (e) {
@@ -209,7 +209,7 @@ describe('Multigraph', () => {
         sources
       }
       const result = await testClient.multigraph.fetchOverview(options);
-      expect(result.data.minValue).toBe(134);
+      expect(result.data.minValue).toBe(261);
       expect(result.data.maxValue).toBe(3599);
 
     } catch (e) {
