@@ -127,8 +127,11 @@ export interface StatisticsItem {
 }
 
 export interface StatisticsGroupEnsemble {
-  id: number
+  id: string
   name: string
+  region: string
+  countries: string[]
+  endpoints: { [endpoint: string]: string }
   groups: {
     id: number,
     hierarchy: number,
