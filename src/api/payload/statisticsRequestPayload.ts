@@ -33,6 +33,14 @@ export class StatisticsRequestPayload {
   avoidTransitRouteTypes: number[]
   rushHour: boolean
 
+  walkDownhill: number
+  walkSpeed: number
+  walkUphill: number
+
+  bikeDownhill: number
+  bikeSpeed: number
+  bikeUphill: number
+
   constructor(
     client: TargomoClient,
     sources: LatLngId[],
@@ -97,5 +105,16 @@ export class StatisticsRequestPayload {
       this.getClosestSources = true
     }
 
+    if (options.walkSpeed) {
+      this.walkDownhill = options.walkSpeed.downhill != null ? +options.walkSpeed.downhill : undefined
+      this.walkSpeed = options.walkSpeed.speed != null ? +options.walkSpeed.speed : undefined
+      this.walkUphill = options.walkSpeed.uphill != null ? +options.walkSpeed.uphill : undefined
+    }
+
+    if (options.bikeSpeed) {
+      this.bikeDownhill = options.bikeSpeed.downhill != null ? +options.bikeSpeed.downhill : undefined
+      this.bikeSpeed = options.bikeSpeed.speed != null ? +options.bikeSpeed.speed : undefined
+      this.bikeUphill = options.bikeSpeed.uphill != null ? +options.bikeSpeed.uphill : undefined
+    }
   }
 }
