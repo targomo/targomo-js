@@ -206,25 +206,6 @@ export enum SRID {
 }
 
 /**
- *
- */
-export interface BenchmarkCriteria {
-  source: string,
-  minEnd: number,
-  minStart: number
-  factor: number
-}
-
-/**
- *
- */
-export interface SimilarityCriteria {
-  source: string,
-  minutes: number,
-  factor: number
-}
-
-/**
  * A lat, lng position with the addition of an id
  */
 export interface LatLngId {
