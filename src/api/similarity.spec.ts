@@ -4,7 +4,7 @@ import { TargomoClient } from './targomoClient';
 describe('similarity service', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
 
-  test.skip('medatada', async () => {
+  test.skip('metatada', async () => {
     const result = await testClient.similarity.metadata(100)
     expect(result).toBeDefined()
     expect(result.length).toBeGreaterThan(0)

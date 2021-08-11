@@ -1,3 +1,4 @@
+import { MultigraphRequestOptionsSourcesTargets } from './../types/options/multigraphRequestOptions';
 import { MultigraphRequestAggregation, MultigraphRequestLayer, MultigraphRequestOptions } from '../types';
 import { TargomoClient } from './targomoClient';
 
@@ -46,7 +47,7 @@ describe('Multigraph', () => {
       { lng: 13.3799274, lat: 52.51644311, id: 3 }
     ]
     try {
-      const options: MultigraphRequestOptions = {
+      const options: MultigraphRequestOptionsSourcesTargets = {
         maxEdgeWeight: 3600,
         travelType: 'car',
         useClientCache: false,
@@ -84,7 +85,7 @@ describe('Multigraph', () => {
     ]
 
     try {
-      const options: MultigraphRequestOptions = {
+      const options: MultigraphRequestOptionsSourcesTargets = {
         maxEdgeWeight: 3600,
         travelType: 'car',
         useClientCache: false,
@@ -189,7 +190,7 @@ describe('Multigraph', () => {
       { lng: 13.3799274, lat: 52.51644311, id: 3 }
     ]
     try {
-      const options: MultigraphRequestOptions = {
+      const options: MultigraphRequestOptionsSourcesTargets = {
         maxEdgeWeight: 3600,
         travelType: 'car',
         useClientCache: false,
@@ -227,7 +228,7 @@ describe('Multigraph', () => {
     ]
 
     try {
-      const options: MultigraphRequestOptions = {
+      const options: MultigraphRequestOptionsSourcesTargets = {
         maxEdgeWeight: 3600,
         travelType: 'car',
         useClientCache: false,

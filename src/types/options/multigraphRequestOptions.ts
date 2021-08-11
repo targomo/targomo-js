@@ -45,11 +45,11 @@ export interface MultigraphAggregationOptions {
 
 export interface MultigraphSpecificRequestOptions {
 
-  preAggregationPipeline: {
+  preAggregationPipeline?: {
     [pipelineName: string]: MultigraphAggregationOptions
   }
 
-  referencedStatisticIds: {
+  referencedStatisticIds?: {
     [parameterName: string]: number
   }
 
@@ -61,7 +61,7 @@ export interface MultigraphSpecificRequestOptions {
     maxGeometryCount?: number
   }
 
-  domain: {
+  domain?: {
     type: 'edge' | 'node' | 'statistic_geometry'
     edgeAggregationType?: 'min' | 'max' | 'mean'
     statisticGroupId?: number
