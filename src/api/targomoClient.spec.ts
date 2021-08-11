@@ -31,6 +31,10 @@ describe('Targomo Client Interceptor', () => {
       })
   })
 
+  afterAll(() => {
+    nock.restore()
+  })
+
   test('should include environment header on every request donde to A-Team services', async () => {
     const testClient = new TargomoClient('germany', '1234', { environment: TargomoEnvironment.STAGING })
     await testClient.statistics.metadata(0)
