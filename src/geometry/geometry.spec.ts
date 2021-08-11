@@ -6,13 +6,11 @@ describe('geometry functions', () => {
   const pointA: LatLng = { lat: 52.5330232, lng: 13.356626 }
   const pointB: LatLng = { lat: 52.3881693, lng: 13.120117 }
 
-  const testKey = process.env.TGM_TEST_API_KEY; // TODO create key explicit for unit tests
-  const serviceUrl = 'https://route360.net/germany'
   const travelOptions: {
     maxEdgeWeight: number,
     edgeWeight: 'time' | 'distance',
     travelType: TravelType
-  } = {edgeWeight: 'time', maxEdgeWeight: 1800, travelType: 'bike'}
+  } = { edgeWeight: 'time', maxEdgeWeight: 1800, travelType: 'bike' }
 
   test('caclulates distance from A to B', () => {
     const distance = geometry.calculateDistance(pointA, pointB)
