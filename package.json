@@ -56,8 +56,8 @@
     "webpack-node-externals": "1.6.0"
   },
   "dependencies": {
+    "@types/geojson": "^7946.0.1",
     "isomorphic-fetch": "^2.2.1",
-    "whatwg-fetch": "^2.0.3",
-    "@types/geojson": "^7946.0.1"
+    "whatwg-fetch": "^2.0.3"
   }
 }
