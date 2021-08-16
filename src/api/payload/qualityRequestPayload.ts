@@ -1,17 +1,17 @@
 import { TargomoClient } from ".."
-import { LatLngId } from "../.."
+import { LatLngId, Location } from "../.."
 import { QualityRequestOptions } from "../../types/options/qualityRequestOptions"
 
 export class QualityRequestPayload {
-  locations: LatLngId[]
+  locations: Location[]
   criteria: QualityRequestOptions
-  competitors?: LatLngId[]
+  competitors?: Location[]
 
   constructor(
     client: TargomoClient,
-    locations: LatLngId[],
+    locations: Location[],
     criteria: QualityRequestOptions,
-    competitors?: LatLngId[]
+    competitors?: Location[]
   ) {
     this.locations = locations
     this.criteria = criteria
