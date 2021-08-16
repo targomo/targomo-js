@@ -31,6 +31,7 @@ export class ClientConfig implements ClientOptions {
   overpassUrl: string = 'https://api.targomo.com/overpass/'
   fleetsUrl: string = 'https://api.targomo.com/fleetplanner/'
   basemapsUrl: string = 'https://maps.targomo.com/styles/'
+  qualityUrl: string = 'https://api.targomo.com/quality/'
   requestTimeout: 20000
   version: number = 1
   debug: boolean = false

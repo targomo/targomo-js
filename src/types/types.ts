@@ -885,3 +885,112 @@ export interface PoiType {
 }
 
 export type PoiHiearachy = PoiType[]
+
+
+export interface Location extends LatLngId {
+  properties?: {gravitationAttractionStrength: number}
+}
+
+
+export interface PoiGroup {
+  /** key should always be "group" */
+  key: "group"
+
+  /** represents the id of the group */
+  value: string
+}
+
+/** See https://www.targomo.com/developers/resources/coverage/ for more infos regarding Service Coverage Areas*/
+export type CoreServiceUrl = ("https://api.targomo.com/africa/" | "https://api.targomo.com/asia/" | "https://api.targomo.com/australia/" | "https://api.targomo.com/britishisles/" | "https://api.targomo.com/central_america/" | "https://api.targomo.com/easterneurope/" | "https://api.targomo.com/northamerica/" | "https://api.targomo.com/south_america/" | "https://api.targomo.com/westcentraleurope/")
+export type EndPoint = CoreServiceUrl
+
+export type Walk_Places = {
+  /** Assumed speed in km/h
+   * @default 5
+ */
+  speed?: number
+
+  /** Uphill penalty specifies by how much a distance is enhanced per one height meter that has to be overcome.
+    @example an uphill penalty of 20 means that per one height meter uphill the distance is increased by 20 meters.
+    @default 5
+ */
+  uphill?: number
+
+  /** Same like uphill but for downhill (might be negative because the distance can be closed quicker when downhill
+   * @default 5
+   */
+  downhill?: number
+}
+
+
+export type Car_Places = {
+  /** Enable the rush hour mode to simulate a more crowded street.
+Warning this is a paid feature so not all plans are allowed to enable it. */
+  rushHour?: boolean
+}
+
+
+export type Bike_Places = {
+  /** Assumed speed in km/h
+   * @default 15
+   */
+  speed?: number
+
+  /** Uphill penalty specifies by how much a distance is enhanced per one height meter that has to be overcome.
+   * @example an uphill penalty of 20 means that per one height meter uphill the distance is increased by 20 meters
+   * @default 20 */
+  uphill?: number
+
+  /** Same like uphill but for downhill (might be negative because the distance can be closed quicker when downhill
+   * @default -10
+   */
+  downhill?: number
+}
+
+
+export type Transit_Places = {
+  frame?: FramePlaces
+
+  /** Optional parameter to limit the number of transfers between different public transport lines/vehicles. Routing will not change public transport when the shortest possible route has reached the transfer limit. This may lead to some possible routes not being found.
+   * Valid values: [0..127]. If the parameter is not present, the number of transfers is unlimited */
+  maxTransfers?: number
+}
+
+
+export interface FramePlaces {
+  /** This is the date on which the routing should take place
+   * @Format This is formatted like: YYYYMMDD
+   * @example for the first of August: 20170801
+   * @default "Current date"
+  */
+  date: number
+
+  /** This is the starting time for the routing in seconds from midnight.
+   * @example if the routing should start at 5.15pm this equals 17 * 3600s + 15 * 60s = 61200
+   * @default 28800 (8am)*/
+  time: number
+
+  /** This is the frame's duration, defined in seconds, in which the routing searches for connections.
+   * A value of -1 is equivalent to setting 'earliestArrival' to true and the duration to 'maxEdgeWeight'.
+   * If the transit duration is less than the 'maxEdgeWeight' it is set to value of 'maxEdgeWeight
+   * @example if we start at 1pm and set the frame 7200s and have a maximum routing time of 3600s, the latest possible arriving time is 9800s, meaning the frame does not get integrated into the routing time.
+   * @default 18000 */
+  duration: number
+
+  /** The maximum duration (in seconds) for walking before entering transit.
+   * If the value is -1, the duration is unlimited
+   * @default -1 */
+  maxWalkingTimeFromSource: number
+
+  /** Not yet implemented, will be ignored. */
+  maxWalkingTimeToTarget: number
+
+  /** If true, the service returns the connection that arrives first at the target instead of the fastest in the time frame
+   * @default false
+   */
+  earliestArrival: boolean
+}
+
+
+export type TravelMode = {[travelMode: string]: (Walk_Places | Car_Places | Bike_Places | Transit_Places)}
+

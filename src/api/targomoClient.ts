@@ -14,6 +14,7 @@ import { FleetsClient } from './fleets';
 import { MultigraphClient } from './multigraph';
 import { BasemapsClient } from './basemaps';
 import { UrlUtil } from '..';
+import { QualityClient } from './quality'
 
 /**
  * @Topic Geocoding
@@ -40,6 +41,7 @@ export class TargomoClient {
   readonly statefulMultigraph: StatefulMultigraphClient
   readonly multigraph: MultigraphClient
   readonly fleets: FleetsClient
+  readonly quality: QualityClient
 
   readonly basemaps: BasemapsClient
 
@@ -81,6 +83,7 @@ export class TargomoClient {
     this.multigraph = new MultigraphClient(this)
     this.basemaps = new BasemapsClient(this);
     this.fleets = new FleetsClient(this);
+    this.quality = new QualityClient(this);
   }
 
   /**
