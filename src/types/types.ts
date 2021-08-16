@@ -818,30 +818,30 @@ export interface TravelTimeFactors {
   /**
    * @General Has an effect on all edge classes (excluding transit travel times)
    */
-  all: number,
-
-  motorway: number,
-  motorway_link: number,
-  trunk: number,
-  trunk_link: number,
-  primary: number,
-  primary_link: number,
-  secondary: number,
-  secondary_link: number,
-  tertiary: number,
-  residential: number,
-  tertiary_link: number,
-  road: number,
-  unclassified: number,
-  service: number,
-  living_street: number,
-  pedestrian: number,
-  track: number,
-  path: number,
-  cycleway: number,
-  footway: number,
-  steps: number,
-  unknown: number
+  all?: number, //all elements are optional
+  
+  motorway?: number,
+  motorway_link?: number,
+  trunk?: number,
+  trunk_link?: number,
+  primary?: number,
+  primary_link?: number,
+  secondary?: number,
+  secondary_link?: number,
+  tertiary?: number,
+  residential?: number,
+  tertiary_link?: number,
+  road?: number,
+  unclassified?: number,
+  service?: number,
+  living_street?: number,
+  pedestrian?: number,
+  track?: number,
+  path?: number,
+  cycleway?: number,
+  footway?: number,
+  steps?: number,
+  unknown?: number
 }
 
 ////
