@@ -888,7 +888,12 @@ export type PoiHiearachy = PoiType[]
 
 
 export interface Location extends LatLngId {
-  properties?: {gravitationAttractionStrength: number}
+  properties?: {
+    /** Parameter used for gravitational criteria to set a custom attraction strength for the given location
+     * @default 1
+     */
+    gravitationAttractionStrength: number
+  }
 }
 
 

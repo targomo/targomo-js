@@ -1,6 +1,8 @@
 import { CoreServiceUrl, OSMType, PoiGroup, TravelMode, TravelTimeFactors } from "..";
 
 export interface QualityRequestOptions {
+  /** Criterion definitions
+   * For each criterion, a key must be set to be able to identify the different criteria in the response */
   [criteriaId: string]: (PointOfInterestCriterion | StatisticsCriterion | GravitationalCriterion)
 }
 
@@ -75,8 +77,8 @@ export interface GravitationalCriterion extends BaseCriterion {
   type: "gravitationSum"
   /** The Statistic Group to be used as data source */
   statisticGroupId: number
-  /** List with statistic ids used for reachability calculation */
-  statisticsIds?: number[]
+  /** List with statistic ids used for reachability calculation - actually required, not optional as said in the documentation*/
+  statisticsIds: number[]
   /** "https://api.targomo.com/statistics/" */
   statisticsServiceUrl?: string
   /** This attribute specifies the exponential power to be applied on values based on proximity to any source. When customized, it is advised to be a negative value to express correctly the gravitation attraction. A high negative lambda, e.g. -4, means that the distance plays a bigger role in the probability to favor a store/location
