@@ -16,6 +16,7 @@ export class QualityClient {
   }
 
   async fetch(locations: Location[], criteria: QualityRequestOptions): Promise<QualityServiceResponse>;
+  async fetch(locations: Location[], criteria: QualityRequestOptions, competitors: Location[]): Promise<QualityServiceResponse>;
   async fetch(locations: Location[], criteria: QualityRequestOptions, competitors?: Location[]): Promise<QualityServiceResponse> {
 
     const url = new UrlUtil.TargomoUrl(this.client)

@@ -116,4 +116,28 @@ describe('TargomoClient quality service - scores', () => {
     expect(result.message).toBe("Scores calculated");
     expect(result.data[locations[0].id]).not.toEqual(result.data[locations[1].id]);
   })
+
+  test('quality service request competitors', async () => {
+    const locations: Location[] = [
+      { lat: 52.510801, lng: 13.401207, id: 1 }
+    ]
+    const criteria: QualityRequestOptions = {
+      "Population": {
+        type: "gravitationSum",
+        statisticGroupId: GERMANY_ZENSUS_500M_STATISTICS,
+        statisticsIds: [ GERMANY_ZENSUS_500M_STATISTICS ],
+        edgeWeight: "time",
+        maxEdgeWeight: 300,
+        travelMode: { "walk": {} },
+        coreServiceUrl: "https://api.targomo.com/westcentraleurope/"
+      }
+    }
+    const competitors: Location[] = [
+      { lat: 52.511801, lng: 13.402207, id: 1 }
+    ]
+    const result = await testClient.quality.fetch(locations, criteria, competitors)
+    expect(result).toBeDefined();
+    expect(result.errors.length).toBe(0)
+    expect(result.message).toBe("Scores calculated");
+  })
 })

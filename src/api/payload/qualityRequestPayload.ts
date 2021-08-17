@@ -16,6 +16,5 @@ export class QualityRequestPayload {
     this.locations = locations
     this.criteria = criteria
     this.competitors = competitors
-    
   }
 }
