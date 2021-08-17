@@ -1,6 +1,6 @@
-import { TargomoClient } from ".."
-import { LatLngId, Location } from "../.."
-import { QualityRequestOptions } from "../../types/options/qualityRequestOptions"
+import { TargomoClient } from '..'
+import { Location } from '../..'
+import { QualityRequestOptions } from '../../types/options/qualityRequestOptions'
 
 export class QualityRequestPayload {
   locations: Location[]

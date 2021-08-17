@@ -818,8 +818,8 @@ export interface TravelTimeFactors {
   /**
    * @General Has an effect on all edge classes (excluding transit travel times)
    */
-  all?: number, //all elements are optional
-  
+  all?: number, // All elements are optional
+
   motorway?: number,
   motorway_link?: number,
   trunk?: number,
@@ -898,15 +898,18 @@ export interface Location extends LatLngId {
 
 
 export interface PoiGroup {
-  /** key should always be "group" */
-  key: "group"
+  /** key should always be 'group' */
+  key: 'group'
 
   /** represents the id of the group */
   value: string
 }
 
 /** See https://www.targomo.com/developers/resources/coverage/ for more infos regarding Service Coverage Areas*/
-export type CoreServiceUrl = ("https://api.targomo.com/africa/" | "https://api.targomo.com/asia/" | "https://api.targomo.com/australia/" | "https://api.targomo.com/britishisles/" | "https://api.targomo.com/central_america/" | "https://api.targomo.com/easterneurope/" | "https://api.targomo.com/northamerica/" | "https://api.targomo.com/south_america/" | "https://api.targomo.com/westcentraleurope/")
+export type CoreServiceUrl = (
+  'https://api.targomo.com/africa/' | 'https://api.targomo.com/asia/' | 'https://api.targomo.com/australia/' |
+  'https://api.targomo.com/britishisles/' | 'https://api.targomo.com/central_america/' | 'https://api.targomo.com/easterneurope/' |
+  'https://api.targomo.com/northamerica/' | 'https://api.targomo.com/south_america/' | 'https://api.targomo.com/westcentraleurope/')
 export type EndPoint = CoreServiceUrl
 
 export type Walk_Places = {
@@ -956,7 +959,9 @@ export type Bike_Places = {
 export type Transit_Places = {
   frame?: FramePlaces
 
-  /** Optional parameter to limit the number of transfers between different public transport lines/vehicles. Routing will not change public transport when the shortest possible route has reached the transfer limit. This may lead to some possible routes not being found.
+  /** Optional parameter to limit the number of transfers between different public transport lines/vehicles.
+   * Routing will not change public transport when the shortest possible route has reached the transfer limit.
+   * This may lead to some possible routes not being found.
    * Valid values: [0..127]. If the parameter is not present, the number of transfers is unlimited */
   maxTransfers?: number
 }
@@ -966,7 +971,7 @@ export interface FramePlaces {
   /** This is the date on which the routing should take place
    * @Format This is formatted like: YYYYMMDD
    * @example for the first of August: 20170801
-   * @default "Current date"
+   * @default 'Current date'
   */
   date: number
 
@@ -978,7 +983,8 @@ export interface FramePlaces {
   /** This is the frame's duration, defined in seconds, in which the routing searches for connections.
    * A value of -1 is equivalent to setting 'earliestArrival' to true and the duration to 'maxEdgeWeight'.
    * If the transit duration is less than the 'maxEdgeWeight' it is set to value of 'maxEdgeWeight
-   * @example if we start at 1pm and set the frame 7200s and have a maximum routing time of 3600s, the latest possible arriving time is 9800s, meaning the frame does not get integrated into the routing time.
+   * @example if we start at 1pm and set the frame 7200s and have a maximum routing time of 3600s,
+   * the latest possible arriving time is 9800s, meaning the frame does not get integrated into the routing time.
    * @default 18000 */
   duration: number
 

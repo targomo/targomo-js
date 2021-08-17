@@ -1,5 +1,5 @@
-//taken from lfr-frontend/src/types/quality.ts
-import { CoreServiceUrl, LatLngId } from "..";
+// Taken from lfr-frontend/src/types/quality.ts
+import { CoreServiceUrl, LatLngId } from '..';
 
 /**
  * @general Response from https://api.targomo.com/quality/v1/scores/post
@@ -16,14 +16,15 @@ interface LocationData {
 }
 
 export interface LatLngIdScores extends LatLngId {
-  /** Each score is given in the form of key-value pair. If the value is null, it means that the service couldn't calculate the scores for some reason.
+  /** Each score is given in the form of key-value pair.
+   * If the value is null, it means that the service couldn't calculate the scores for some reason.
   In that case, an error message should be present in the errors list.
   */
   scores: {
     [score: string]: number
   }
 }
-  
+
 interface ErrorDetailed {
   id: number
   /** Error message that comes from another Targomo's API */

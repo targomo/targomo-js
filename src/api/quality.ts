@@ -23,7 +23,7 @@ export class QualityClient {
       .host(this.client.config.qualityUrl)
       .version()
       .part('/scores')
-      .key("apiKey")
+      .key('apiKey')
       .toString();
 
 
@@ -37,6 +37,4 @@ export class QualityClient {
 
     return result;
   }
-  
 }
-
