@@ -948,7 +948,7 @@ export interface Location extends LatLngId {
     /** Parameter used for gravitational criteria to set a custom attraction strength for the given location
      * @default 1
      */
-    gravitationAttractionStrength: number
+    gravitationAttractionStrength?: number
   }
 }
 
