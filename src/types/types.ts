@@ -884,7 +884,7 @@ export interface PoiType {
   contents?: PoiType[]
 }
 
-export type PoiHiearachy = PoiType[]
+export type PoiHierarchy = PoiType[]
 
 
 export interface Location extends LatLngId {

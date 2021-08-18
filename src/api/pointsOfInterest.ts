@@ -2,7 +2,7 @@ import { FeatureCollection, Geometry } from 'geojson';
 import {
   BoundingBox, LatLngId,
   LatLngIdTravelMode, LatLngProperties,
-  OSMType, Poi, PoiHiearachy, PoiOverview
+  OSMType, Poi, PoiHierarchy, PoiOverview
 } from '../types';
 import { POIRequestOptions } from '../types/options/poiRequestOptions';
 import { requests } from '../util/requestUtil';
@@ -219,7 +219,7 @@ export class PointsOfInterestClient {
    * The POI Hierarchy is a hierarchy tree of POI groups.
    * Thanks to this hierarchy, one can request groups of POI by their ids.
    */
-  async hierarchy(): Promise<PoiHiearachy> {
+  async hierarchy(): Promise<PoiHierarchy> {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.poiUrl)
       .part('poiHierarchy')
