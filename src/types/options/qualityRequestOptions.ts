@@ -8,7 +8,7 @@ export interface QualityRequestOptions {
 
 
 interface BaseCriterion {
-  /** This is the service URL to which the Targomo Reachability requests are dispatched. The endpoint has to correspond to the addresses
+  /** This is the service URL to which the Targomo Routing requests are dispatched. The endpoint has to correspond to the addresses
    * @example if you want to execute reachabilities in Belgium you need to point to a Targomo Endpoint
    * that includes Belgium geographically (https://api.targomo.com/westcentraleurope/) */
   coreServiceUrl: CoreServiceUrl
