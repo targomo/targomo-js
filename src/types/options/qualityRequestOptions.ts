@@ -1,4 +1,4 @@
-import { CoreServiceUrl, OSMType, PoiGroup, TravelMode, TravelTimeFactors } from '..';
+import { OSMType, PoiGroup, TravelMode, TravelTimeFactors } from '..';
 
 export interface QualityRequestOptions {
   /** Criterion definitions
@@ -10,8 +10,9 @@ export interface QualityRequestOptions {
 interface BaseCriterion {
   /** This is the service URL to which the Targomo Routing requests are dispatched. The endpoint has to correspond to the addresses
    * @example if you want to execute reachabilities in Belgium you need to point to a Targomo Endpoint
-   * that includes Belgium geographically (https://api.targomo.com/westcentraleurope/) */
-  coreServiceUrl: CoreServiceUrl
+   * that includes Belgium geographically (https://api.targomo.com/westcentraleurope/)
+   * See https://www.targomo.com/developers/resources/coverage/ for more infos regarding Service Coverage Areas*/
+  coreServiceUrl: string
 
   /** Determines the dimension of the edges' weights, i.e. time (distance in seconds) or distance (distance in meters).
    * 'distance' Will optimize for distance and search for the shortest route,

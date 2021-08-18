@@ -1,5 +1,5 @@
 // Taken from lfr-frontend/src/types/quality.ts
-import { CoreServiceUrl, LatLngId } from '..';
+import { LatLngId } from '..';
 
 /**
  * @general Response from https://api.targomo.com/quality/v1/scores/post
@@ -36,7 +36,8 @@ interface Service {
   /** Service from where the error comes */
   serviceName: string
   serviceUrl: string
-  coreServiceUrl: CoreServiceUrl
+  /** See https://www.targomo.com/developers/resources/coverage/ for more infos regarding Service Coverage Areas*/
+  coreServiceUrl: string
   /** Ids of the criteria that are affected by this error */
   criteriaIds: string[]
   /** Id of the location that is affected by this error */

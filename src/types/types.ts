@@ -905,13 +905,6 @@ export interface PoiGroup {
   value: string
 }
 
-/** See https://www.targomo.com/developers/resources/coverage/ for more infos regarding Service Coverage Areas*/
-export type CoreServiceUrl = (
-  'https://api.targomo.com/africa/' | 'https://api.targomo.com/asia/' | 'https://api.targomo.com/australia/' |
-  'https://api.targomo.com/britishisles/' | 'https://api.targomo.com/central_america/' | 'https://api.targomo.com/easterneurope/' |
-  'https://api.targomo.com/northamerica/' | 'https://api.targomo.com/south_america/' | 'https://api.targomo.com/westcentraleurope/')
-export type EndPoint = CoreServiceUrl
-
 export type Walk_Places = {
   /** Assumed speed in km/h
    * @default 5
