@@ -92,8 +92,20 @@ export type TravelType = 'walk' | 'car' | 'bike' | 'transit'
 
 
 export class TravelSpeedValues {
+  /** Assumed speed in km/h
+   * @default 5
+ */
   speed?: number
+
+  /** Uphill penalty specifies by how much a distance is enhanced per one height meter that has to be overcome.
+    @example an uphill penalty of 20 means that per one height meter uphill the distance is increased by 20 meters.
+    @default 5
+ */
   uphill?: number
+
+  /** Same like uphill but for downhill (might be negative because the distance can be closed quicker when downhill
+   * @default 5
+   */
   downhill?: number
 }
 
@@ -388,27 +400,71 @@ export interface GeometryId {
 }
 
 export interface GeometryIdTravelMode extends GeometryId {
-  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+  tm?: TravelMode
 }
 
 export interface GeometryIdTravelModePayload {
   id: string,
   data: string
   crs: number
-  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+  tm?: TravelMode
 }
 
 /**
  * Object that will be passed to a request as source
  */
 export interface LatLngIdTravelMode extends LatLngId {
-  tm?: {car: {rushHour?: boolean}} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+  tm?: TravelMode
+}
+
+export interface CarModeOptions {
+  /** Enable the rush hour mode to simulate a more crowded street.
+Warning this is a paid feature so not all plans are allowed to enable it. */
+  rushHour?: boolean
 }
 
 export interface TransitTravelModeOptions {
-  frame?: {date?: number, time?: number, duration?: number}
+  frame?: FramePlaces
   maxTransfers?: number;
 }
+
+export interface FramePlaces {
+  /** This is the date on which the routing should take place
+   * @Format This is formatted like: YYYYMMDD
+   * @example for the first of August: 20170801
+   * @default 'Current date'
+  */
+  date?: number
+
+  /** This is the starting time for the routing in seconds from midnight.
+   * @example if the routing should start at 5.15pm this equals 17 * 3600s + 15 * 60s = 61200
+   * @default 28800 (8am)*/
+  time?: number
+
+  /** This is the frame's duration, defined in seconds, in which the routing searches for connections.
+   * A value of -1 is equivalent to setting 'earliestArrival' to true and the duration to 'maxEdgeWeight'.
+   * If the transit duration is less than the 'maxEdgeWeight' it is set to value of 'maxEdgeWeight
+   * @example if we start at 1pm and set the frame 7200s and have a maximum routing time of 3600s,
+   * the latest possible arriving time is 9800s, meaning the frame does not get integrated into the routing time.
+   * @default 18000 */
+  duration?: number
+
+  /** The maximum duration (in seconds) for walking before entering transit.
+   * If the value is -1, the duration is unlimited
+   * @default -1 */
+  maxWalkingTimeFromSource?: number
+
+  /** Not yet implemented, will be ignored. */
+  maxWalkingTimeToTarget?: number
+
+  /** If true, the service returns the connection that arrives first at the target instead of the fastest in the time frame
+   * @default false
+   */
+  earliestArrival?: boolean
+}
+
+export type TravelMode = {car: CarModeOptions} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
+
 
 /**
  * Osm Type (OSM map feature tags. See: http://wiki.openstreetmap.org/wiki/Map_Features)
@@ -818,30 +874,30 @@ export interface TravelTimeFactors {
   /**
    * @General Has an effect on all edge classes (excluding transit travel times)
    */
-  all: number,
+  all?: number, // All elements are optional
 
-  motorway: number,
-  motorway_link: number,
-  trunk: number,
-  trunk_link: number,
-  primary: number,
-  primary_link: number,
-  secondary: number,
-  secondary_link: number,
-  tertiary: number,
-  residential: number,
-  tertiary_link: number,
-  road: number,
-  unclassified: number,
-  service: number,
-  living_street: number,
-  pedestrian: number,
-  track: number,
-  path: number,
-  cycleway: number,
-  footway: number,
-  steps: number,
-  unknown: number
+  motorway?: number,
+  motorway_link?: number,
+  trunk?: number,
+  trunk_link?: number,
+  primary?: number,
+  primary_link?: number,
+  secondary?: number,
+  secondary_link?: number,
+  tertiary?: number,
+  residential?: number,
+  tertiary_link?: number,
+  road?: number,
+  unclassified?: number,
+  service?: number,
+  living_street?: number,
+  pedestrian?: number,
+  track?: number,
+  path?: number,
+  cycleway?: number,
+  footway?: number,
+  steps?: number,
+  unknown?: number
 }
 
 ////
@@ -884,4 +940,24 @@ export interface PoiType {
   contents?: PoiType[]
 }
 
-export type PoiHiearachy = PoiType[]
+export type PoiHierarchy = PoiType[]
+
+
+export interface Location extends LatLngId {
+  properties?: {
+    /** Parameter used for gravitational criteria to set a custom attraction strength for the given location
+     * @default 1
+     */
+    gravitationAttractionStrength?: number
+  }
+}
+
+
+export interface PoiGroup {
+  /** key should always be 'group' */
+  key: 'group'
+
+  /** represents the id of the group */
+  value: string
+}
+
