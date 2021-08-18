@@ -47,10 +47,10 @@ export interface PointOfInterestCriterion extends BaseCriterion {
     */
   type: ('closestPoiDistance' | 'poiCoverageCount' | 'poiCoverageDistance')
   /** list of Osm Types to consider for this criterion */
-  osmTypes: (OSMType[] | PoiGroup[])
+  osmTypes: (OSMType | PoiGroup)[]
   /** When referenceOsmTypes are set, the service will also calculate the reachability for the list of types in referenceOsmTypes
    * and the score will be the fraction: score(osmTypes) / score(referenceOsmTypes) */
-  referenceOsmTypes?: (OSMType[] | PoiGroup[])
+  referenceOsmTypes?: (OSMType | PoiGroup)[]
   /** default: 'https://api.targomo.com/pointofinterest/' */
   poiServiceUrl?: string
 }
