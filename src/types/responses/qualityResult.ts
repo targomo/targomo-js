@@ -1,5 +1,5 @@
 // Taken from lfr-frontend/src/types/quality.ts
-import { LatLngId } from '..';
+import { LatLngId, Poi } from '..';
 
 /**
  * @general Response from https://api.targomo.com/quality/v1/scores/post
@@ -22,6 +22,11 @@ export interface LatLngIdScores extends LatLngId {
   */
   scores: {
     [score: string]: number
+  }
+  details?: {
+    [criteriaId: string]: {
+      [edgeWeight: string]: Poi
+    }
   }
 }
 
