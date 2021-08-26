@@ -25,7 +25,7 @@ export interface LatLngIdScores extends LatLngId {
   }
   details?: {
     [criteriaId: string]: {
-      [edgeWeight: string]: Poi
+      [edgeWeight: string]: Poi[]
     }
   }
 }
