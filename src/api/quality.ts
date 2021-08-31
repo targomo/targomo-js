@@ -22,7 +22,7 @@ export class QualityClient {
   async fetch(locations: Location[], criteria: QualityRequestOptions, showDetails?: boolean, competitors?: Location[]):
     Promise<QualityServiceResponse> {
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.qualityUrl)
       .version()
       .part('/scores')
