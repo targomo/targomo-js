@@ -52,6 +52,34 @@ describe('TargomoClient quality service - scores', () => {
     expect(result.message).toBe("Scores calculated");
   })
 
+  test('quality service detailed request', async () => {
+    const locations = [
+      { lat: 52.510801, lng: 13.401207, id: 1 }
+    ]
+    const criteria: QualityRequestOptions = {
+      "poi-shops": {
+        type: "closestPoiDistance",
+        osmTypes: [
+          {
+            "key": "group",
+            "value": "g_shop"
+          }
+        ],
+        maxEdgeWeight: 500,
+        edgeWeight: "time",
+        travelMode: {
+          "walk": {}
+        },
+        coreServiceUrl: "https://api.targomo.com/westcentraleurope/"
+      }
+    }
+    const result = await testClient.quality.fetch(locations, criteria, true)
+    expect(result).toBeDefined();
+    expect(result.data[locations[0].id]).toBeDefined();
+    expect(result.data[locations[0].id].details).toBeDefined();
+    expect(result.errors.length).toBe(0)
+  })
+
 
   test('quality service request non-existent criteria', async () => {
     const locations = [
@@ -135,7 +163,7 @@ describe('TargomoClient quality service - scores', () => {
     const competitors: Location[] = [
       { lat: 52.511801, lng: 13.402207, id: 1 }
     ]
-    const result = await testClient.quality.fetch(locations, criteria, competitors)
+    const result = await testClient.quality.fetch(locations, criteria, false, competitors)
     expect(result).toBeDefined();
     expect(result.errors.length).toBe(0)
     expect(result.message).toBe("Scores calculated");
