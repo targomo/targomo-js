@@ -2,7 +2,7 @@
   "name": "@targomo/core",
   "description": "The JavaScript (& TypeScript) API for Targomo's time-based access mapping services.",
   "author": "Targomo",
-  "version": "0.5.1",
+  "version": "0.5.3",
   "license": "MIT",
   "repository": "github:targomo/targomo-js",
   "homepage": "https://targomo.com/developers",
