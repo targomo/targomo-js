@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/docker/debian/node:10_ci
+image: $CI_REGISTRY/docker/debian/node:10_ci_swift-client
 
 variables:
   NODE_ENV: gitlab-ci
