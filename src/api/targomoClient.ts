@@ -49,7 +49,7 @@ export class TargomoClient {
 
   /**
    * Create a new Targomo client
-   * @param region Service region name or full service URL. See: https://developers.route360.net/availability/
+   * @param region Service region name or full service URL. See: https://www.targomo.com/developers/resources/coverage/
    * @param serviceKey Your targomo service key
    * @param additionalOptions additional options, defaults will be used if not provided
    */
