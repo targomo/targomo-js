@@ -9,8 +9,6 @@ export class LatLng {
   elevation?: number
 }
 
-
-
 /**
  * A map bounding box
  */
@@ -56,7 +54,6 @@ export interface LatLngIdProperties extends LatLngProperties {
   id: any
 }
 
-
 /**
  *
  */
@@ -90,11 +87,10 @@ export type TravelSpeed = 'slow' | 'medium' | 'fast'
  */
 export type TravelType = 'walk' | 'car' | 'bike' | 'transit'
 
-
 export class TravelSpeedValues {
   /** Assumed speed in km/h
    * @default 5
- */
+   */
   speed?: number
 
   /** Uphill penalty specifies by how much a distance is enhanced per one height meter that has to be overcome.
@@ -130,9 +126,9 @@ export interface GeoSearchDescription {
 export interface StatisticsItem {
   id: number
   name: string
-  label?: string,
-  chart?: boolean,
-  type?: 'value' | 'percent' | 'average',
+  label?: string
+  chart?: boolean
+  type?: 'value' | 'percent' | 'average'
   meta?: StatisticsItemMeta
   groupId?: StatisticsGroupId
   groupMeta?: StatisticsGroupMeta
@@ -145,8 +141,8 @@ export interface StatisticsGroupEnsemble {
   countries: string[]
   endpoints: { [endpoint: string]: string }
   groups: {
-    id: number,
-    hierarchy: number,
+    id: number
+    hierarchy: number
     minZoomRecommendation: number
   }[]
 }
@@ -199,9 +195,9 @@ export class StatisticValues {
 }
 
 export interface MatrixOptimizationOptions {
-  pointsPerSolution: number,
-  maxSolutions: number,
-  statistic: StatisticsItem,
+  pointsPerSolution: number
+  maxSolutions: number
+  statistic: StatisticsItem
   name?: string
   description?: string
   statisticsGroup: StatisticsGroupId
@@ -214,7 +210,7 @@ export type StatisticsList = { [statisticKeyId: string]: StatisticValues }
 
 export enum SRID {
   SRID_3857 = 3857,
-  SRID_4326 = 4326
+  SRID_4326 = 4326,
 }
 
 /**
@@ -237,7 +233,6 @@ export interface LatLngIdTravelTime extends LatLngId {
  * Describes metadata about a single statistic in a StatisticsGroup
  */
 export interface StatisticsItemMeta {
-
   statistic_id: number
 
   /**
@@ -274,7 +269,7 @@ export interface StatisticsItemMeta {
    * Names of the StatisticsItem in different languages
    */
   names: {
-    en: string,
+    en: string
     [langCode: string]: string
   }
 
@@ -288,27 +283,26 @@ export interface StatisticsItemMeta {
    */
   topic?: { [langCode: string]: string }
 
-
   /**
    * Breakpoints based on different statistical clustering approaches
    */
   breakpoints: {
     equal_interval?: {
-      c9: number[],
-      c7: number[],
-      c5: number[],
+      c9: number[]
+      c7: number[]
+      c5: number[]
       [n: string]: number[]
-    },
+    }
     kmeans?: {
-      c9: number[],
-      c7: number[],
-      c5: number[],
+      c9: number[]
+      c7: number[]
+      c5: number[]
       [n: string]: number[]
-    },
+    }
     [method: string]: {
-      c9: number[],
-      c7: number[],
-      c5: number[],
+      c9: number[]
+      c7: number[]
+      c5: number[]
       [n: string]: number[]
     }
   }
@@ -318,7 +312,6 @@ export interface StatisticsItemMeta {
  * Describes metadata about a specific StatisticsSet (details https://service.route360.net/vector-statistics/statistics/list/v1)
  */
 export interface StatisticsGroupMeta {
-
   id: number
 
   ensembleId?: number
@@ -326,7 +319,7 @@ export interface StatisticsGroupMeta {
   /**
    * Minimum map zoom level to display the group on a map
    */
-  min_zoom: number,
+  min_zoom: number
 
   /**
    * TODO
@@ -344,34 +337,36 @@ export interface StatisticsGroupMeta {
   type: string
 
   /**
-   * TODO
+   * @deprecated
    */
   source: string
 
-  created: Date,
-  license: string,
-  modified: Date,
-  numberofpoints: number,
-  version: string,
+  attribution: string
+
+  created: Date
+  license: string
+  modified: Date
+  numberofpoints: number
+  version: string
   bounding_box: {
-    top_right: LatLng,
+    top_right: LatLng
     bottom_left: LatLng
-  },
+  }
 
   /**
- * Description of the StatisticsGroup in different languages
- */
+   * Description of the StatisticsGroup in different languages
+   */
   names: {
     [langCode: string]: string
-  },
+  }
 
   /**
- * Description of the StatisticsGroup in different languages
- */
+   * Description of the StatisticsGroup in different languages
+   */
   descriptions: {
     [langCode: string]: string
-  },
-  ignorevalues: number[],
+  }
+  ignorevalues: number[]
   stats: StatisticsItemMeta[]
 }
 
@@ -379,9 +374,9 @@ export interface StatisticsGroupMeta {
  * Padding object
  */
 export interface PaddingObject {
-  top?: number,
-  bottom?: number,
-  left?: number,
+  top?: number
+  bottom?: number
+  left?: number
   right?: number
 }
 
@@ -394,7 +389,7 @@ export interface SetBoundsOptions {
 }
 
 export interface GeometryId {
-  id: any,
+  id: any
   geometry: Geometry
   crs?: number
 }
@@ -404,7 +399,7 @@ export interface GeometryIdTravelMode extends GeometryId {
 }
 
 export interface GeometryIdTravelModePayload {
-  id: string,
+  id: string
   data: string
   crs: number
   tm?: TravelMode
@@ -425,7 +420,7 @@ Warning this is a paid feature so not all plans are allowed to enable it. */
 
 export interface TransitTravelModeOptions {
   frame?: FramePlaces
-  maxTransfers?: number;
+  maxTransfers?: number
 }
 
 export interface FramePlaces {
@@ -433,7 +428,7 @@ export interface FramePlaces {
    * @Format This is formatted like: YYYYMMDD
    * @example for the first of August: 20170801
    * @default 'Current date'
-  */
+   */
   date?: number
 
   /** This is the starting time for the routing in seconds from midnight.
@@ -463,8 +458,11 @@ export interface FramePlaces {
   earliestArrival?: boolean
 }
 
-export type TravelMode = {car: CarModeOptions} | {walk: TravelSpeedValues} | {bike: TravelSpeedValues}| {transit: TransitTravelModeOptions}
-
+export type TravelMode =
+  | { car: CarModeOptions }
+  | { walk: TravelSpeedValues }
+  | { bike: TravelSpeedValues }
+  | { transit: TransitTravelModeOptions }
 
 /**
  * Osm Type (OSM map feature tags. See: http://wiki.openstreetmap.org/wiki/Map_Features)
@@ -474,18 +472,18 @@ export interface OSMType {
   value: string
 }
 
-
 export interface ReachabilityResult {
   id: string
   source: string
   travelTime: number
 }
 
-export interface TimeResult {  /**
-  * @General This field defines what travel type is used for Targomo Time Service
-  * (or Routing Service if geojsonCreation = ROUTING_SERVICE).
-  */
- //  travelType: TravelType
+export interface TimeResult {
+  /**
+   * @General This field defines what travel type is used for Targomo Time Service
+   * (or Routing Service if geojsonCreation = ROUTING_SERVICE).
+   */
+  //  travelType: TravelType
   id: string
   targets: {
     id: string
@@ -503,17 +501,17 @@ export interface FpStore {
    * @General Unique ID that is required to be set so that Order and Vehicle can reference to their respective store.
    * @Nullable No.
    */
-  uuid: string;
+  uuid: string
   /**
    * @General Name of the store.
    * @Format Cannot be longer than 256 chars.
    */
-  name?: string;
+  name?: string
   /**
    * @General Location of the store.
    * @Format For store addresses the geocoordinates(lat, lng) must be present in the FpAddress object.
    */
-  address: FpAddress;
+  address: FpAddress
 }
 
 /**
@@ -526,14 +524,14 @@ export interface FpAddress {
   /**
    * @General A unique id which can be used to map the order entity back to the original after the request.
    */
-  uuid?: string;
+  uuid?: string
   /**
    * @General Amount of time it takes to carry out an order for this address in seconds.
    * @default 0
    * @Format Time in seconds.
    * @Nullable This value is only important for addresses in orders.
    */
-  avgHandlingTime?: number;
+  avgHandlingTime?: number
   /**
    * @General Latitude of the geocoordinates of the the address.
    * @Nullable This is required for addresses in store and start or endDestination.
@@ -541,20 +539,20 @@ export interface FpAddress {
    * @Default If no value is set the result will include a warning and the default of 1 second is assumed,
    * i.e. after arrival the transport departs one second later.
    */
-  lat?: number;
+  lat?: number
   /**
    * @General Longitude of the geocoordinates of the the address.
    * @Nullable This is required for addresses in store and start or endDestination.
    * @Format WGS84 format.
    */
-  lng?: number;
-  name?: string;
-  street?: string;
-  streetDetails?: string;
-  postalCode?: string;
-  city?: string;
-  country?: string;
-  phone?: string;
+  lng?: number
+  name?: string
+  street?: string
+  streetDetails?: string
+  postalCode?: string
+  city?: string
+  country?: string
+  phone?: string
 }
 
 /**
@@ -564,13 +562,13 @@ export interface FpOrder {
   /**
    * @General A unique id which can be used to map the order entity back to the original after the request.
    */
-  uuid?: string;
+  uuid?: string
   /**
    * @General To associate the order entity to a store.
    * @Format This id must be identical with one of the uuids in the store objects.
    * @Nullable No
    */
-  storeUuid: string;
+  storeUuid: string
   /**
    * @General The location of the order.
    * When specifying an order setting its address is mandatory.
@@ -588,7 +586,7 @@ export interface FpOrder {
    * This can lead to small runtime impairments for many addresses, since the geocoding accesses an external service.
    * The resulting geodata must not be saved.
    */
-  address: FpAddress;
+  address: FpAddress
   /**
    * @General The deadline (time and date) for an order to be serviced.
    * The optimization algorithm tries to minimize the amount of deadlines that are not kept.
@@ -596,7 +594,7 @@ export interface FpOrder {
    * @Format Expressed according to ISO 8601.
    * @Default null
    */
-  deadline?: string;
+  deadline?: string
 
   /**
    * @General The user can specify within what time intervals the order can be serviced via visitingTimes.
@@ -633,7 +631,7 @@ export interface FpOrder {
    * @Format Expressed according to ISO 8601.
    * @Default []
    */
-  visitingTimes?: {start: string, end: string}[];
+  visitingTimes?: { start: string; end: string }[]
   /**
    * @General The user can define a respective load to specify the use case specific characteristics of the order.
    * @Example
@@ -656,32 +654,32 @@ export interface FpOrder {
    * @Format The physical units of the load values, e.g. for weight and volume, must match the units of the associated loadRestrictions
    * in the Vehicle.
    */
-  load?: {[key: string]: number};
+  load?: { [key: string]: number }
 
   /**
    * @General The priority specifies the priority of an order. This has effects on:
-  * - Validation: If the order number or the total order volume/weight is too high, first orders with a lower rather than a higher
-  * priority are removed.
-  * - Optimization: It is preferable to try to keep the deadlines of orders with higher priority.
-  * Here, the priority of the order represents the number of penalty points it acquires for not meeting the order’s deadline.
-  * For example, not meeting a deadline of an order with priority 10 is penalty-equivalent with not meeting the deadline of
-  * 10 orders with priority 1. If the optimization is to have priority classes,
-  * i.e. orders of a higher priority class are more important than infinitely many orders of a lower priority class,
-  * we suggest the usage of a "folding technique": Consider you have 12 orders, 4 of each priority "low", "medium", and "high".
-  * The low priority orders are assigned the value 1, the orders with medium priority are assigned the value 5,
-  * and the orders with the high priority are assigned the value 25.
-  * With this configuration you could always ensure that the meeting of a deadline of one higher priority order is
-  * more important than the meeting of deadlines of all lower priority orders.
-  * ! Please note that this technique can cause "NumberOverflow" errors for too many classes and orders.
-  * @Default 1
+   * - Validation: If the order number or the total order volume/weight is too high, first orders with a lower rather than a higher
+   * priority are removed.
+   * - Optimization: It is preferable to try to keep the deadlines of orders with higher priority.
+   * Here, the priority of the order represents the number of penalty points it acquires for not meeting the order’s deadline.
+   * For example, not meeting a deadline of an order with priority 10 is penalty-equivalent with not meeting the deadline of
+   * 10 orders with priority 1. If the optimization is to have priority classes,
+   * i.e. orders of a higher priority class are more important than infinitely many orders of a lower priority class,
+   * we suggest the usage of a "folding technique": Consider you have 12 orders, 4 of each priority "low", "medium", and "high".
+   * The low priority orders are assigned the value 1, the orders with medium priority are assigned the value 5,
+   * and the orders with the high priority are assigned the value 25.
+   * With this configuration you could always ensure that the meeting of a deadline of one higher priority order is
+   * more important than the meeting of deadlines of all lower priority orders.
+   * ! Please note that this technique can cause "NumberOverflow" errors for too many classes and orders.
+   * @Default 1
    */
-  priority?: number;
+  priority?: number
 
   /**
    * @General A potential service comment for that order.
    * @Format Length cannot exceed 5000 chars.
    */
-  comments?: string;
+  comments?: string
 
   /**
    * @General With demands an order can be annotated with a list of things that need to be met by the supplies of the servicing/visiting
@@ -693,7 +691,7 @@ export interface FpOrder {
    * supplies.
    * @Default []
    */
-  demands?: string[];
+  demands?: string[]
 
   /*
    * @General If a tag is listed in optimizationMetadata.nonParallelOrdersByTags then they restrict the optimization in a way that some
@@ -709,7 +707,7 @@ export interface FpOrder {
    * It means that if another order exists that has the same "facility manager":"Max Mustermann" or "owner": "Muster AG" (or both) then
    * they cannot be serviced in parallel since for both visits the same facility manager and/or owner has to be present.
    */
-  tags?: {[key: string]: string};
+  tags?: { [key: string]: string }
 }
 
 /**
@@ -720,11 +718,11 @@ export interface FpTransport {
   /**
    * @General The vehicle entity describes the fixed parameters of a transport.
    */
-  vehicle: FpVehicle;
+  vehicle: FpVehicle
   /**
    * @General Metadata defining variable specifics for the vehicle/transports.
    */
-  metadata?: FpTransportMetadata;
+  metadata?: FpTransportMetadata
 }
 /**
  * @General The vehicle entity describes the fixed parameters of a transport.
@@ -734,13 +732,13 @@ export interface FpVehicle {
   /**
    * @General A unique id which can be used to map the order entity back to the original after the request.
    */
-  uuid?: string;
+  uuid?: string
   /**
    * @General To associate the vehicle entity to a store.
    * @Format This id must be identical with one of the uuids in the store objects.
    * @Nullable No
    */
-  storeUuid: string;
+  storeUuid: string
 
   /**
    * @General For each use case specific load key, for instance "weight", "volume", "item", the user can define restrictions
@@ -755,9 +753,9 @@ export interface FpVehicle {
    */
   loadRestrictions?: {
     [key: string]: {
-      maxSum: number,
-      minSum: number,
-      minSingle: number,
+      maxSum: number
+      minSum: number
+      minSingle: number
       maxSingle: number
     }
   }
@@ -771,7 +769,7 @@ export interface FpVehicle {
    * when secondsToPenaltyRatioForOutOfWorkingHours is set.
    * @Default If the priority is not specified the service will assume a priority of 1 and include a warning in the tour planning result.
    */
-  priority: number;
+  priority: number
 
   /**
    * @General With supplies a vehicle can be annotated with a list of items or expertise that it provides so it can fulfil the demands of
@@ -781,7 +779,7 @@ export interface FpVehicle {
    * Means that this vehicle can service any order that demands "normal_goods", "dangerous_goods", "region_germany", or
    * "region_benelux" or any combination of that, e.g. its tour can include an order with dangerous goods in Germany.
    */
-  supplies?: string[];
+  supplies?: string[]
 
   /**
    * An optional parameter that is used in the route optimization. With this parameter all or some vehicles can be annotated with extra
@@ -793,12 +791,12 @@ export interface FpVehicle {
    * @Min If specified it has to be equal or greater than 0.
    * @Default 0
    */
-  fixedTravelCosts?: number;
+  fixedTravelCosts?: number
 
-  name?: string;
-  plate?: string;
-  avgFuelConsumption?: number;
-  fuelType?: string;
+  name?: string
+  plate?: string
+  avgFuelConsumption?: number
+  fuelType?: string
 }
 
 /**
@@ -823,13 +821,13 @@ export interface FpTransportMetadata {
    * @Format Expressed according to ISO 8601
    * @Default If no earliestDepartureTime is specified, it is assumed that the vehicle is immediately ready for departure.
    */
-  earliestDepartureTime?: string;
+  earliestDepartureTime?: string
 
   /**
    * @General latestArrivalTime can be set to when the tour for this transport/vehicle has to end at the latest.
    * @Default If no value was set it is assumed that no latest end date for this transport/vehicle exists.
    */
-  latestArrivalTime?: string;
+  latestArrivalTime?: string
 
   /**
    * @General Breaks within the working hours (from earliestDepartureTime to latestArrivalTime) can be set with interruptionTimes.
@@ -837,7 +835,7 @@ export interface FpTransportMetadata {
    * If these breaks fall within the tour (-item) the result will contain these in the tourItem.interruptions parameter.
    * @Format Both, start and end dates must be set for all time intervals of interruption times.
    */
-  interruptionTimes?: {start: string, end: string}[]
+  interruptionTimes?: { start: string; end: string }[]
 
   /**
    * @General The start location of the vehicle.
@@ -845,7 +843,7 @@ export interface FpTransportMetadata {
    * the address of the store referenced in the Vehicle is assumed to be the start address of the transport's tour.
    * @Format For start addresses, the geocoordinates(lat, lng) must exist already.
    */
-  start?: FpAddress ;
+  start?: FpAddress
   /**
    * @General The field endDestinations contains the potential end points of the vehicle.
    * @Performance If multiple endDestinations are specified, finding the best endpoint is part of the optimization.
@@ -855,7 +853,7 @@ export interface FpTransportMetadata {
    * - Multiple list entries: The selection of the best end point is part of the optimization.
    * For end destination addresses the geocoordinates(lat, lng) must exist already.
    */
-  endDestinations?: FpAddress[];
+  endDestinations?: FpAddress[]
 }
 /**
  * @General Specifies factors with which the travel times of the edges are adjusted.
@@ -874,29 +872,29 @@ export interface TravelTimeFactors {
   /**
    * @General Has an effect on all edge classes (excluding transit travel times)
    */
-  all?: number, // All elements are optional
+  all?: number // All elements are optional
 
-  motorway?: number,
-  motorway_link?: number,
-  trunk?: number,
-  trunk_link?: number,
-  primary?: number,
-  primary_link?: number,
-  secondary?: number,
-  secondary_link?: number,
-  tertiary?: number,
-  residential?: number,
-  tertiary_link?: number,
-  road?: number,
-  unclassified?: number,
-  service?: number,
-  living_street?: number,
-  pedestrian?: number,
-  track?: number,
-  path?: number,
-  cycleway?: number,
-  footway?: number,
-  steps?: number,
+  motorway?: number
+  motorway_link?: number
+  trunk?: number
+  trunk_link?: number
+  primary?: number
+  primary_link?: number
+  secondary?: number
+  secondary_link?: number
+  tertiary?: number
+  residential?: number
+  tertiary_link?: number
+  road?: number
+  unclassified?: number
+  service?: number
+  living_street?: number
+  pedestrian?: number
+  track?: number
+  path?: number
+  cycleway?: number
+  footway?: number
+  steps?: number
   unknown?: number
 }
 
@@ -934,6 +932,7 @@ export interface PoiType {
   id: string
   name: string
   description: string
+  source: 'openstreetmap' | 'custom'
   type: 'CATEGORY' | 'TAG' | 'COMPOSITE_TAG'
   key?: string
   value?: any
@@ -941,7 +940,6 @@ export interface PoiType {
 }
 
 export type PoiHierarchy = PoiType[]
-
 
 export interface Location extends LatLngId {
   properties?: {
@@ -952,7 +950,6 @@ export interface Location extends LatLngId {
   }
 }
 
-
 export interface PoiGroup {
   /** key should always be 'group' */
   key: 'group'
@@ -960,4 +957,3 @@ export interface PoiGroup {
   /** represents the id of the group */
   value: string
 }
-
