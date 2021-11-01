@@ -338,6 +338,7 @@ export interface StatisticsGroupMeta {
 
   /**
    * @deprecated
+   * Please use `attribution` instead
    */
   source: string
 
