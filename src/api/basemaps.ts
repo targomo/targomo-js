@@ -42,9 +42,9 @@ export class BasemapsClient {
 
 
     /**
-     * @General Get a GL style URL which can be used in Mapbox.
+     * @General Get a GL style URL which can be used in Mapbox GL JS / MapLibre GL JS
      * @Exceptions This method can throw the error "valid style name required to access Targomo basemap".
-     * This error is thrown when the passed basremapName does not exist in basemapsLookup.
+     * This error is thrown when the passed basemapName does not exist in basemapsLookup.
      * Make sure that you get the basemapName with the basemapNames accessor when this error is thrown.
      * @Example
      * ``` js
@@ -52,9 +52,9 @@ export class BasemapsClient {
      * const basemapNames = basemaps.basemapNames;
      * const name = basemapNames[0];
      * const styleURL = basemaps.getStyleURL(name);
-     * yourMapboxMap.setStyle(styleUrl);
+     * yourGLMap.setStyle(styleUrl);
      * ```
-     * @Return Url for mapbox-gl style.
+     * @Return Url for gl style.
      * @Param basemapName
      * A string of valid basemap name (which you can get from the basemapNames accessor)
     */
@@ -64,7 +64,7 @@ export class BasemapsClient {
         }
         return new UrlUtil.TargomoUrl(this.client)
             .host(this.client.config.basemapsUrl)
-            .part(this.basemapsLookup[basemapName] + '.json')
+            .part(this.basemapsLookup[basemapName] + '/style.json')
             .params({key: this.client.serviceKey})
             .toString();
     }
