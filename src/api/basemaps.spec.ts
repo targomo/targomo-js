@@ -6,7 +6,7 @@ describe('TargomoClient basemaps service', () => {
 
   test('get basemap', async () => {
     expect(testClient.basemaps.getGLStyleURL('Basic'))
-    .toEqual('https://maps.targomo.com/styles/klokantech-basic-gl-style/style.json?key=' + process.env.TGM_TEST_API_KEY);
+    .toEqual('https://maps.targomo.com/styles/basic-gl-style/style.json?key=' + process.env.TGM_TEST_API_KEY);
 
     try {
       expect(testClient.basemaps.getGLStyleURL('asdf')).toThrowError();

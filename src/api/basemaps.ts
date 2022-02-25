@@ -24,7 +24,7 @@ export class BasemapsClient {
         'Light blue': 'blueberry-gl-style',
         'Dark blue': 'fiord-color-gl-style',
         'Dark blue No-Labels': 'fiord-color-nolabels-gl-style',
-        'Basic': 'klokantech-basic-gl-style',
+        'Basic': 'basic-gl-style',
         'Toner': 'toner-gl-style',
     }
 
