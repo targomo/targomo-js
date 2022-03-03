@@ -43,7 +43,7 @@ describe('TargomoClient statistics service', () => {
       }
     ]
 
-    const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 1}]
+    const sources = [{ lng: 13.3786431, lat: 52.4668237, id: 2}]
 
     const result = await testClient.statistics.dependent({
       statistics: [{id: 0, name: 'population'}],
