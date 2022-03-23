@@ -1,6 +1,5 @@
-import { TravelRequestOptions } from './../../types/requestOptions';
 import { LatLngId, LatLngIdTravelMode } from '../../index'
-import { GeometryIdTravelMode, GeometryIdTravelModePayload } from '../../types';
+import { GeometryIdTravelMode, GeometryIdTravelModePayload, TravelRequestOptions } from '..';
 
 /**
  * An object the contains a configuration set for making requests to the r360 services backend

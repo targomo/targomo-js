@@ -1,6 +1,5 @@
 import { StatisticsGroupId, StatisticsItem } from '../index';
-import { TravelRequestOptions } from '../requestOptions';
-import { GeometryId, LatLngId, TravelType } from '../types';
+import { GeometryId, LatLngId, TravelType,TravelRequestOptions } from '..';
 
 export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
   statisticsGroup: StatisticsGroupId

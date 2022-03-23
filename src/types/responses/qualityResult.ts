@@ -1,4 +1,3 @@
-// Taken from lfr-frontend/src/types/quality.ts
 import { LatLngId, Poi } from '..';
 
 /**

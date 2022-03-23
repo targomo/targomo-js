@@ -1,6 +1,6 @@
-import { LatLngId, OSMType} from '../../types'
-import { TargomoClient } from '../targomoClient'
-import { POIRequestOptions } from '../../types/options/poiRequestOptions'
+import { LatLngId, OSMType} from '..'
+import { TargomoClient } from '../../api/targomoClient'
+import { POIRequestOptions } from '../options/poiRequestOptions'
 import {TravelRequestPayload} from './travelRequestPayload'
 
 export class POIRequestPayload extends TravelRequestPayload {

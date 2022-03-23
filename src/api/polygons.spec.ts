@@ -1,8 +1,7 @@
-import { PolygonGeoJsonOptions, PolygonSvgOptions, PolygonSvgOptionsSources } from './payload/polygonRequestPayload';
+import { PolygonGeoJsonOptions, PolygonSvgOptions, PolygonSvgOptionsSources, PolygonSvgResult } from '../types';
 import { TargomoClient } from './index';
 import { FeatureCollection, MultiPolygon } from 'geojson';
 import { PolygonArray } from './polygons';
-import { PolygonSvgResult } from '../types/responses/polygonSvgResult';
 
 
 describe('TargomoClient polygon service', () => {

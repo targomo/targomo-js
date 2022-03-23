@@ -1,10 +1,6 @@
 import { TargomoClient } from './targomoClient'
-import { UrlUtil} from '../util';
-import { requests} from '../util/requestUtil';
-import { OptimizationRequestOptions } from '../types/options/optimizationRequestOptions';
-import { LatLngId } from '../types/types';
-import { OptimizationRequestPayload } from './payload/optimizationRequestPayload';
-import { OptimizationResult } from '../types/responses/optimizationResult';
+import { UrlUtil, requests} from '../util';
+import { LatLngId, OptimizationRequestOptions, OptimizationRequestPayload, OptimizationResult } from '../types';
 
 /**
  * @Topic Optimizations

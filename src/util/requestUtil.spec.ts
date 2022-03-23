@@ -1,5 +1,4 @@
-import { PolygonSvgOptions } from '../api/payload/polygonRequestPayload';
-import { PolygonSvgResult } from '../types/responses/polygonSvgResult';
+import { PolygonSvgOptions, PolygonSvgResult } from '../types';
 import { TargomoClient } from '../api/targomoClient';
 
 describe('RequestUtil tests', () => {

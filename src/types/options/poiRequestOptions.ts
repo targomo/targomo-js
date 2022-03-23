@@ -1,5 +1,4 @@
-import { OSMType } from '../types'
-import { TravelRequestOptions } from '../requestOptions';
+import { OSMType, TravelRequestOptions } from '..'
 
 export interface POIRequestOptions extends TravelRequestOptions {
   osmTypes: OSMType[]

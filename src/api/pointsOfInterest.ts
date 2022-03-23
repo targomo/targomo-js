@@ -2,12 +2,10 @@ import { FeatureCollection, Geometry } from 'geojson';
 import {
   BoundingBox, LatLngId,
   LatLngIdTravelMode, LatLngProperties,
-  OSMType, Poi, PoiHierarchy, PoiOverview
+  OSMType, Poi, PoiHierarchy, PoiOverview, 
+  POIRequestPayload, POIRequestOptions
 } from '../types';
-import { POIRequestOptions } from '../types/options/poiRequestOptions';
-import { requests } from '../util/requestUtil';
-import { UrlUtil } from '../util/urlUtil';
-import { POIRequestPayload } from './payload/poiRequestPayload';
+import { requests, UrlUtil } from '../util';
 import { TargomoClient } from './targomoClient';
 
 export interface PoiTileParameters {

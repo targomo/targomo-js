@@ -1,10 +1,10 @@
-import { GeometryIdTravelModePayload, LatLngId, TravelType } from '../../types';
+import { GeometryIdTravelModePayload, LatLngId, TravelType } from '..';
 import {
   StatisticsRequestOptions,
   StatisticsRequestOptionsSources, StatisticsTravelRequestOptions,
   StatisticsTravelRequestOptionsSources
-} from '../../types/options/statisticsRequestOptions';
-import { TargomoClient } from '../targomoClient';
+} from '../options/statisticsRequestOptions';
+import { TargomoClient } from '../../api/targomoClient';
 
 function isStatisticsRequestOptions(value: StatisticsRequestOptions | StatisticsTravelRequestOptions): value is StatisticsRequestOptions {
   return (<any>value).statistics

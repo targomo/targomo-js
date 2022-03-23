@@ -1,5 +1,5 @@
-import { StatisticsGeometryRequestOptions } from '../../types/options/statisticsRequestOptions'
-import { TargomoClient } from '../targomoClient';
+import { StatisticsGeometryRequestOptions } from '../options/statisticsRequestOptions'
+import { TargomoClient } from '../../api/targomoClient';
 
 export class StatisticsGeometryRequestPayload {
   statisticIds: number[]

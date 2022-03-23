@@ -1,4 +1,4 @@
-import { FpTransport, TravelTimeFactors, TravelType, EdgeWeightType} from '../../types';
+import { FpTransport, TravelTimeFactors, TravelType, EdgeWeightType} from '..';
 import { FpStore, FpOrder } from '../..';
 
 export interface FpRequestMetadata {

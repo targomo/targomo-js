@@ -1,11 +1,9 @@
-import { FpResult } from './../types/responses/FleetResult';
-import { FpRequestOptions } from './../types/options/fleetRequestOptions';
-import { FpTransport } from './../types/types';
+import { 
+    FpResult, FpRequestOptions, FpTransport, 
+    FpRequestPayload, FpStore, FpOrder 
+} from './../types';
 import { TargomoClient } from './targomoClient'
-import { requests } from '../util/requestUtil';
-import { FpRequestPayload } from './payload/fleetsRequestPayload';
-import { FpStore, FpOrder } from '../types';
-import { UrlUtil } from '../util/urlUtil';
+import { requests, UrlUtil } from '../util';
 
 
 /**

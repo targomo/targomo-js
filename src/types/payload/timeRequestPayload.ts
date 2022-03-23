@@ -1,6 +1,6 @@
-import { LatLngId} from '../../types'
-import { TargomoClient } from '../targomoClient'
-import { TimeRequestOptionsSourcesTargets } from '../../types/options'
+import { LatLngId} from '..'
+import { TargomoClient } from '../../api/targomoClient'
+import { TimeRequestOptionsSourcesTargets } from '../options'
 import {TravelRequestPayload} from './travelRequestPayload'
 
 export class TimeRequestPayload extends TravelRequestPayload {

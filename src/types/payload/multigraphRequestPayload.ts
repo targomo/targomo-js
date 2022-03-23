@@ -2,7 +2,7 @@ import {
   LatLngId, LatLngIdTravelMode,
   MultigraphSpecificRequestOptions
 } from '../..';
-import { MultigraphRequestOptionsSourcesTargets } from '../../types';
+import { MultigraphRequestOptionsSourcesTargets } from '..';
 import { TravelRequestPayload } from './travelRequestPayload';
 
 
