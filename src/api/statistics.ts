@@ -13,13 +13,12 @@ import {
   StatisticsGroupEnsemble,
   UrlUtil
 } from '../index';
-import { StatisticsRequestPayload } from './payload/statisticsRequestPayload';
-import { StatisticsResult } from '../types/responses/index';
-import { requests } from '../util/requestUtil';
-import { SimpleLRU } from '../util/cache';
-import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload';
-import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult';
-import { StatisticsRequestOptionsSources, StatisticsTravelRequestOptionsSources } from '../types';
+import { 
+    StatisticsRequestPayload, StatisticsResult, 
+    StatisticsGeometryRequestPayload, StatisticsGeometryResult, 
+    StatisticsRequestOptionsSources, StatisticsTravelRequestOptionsSources 
+} from '../types';
+import { SimpleLRU, requests } from '../util';
 
 /**
  * @Topic Statistics

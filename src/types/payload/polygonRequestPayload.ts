@@ -1,6 +1,6 @@
-import { LatLngId, SRID} from '../../types';
-import { TargomoClient } from '../targomoClient';
-import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../../types/options/polygonRequestOptions';
+import { LatLngId, SRID} from '..';
+import { TargomoClient } from '../../api/targomoClient';
+import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../options/polygonRequestOptions';
 import {TravelRequestPayload} from './travelRequestPayload'
 
 export interface PolygonSvgOptions extends PolygonRequestOptions {

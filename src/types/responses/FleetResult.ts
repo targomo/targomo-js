@@ -1,6 +1,5 @@
-import { FpVehicle, FpStore, FpAddress, FpOrder, FpTransport } from './../types';
+import { FpVehicle, FpStore, FpAddress, FpOrder, FpTransport, FpRequestPayload, FpRequestMetadata } from '..';
 import { FeatureCollection, LineString } from 'geojson';
-import { FpRequestPayload, FpRequestMetadata } from '../../api/payload/fleetsRequestPayload';
 
 /**
  * @General The reponse of the request if the optimization was successfully carried out. It contains the original request body information

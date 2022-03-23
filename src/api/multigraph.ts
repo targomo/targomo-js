@@ -1,7 +1,6 @@
 import { TargomoClient } from '.';
 import { UrlUtil, LatLngIdTravelMode, LatLngId, requests, MultigraphRequestOptions, MultigraphRequestOptionsSourcesTargets } from '..';
-import { MgResult, MgOverviewResult } from '../types/responses/multigraphResult';
-import { MultigraphRequestPayload } from './payload/multigraphRequestPayload';
+import { MgResult, MgOverviewResult, MultigraphRequestPayload } from '../types';
 
 /**
  * @Topic Multigraph

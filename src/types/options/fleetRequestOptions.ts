@@ -1,4 +1,4 @@
-import { BaseRequestOptions } from '../requestOptions';
+import { BaseRequestOptions } from './requestOptions';
 import { TravelType } from '../types';
 
 /**

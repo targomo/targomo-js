@@ -4,8 +4,8 @@ import {
   MultigraphRequestOptions,
   MultigraphRequestAggregation,
   MultigraphAggregationOptions,
-} from '../../types'
-import { TargomoClient } from '../targomoClient'
+} from '..'
+import { TargomoClient } from '../../api/targomoClient'
 
 export class StatefulMultigraphRequestPayload extends StatisticsRequestPayload {
   multiGraphPreAggregationPipeline: {

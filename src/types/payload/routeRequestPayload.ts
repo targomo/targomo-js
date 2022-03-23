@@ -1,6 +1,6 @@
-import { LatLngId} from '../../types'
-import { TargomoClient } from '../targomoClient'
-import { RouteRequestOptions, RouteRequestOptionsSourcesTargets } from '../../types/options'
+import { LatLngId} from '..'
+import { TargomoClient } from '../../api/targomoClient'
+import { RouteRequestOptions, RouteRequestOptionsSourcesTargets } from '../options'
 import { TravelRequestPayload } from './travelRequestPayload';
 
 export interface RouteCompactOptions extends RouteRequestOptions {

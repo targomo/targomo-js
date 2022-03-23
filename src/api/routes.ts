@@ -1,14 +1,11 @@
 import { FeatureCollection, LineString, Point } from 'geojson';
 import { LatLngId, LatLngIdTravelMode } from '../index';
-import { RouteRequestOptions } from '../types/options/routeRequestOptions';
-import { Route } from '../types/responses/route';
-import { requests } from '../util/requestUtil';
-import { UrlUtil } from '../util/urlUtil';
-import {
-  RouteCompactOptions,
-  RouteCompactOptionsSourcesTargets, RouteGeoJsonOptions,
-  RouteGeoJsonOptionsSourcesTargets, RouteRequestPayload
-} from './payload/routeRequestPayload';
+import { 
+    RouteRequestOptions, Route, RouteCompactOptions,
+    RouteCompactOptionsSourcesTargets, RouteGeoJsonOptions,
+    RouteGeoJsonOptionsSourcesTargets, RouteRequestPayload 
+} from '../types';
+import { requests, UrlUtil } from '../util';
 import { TargomoClient } from './targomoClient';
 
 /**

@@ -1,4 +1,4 @@
-import { LatLng, BoundingBox, TravelType } from './../types/index'
+import { LatLng, BoundingBox, TravelType } from './../types'
 import * as projection from './projection'
 
 /**

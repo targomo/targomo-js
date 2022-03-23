@@ -1,14 +1,13 @@
 import { FeatureCollection, MultiPolygon } from 'geojson';
 import { boundingBoxFromLocationArray, webMercatorToLatLng } from '../geometry';
 import { LatLngId } from '../index';
-import { BoundingBox, LatLng } from '../types';
-import { PolygonRequestOptions } from '../types/options/polygonRequestOptions';
-import { ProjectedBounds, ProjectedPolygon } from '../types/projectedPolygon';
-import { PolygonData, PolygonSvgResult } from '../types/responses/polygonSvgResult';
-import { requests } from '../util/requestUtil';
-import { UrlUtil } from '../util/urlUtil';
-import { PolygonGeoJsonOptions, PolygonGeoJsonOptionsSources,
-         PolygonRequestPayload, PolygonSvgOptions, PolygonSvgOptionsSources } from './payload/polygonRequestPayload';
+import { 
+    BoundingBox, LatLng, PolygonRequestOptions, 
+    PolygonGeoJsonOptions, PolygonGeoJsonOptionsSources,
+    PolygonRequestPayload, PolygonSvgOptions, PolygonSvgOptionsSources, 
+    ProjectedBounds, ProjectedPolygon, PolygonData, PolygonSvgResult
+} from '../types';
+import { requests, UrlUtil } from '../util';
 import { TargomoClient } from './targomoClient';
 
 

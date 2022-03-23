@@ -1,5 +1,7 @@
-import { TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
-import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types';
+import { 
+    LatLngIdTravelMode, LatLngId, GeometryIdTravelMode, 
+    TravelRequestOptions, UseCacheRequestOptions 
+} from '..';
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',

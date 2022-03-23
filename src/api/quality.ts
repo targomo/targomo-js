@@ -1,11 +1,7 @@
 import { Location } from '../index';
-import { QualityServiceResponse } from '../types';
-import { QualityRequestOptions } from '../types/options/qualityRequestOptions';
-import { requests } from '../util/requestUtil';
-import { UrlUtil } from '../util/urlUtil';
-import { QualityRequestPayload } from './payload/qualityRequestPayload';
+import { QualityServiceResponse, QualityRequestOptions, QualityRequestPayload } from '../types';
+import { requests, UrlUtil } from '../util';
 import { TargomoClient } from './targomoClient';
-
 
 
 /**

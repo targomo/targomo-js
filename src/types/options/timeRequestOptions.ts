@@ -1,5 +1,7 @@
-import { UseCacheRequestOptions, TravelRequestOptions } from '../requestOptions';
-import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types';
+import { 
+    LatLngIdTravelMode, LatLngId, GeometryIdTravelMode, 
+    UseCacheRequestOptions, TravelRequestOptions 
+} from '..';
 
 export interface TimeRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
 }

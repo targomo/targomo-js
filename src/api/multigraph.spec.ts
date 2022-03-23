@@ -1,5 +1,7 @@
-import { MultigraphRequestOptionsSourcesTargets } from './../types/options/multigraphRequestOptions';
-import { MultigraphRequestAggregation, MultigraphRequestLayer, MultigraphRequestOptions } from '../types';
+import { 
+    MultigraphRequestAggregation, MultigraphRequestLayer, 
+    MultigraphRequestOptions, MultigraphRequestOptionsSourcesTargets 
+} from '../types';
 import { TargomoClient } from './targomoClient';
 
 describe('Multigraph', () => {

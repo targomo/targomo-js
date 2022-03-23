@@ -1,9 +1,10 @@
 import { TargomoClient } from './targomoClient'
-import { LatLngId, LatLngIdTravelTime, LatLngIdTravelMode, TimeResult, ReachabilityResult } from '../index';
-import { requests} from '../util/requestUtil';
-import { TimeRequestOptions, TimeRequestOptionsSourcesTargets } from '../types/options/timeRequestOptions';
-import { TimeRequestPayload } from './payload/timeRequestPayload';
-import { UrlUtil } from '../util/urlUtil';
+import { 
+    LatLngId, LatLngIdTravelTime, LatLngIdTravelMode, 
+    TimeResult, ReachabilityResult, TimeRequestOptions, 
+    TimeRequestOptionsSourcesTargets, TimeRequestPayload
+} from '../index';
+import { requests, UrlUtil } from '../util';
 
 /**
  * @Topic Reachability

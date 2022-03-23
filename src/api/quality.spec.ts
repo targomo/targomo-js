@@ -1,4 +1,4 @@
-import { QualityRequestOptions } from '../types/options/qualityRequestOptions';
+import { QualityRequestOptions } from '../types';
 import { TargomoClient } from './index';
 import { Location } from '../index';
 

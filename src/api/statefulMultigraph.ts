@@ -1,8 +1,7 @@
 import { TargomoClient } from './targomoClient'
 import { LatLngId, MultigraphRequestOptions, MultigraphInfo, BoundingBox } from '../index'
-import { UrlUtil } from '../util/urlUtil'
-import { requests } from '../util/requestUtil'
-import { StatefulMultigraphRequestPayload } from './payload/statefulMultigraphRequestPayload'
+import { requests, UrlUtil } from '../util'
+import { StatefulMultigraphRequestPayload } from '../types'
 
 /**
  * @Topic Stateful Multigraph

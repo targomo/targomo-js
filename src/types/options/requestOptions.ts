@@ -2,7 +2,7 @@ import {
   TravelSpeedValues,
   TravelType,
   TravelTimeFactors
-} from './types'
+} from '../types'
 
 
 export class UseCacheRequestOptions {
