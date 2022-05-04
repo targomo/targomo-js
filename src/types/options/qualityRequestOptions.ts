@@ -1,5 +1,6 @@
 import type { Geometry } from 'geojson'
 import type { Location, OSMType, PoiGroup, TravelMode, TravelTimeFactors } from '..'
+import type { TravelType } from '../types'
 
 export type CriterionType =
   | 'statisticsSum'
@@ -84,6 +85,20 @@ interface BasePoiCriterion extends BaseCriterion {
   poiServiceUrl?: string
 }
 
+interface BaseGravitationCriterion {
+  /** This attribute specifies the exponential power to be applied on values based on proximity to any source.
+   * When customized, it is advised to be a negative value to express correctly the gravitation attraction.
+   * @example A high negative lambda, e.g. -4, means that the distance plays a bigger role in the probability to favor a store/location
+   * @example a lower negative lambda, e.g. -1.5, means a lower influence of the travel distance towards a probability
+   * @default -2 */
+  gravitationExponent?: number
+
+  /**
+   * can be used to override root level competitors
+   */
+  competitors?: Location[]
+}
+
 export interface PointOfInterestReachabilityCriterion extends BasePoiCriterion, BaseReachabilityCriterion {
   /** must be one of these values
   @example poiCoverageCount: the retrieved score is the number of POIs reachable from the location
@@ -92,6 +107,13 @@ export interface PointOfInterestReachabilityCriterion extends BasePoiCriterion, 
   @example closestPoiDistance: the retrieved score is the score weighted by the distance of the closest POI reachable from the location
     */
   type: 'closestPoiDistance' | 'poiCoverageCount' | 'poiCoverageDistance'
+}
+
+export interface PointOfInterestGravitationCriterion
+  extends BasePoiCriterion,
+    BaseReachabilityCriterion,
+    BaseGravitationCriterion {
+  type: 'poiGravitationSum'
 }
 
 export interface PointOfInterestInZoneCriterion extends BasePoiCriterion {
@@ -118,7 +140,10 @@ export interface QualityStatisticsInZoneCriterion extends BaseStatisticsCriterio
   type: 'statisticsSumInZone'
 }
 
-export interface GravitationalCriterion extends BaseStatisticsCriterion, BaseReachabilityCriterion {
+export interface GravitationalCriterion
+  extends BaseStatisticsCriterion,
+    BaseReachabilityCriterion,
+    BaseGravitationCriterion {
   /** Must be equal to
    * @example gravitationSum: the retrieved score is the sum of the data of all statistics cells reachable from
    * the location according to the gravitational model.
@@ -126,15 +151,9 @@ export interface GravitationalCriterion extends BaseStatisticsCriterion, BaseRea
    * For more details about the gravitational model: https://www.targomo.com/how-to-select-the-ideal-branch-location-with-science
    */
   type: 'gravitationSum'
-  /** This attribute specifies the exponential power to be applied on values based on proximity to any source.
-   * When customized, it is advised to be a negative value to express correctly the gravitation attraction.
-   * @example A high negative lambda, e.g. -4, means that the distance plays a bigger role in the probability to favor a store/location
-   * @example a lower negative lambda, e.g. -1.5, means a lower influence of the travel distance towards a probability
-   * @default -2 */
-  gravitationExponent?: number
 }
 
-export interface QualityStaypointCriterion extends BaseCriterion {
+export interface StaypointCriterion extends BaseCriterion {
   type: 'staypointCount'
   dayEnd: number
   dayOfYearEnd: number
@@ -147,10 +166,29 @@ export interface QualityStaypointCriterion extends BaseCriterion {
   unique: true
 }
 
-export interface QualityMathCriterion extends BaseCriterion {
+export interface MathCriterion extends BaseCriterion {
   type: 'mathAggregation'
   criterionParameters: { [key: string]: object }
   mathExpression: string
+}
+
+export interface EdgeStatisticsCriterion extends BaseCriterion {
+  type: 'edgeStatistics'
+  edgeStatisticsServiceUrl: string
+  edgeStatisticGroupId: number
+  edgeStatisticId: number
+  radius: number
+  radii: number[]
+  travelType: TravelType
+  direction: 0 | 1 | 2 | 'any' | 'sum' | 'mean'
+  ignoreRoadClasses: number[]
+}
+
+export interface TransitCriterion extends BaseCriterion {
+  type: 'transitStopsSum' | 'transitStopsDistance'
+  startTime: number
+  endTime: number
+  referenceInterval: number
 }
 
 export type QualityCriterion =
@@ -159,8 +197,10 @@ export type QualityCriterion =
   | StatisticsReachabilityCriterion
   | QualityStatisticsInZoneCriterion
   | GravitationalCriterion
-  | QualityStaypointCriterion
-  | QualityMathCriterion
+  | StaypointCriterion
+  | MathCriterion
+  | EdgeStatisticsCriterion
+  | TransitCriterion
 
 /** Criterion definitions
  * For each criterion, a key must be set to be able to identify the different criteria in the response */
