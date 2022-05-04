@@ -69,7 +69,7 @@ async function buildLibraries() {
       ...defaultPlugins,
       uglify(),
       copy({
-        targets: [{ src: './package.json', dest: paths.join(distFolder, 'package.json') }],
+        targets: [{ src: './package.json', dest: distFolder }],
         verbose: true,
       }),
     ],
