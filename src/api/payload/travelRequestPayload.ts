@@ -3,7 +3,7 @@ import { LatLngId, LatLngIdTravelMode } from '../../index'
 import { GeometryIdTravelMode, GeometryIdTravelModePayload } from '../../types'
 
 /**
- * An object the contains a configuration set for making requests to the r360 services backend
+ * An object the contains a configuration set for making requests to the targomo services backend
  */
 export class TravelRequestPayload extends TravelRequestOptions {
   sources: LatLngIdTravelMode[]

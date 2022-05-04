@@ -39,6 +39,11 @@ interface BaseCriterion {
  * Specialization of the Base criteion for all criteria that do reachability
  */
 interface BaseReachabilityCriterion extends BaseCriterion {
+  /**
+   * URL to targomo core service
+   */
+  coreServiceUrl: string
+
   /** Determines the dimension of the edges' weights, i.e. time (distance in seconds) or distance (distance in meters).
    * 'distance' Will optimize for distance and search for the shortest route,
    * 'time' will optimize for time and will search for the fastest route.

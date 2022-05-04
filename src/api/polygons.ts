@@ -22,27 +22,27 @@ import { TargomoClient } from './targomoClient'
 export class PolygonsClient {
   constructor(private client: TargomoClient) {}
   /**
-   * Request geojson polygons for one or more sources from r360 service
+   * Request geojson polygons for one or more sources from targomo service
    * @param sources
    * @param options
    */
   async fetch(sources: LatLngId[], options: PolygonGeoJsonOptions): Promise<FeatureCollection<MultiPolygon>>
 
   /**
-   * Request svg polygons for one or more sources from r360 service
+   * Request svg polygons for one or more sources from targomo service
    * @param sources
    * @param options
    */
   async fetch(sources: LatLngId[], options: PolygonSvgOptions): Promise<PolygonArray>
 
   /**
-   * Request geojson polygons for one or more sources from r360 service
+   * Request geojson polygons for one or more sources from targomo service
    * @param options
    */
   async fetch(options: PolygonGeoJsonOptionsSources): Promise<FeatureCollection<MultiPolygon>>
 
   /**
-   * Request svg polygons for one or more sources from r360 service
+   * Request svg polygons for one or more sources from targomo service
    * @param options
    */
   async fetch(options: PolygonSvgOptionsSources): Promise<PolygonArray>

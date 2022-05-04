@@ -92,7 +92,7 @@ export class PointsOfInterestClient {
   }
 
   /**
-   * Makes a request to the r360 poi service.
+   * Makes a request to the targomo poi service.
    * Returns a list of OSMLatLng locations of the categories specified by `osmTypes` that are reachable within the given travel options
    */
   async reachable(

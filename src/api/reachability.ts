@@ -43,7 +43,7 @@ export class ReachabilityClient {
   }
 
   /**
-   * Makes a reachability request to the r360 services, and returns the raw results of the request
+   * Makes a reachability request to the targomo services, and returns the raw results of the request
    *
    * @param sources
    * @param targets
@@ -72,7 +72,7 @@ export class ReachabilityClient {
   }
 
   /**
-   * Makes a reachability request to the r360 services and returns the number of locations that are reachable within the given parameters
+   * Makes a reachability request to the targomo services and returns the number of locations that are reachable within the given parameters
    *
    * @param sources
    * @param targets
@@ -90,7 +90,7 @@ export class ReachabilityClient {
   }
 
   /**
-   * Makes a reachability requests to the r360 services and returns the input targets decorated with the resulting travel time
+   * Makes a reachability requests to the targomo services and returns the input targets decorated with the resulting travel time
    *
    * @param sources
    * @param targets

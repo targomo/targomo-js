@@ -48,7 +48,7 @@ export class StatisticsClient {
   }
 
   /**
-   * Make a statistics request to the r360 services
+   * Make a statistics request to the targomo services
    */
   async individual(sources: LatLngId[], options: StatisticsRequestOptions): Promise<{ [id: string]: StatisticsList }>
   async individual(options: StatisticsRequestOptionsSources): Promise<{ [id: string]: StatisticsList }>
@@ -61,7 +61,7 @@ export class StatisticsClient {
   }
 
   /**
-   * Make a statistics request to the r360 services
+   * Make a statistics request to the targomo services
    */
   async travelTimes(sources: LatLngId[], options: StatisticsTravelRequestOptions): Promise<ReachableTile>
   async travelTimes(options: StatisticsTravelRequestOptionsSources): Promise<ReachableTile>

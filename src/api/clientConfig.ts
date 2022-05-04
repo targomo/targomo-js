@@ -1,5 +1,5 @@
 // TODO: or rename to ClientDefaults maybe to make it more clear
-// TODO: add more defaults here ...ex same stuff as in r360-js
+// TODO: add more defaults here ...ex same stuff as in targomo-js
 
 import { TargomoEnvironment } from '../constants'
 

@@ -223,7 +223,7 @@ export interface LatLngId {
 }
 
 /**
- * A LatLngId decorated with a travel time, usually return from an r360 service
+ * A LatLngId decorated with a travel time, usually return from an targomo service
  */
 export interface LatLngIdTravelTime extends LatLngId {
   travelTime?: number
