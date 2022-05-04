@@ -11,7 +11,7 @@ export interface Cache<T> {
  */
 export class SimpleLRU<T> implements Cache<T> {
   private map: {[index: string]: SimpleLRUEntry<T>} = {}
-  private size: number = 0
+  private size = 0
   private newest: SimpleLRUEntry<T>
   private oldest: SimpleLRUEntry<T>
 

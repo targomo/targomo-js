@@ -191,7 +191,7 @@ export class StatisticsClient {
   async metadataKey(group: StatisticsGroupMeta | StatisticsGroupId, statistic: StatisticsItem): Promise<StatisticsItemMeta> {
     const endpoint = await this.metadata(group)
 
-    for (let attribute of endpoint.stats) {
+    for (const attribute of endpoint.stats) {
       if (statistic.id == attribute.statistic_id || (attribute.names && attribute.names.en == statistic.name)) {
         return attribute
       }
@@ -239,7 +239,7 @@ export class StatisticsClient {
       const result = await requests(this.client).fetch(url, 'GET')
 
       // FIXME: workaround for server results
-      for (let id in result) {
+      for (const id in result) {
         if (result[id]) {
           const ensemble = result[id]
           ensemble.id = +ensemble.id

@@ -1,6 +1,6 @@
 import { Cache, SimpleCache } from '../util/cache'
-import { TargomoClient } from '../api/index';
-import { TargomoEnvironment, TARGOMO_ENVIRONMENT_HEADER } from '../constants';
+import { TargomoClient } from '../api/index'
+import { TargomoEnvironment, TARGOMO_ENVIRONMENT_HEADER } from '../constants'
 
 const CACHE = new SimpleCache<any>()
 
@@ -15,8 +15,8 @@ function logBody(body: any) {
 export class RequestsUtil {
   constructor(private options?: { debug?: boolean; timeout?: number; environment?: TargomoEnvironment }) {}
 
-  async fetch(url: string, method: string = 'GET', payload?: any, headers: { [index: string]: string } = {}) {
-    if (!!this.options.environment) {
+  async fetch(url: string, method = 'GET', payload?: any, headers: { [index: string]: string } = {}) {
+    if (this.options.environment) {
       headers[TARGOMO_ENVIRONMENT_HEADER] = this.options.environment
     }
 
@@ -39,7 +39,7 @@ export class RequestsUtil {
     const requestHeaders = new Headers(headers)
     const requestOptions: RequestInit = {
       method: requestMethod,
-      headers: requestHeaders
+      headers: requestHeaders,
     }
 
     if (method === 'POST-RAW') {
@@ -78,9 +78,10 @@ export class RequestsUtil {
 
     if (response.status >= 400) {
       console.log(`  [Body]`)
-      const responseBody = response.headers.get('content-type') === 'application/json'
-                            ? JSON.stringify(await response.text(), null, 2)
-                            : await response.text()
+      const responseBody =
+        response.headers.get('content-type') === 'application/json'
+          ? JSON.stringify(await response.text(), null, 2)
+          : await response.text()
 
       logBody(responseBody)
       console.log('[TargomoClient End]')
@@ -90,8 +91,8 @@ export class RequestsUtil {
       let responseValue: any = null
       if (method === 'JSONP') {
         const data = await response.text()
-        let start = data.indexOf('(')
-        let end = data.lastIndexOf(')')
+        const start = data.indexOf('(')
+        const end = data.lastIndexOf(')')
 
         if (start > -1 && end > -1) {
           responseValue = JSON.parse(data.substring(start + 1, end))
@@ -114,7 +115,7 @@ export class RequestsUtil {
     }
   }
 
-  async fetchData(url: string, method: string = 'GET', payload?: any, headers?: { [index: string]: string }) {
+  async fetchData(url: string, method = 'GET', payload?: any, headers?: { [index: string]: string }) {
     // No error handling here, it is done in this.fetch()
     const result: any = await this.fetch(url, method, payload, headers)
     if (!result.data) {
@@ -132,11 +133,13 @@ export class RequestsUtil {
    * @param method
    * @param payload
    */
-  fetchCached<T>(cache: boolean | Cache<T>,
+  fetchCached<T>(
+    cache: boolean | Cache<T>,
     url: string,
-    method: string = 'GET',
+    method = 'GET',
     payload?: any,
-    headers?: { [index: string]: string }) {
+    headers?: { [index: string]: string }
+  ) {
     if (cache !== false) {
       if (cache === true || !cache) {
         cache = CACHE
@@ -156,11 +159,13 @@ export class RequestsUtil {
    * @param method
    * @param payload
    */
-  fetchCachedData<T>(cache: boolean | Cache<T>,
+  fetchCachedData<T>(
+    cache: boolean | Cache<T>,
     url: string,
-    method: string = 'GET',
+    method = 'GET',
     payload?: any,
-    headers?: { [index: string]: string }) {
+    headers?: { [index: string]: string }
+  ) {
     if (cache !== false) {
       if (cache === true || !cache) {
         cache = CACHE
@@ -174,10 +179,11 @@ export class RequestsUtil {
   }
 }
 
-export function requests(client?: TargomoClient, options?: { requestTimeout?: number }): RequestsUtil {
+export function requests(client?: TargomoClient, _options?: { requestTimeout?: number }): RequestsUtil {
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
   return new RequestsUtil({
     debug: client && client.config && client.config.debug,
-    environment: (!!client && !!client.config && !!client.config.environment) ? client.config.environment : TargomoEnvironment.PROD,
+    environment:
+      !!client && !!client.config && !!client.config.environment ? client.config.environment : TargomoEnvironment.PROD,
   }) // {timeout: requestTimeout})
 }

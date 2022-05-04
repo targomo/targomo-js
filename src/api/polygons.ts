@@ -99,7 +99,7 @@ export class PolygonArray extends Array<PolygonSvgResult> {
   }
 
   getMaxBounds(): BoundingBox {
-    let boundsPoints: LatLng[] = []
+    const boundsPoints: LatLng[] = []
     this.forEach((svgPolygons: PolygonSvgResult) => {
       let bounds3857: ProjectedBounds;
       svgPolygons.polygons.forEach((polygonData: PolygonData) => {

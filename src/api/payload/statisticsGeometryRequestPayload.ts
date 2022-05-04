@@ -8,7 +8,7 @@ export class StatisticsGeometryRequestPayload {
 
   constructor(client: TargomoClient, geometry: string, options: StatisticsGeometryRequestOptions) {
 
-    let statisticsIndices: number[] = options.statistics.map(statistic => {
+    const statisticsIndices: number[] = options.statistics.map(statistic => {
       if (statistic instanceof Number || typeof statistic === 'number') {
         return +statistic
       } else {

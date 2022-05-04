@@ -25,7 +25,7 @@ export class ReachabilityClient {
     targets?: LatLngId[],
     options?: TimeRequestOptionsSourcesTargets
   ): Promise<TimeResult[]> {
-    let sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
+    const sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
     options = options || <TimeRequestOptionsSourcesTargets>sourcesOrOptions
 
     const url = new UrlUtil.TargomoUrl(this.client)
@@ -54,7 +54,7 @@ export class ReachabilityClient {
     targets?: LatLngId[],
     options?: TimeRequestOptionsSourcesTargets
   ): Promise<ReachabilityResult[]> {
-    let sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
+    const sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
     options = options || <TimeRequestOptionsSourcesTargets>sourcesOrOptions
 
     const url = new UrlUtil.TargomoUrl(this.client)
@@ -108,7 +108,7 @@ export class ReachabilityClient {
     targets?: T[],
     options?: TimeRequestOptionsSourcesTargets
   ): Promise<T[]> {
-    let sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
+    const sources: LatLngIdTravelMode[] = options ? <any>sourcesOrOptions : null
     options = options || <TimeRequestOptionsSourcesTargets>sourcesOrOptions
 
     const map: any = {}

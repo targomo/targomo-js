@@ -96,7 +96,7 @@ export interface PointOfInterestReachabilityCriterion extends BasePoiCriterion, 
 
 export interface PointOfInterestInZoneCriterion extends BasePoiCriterion {
   /** 
-  @example poiCountInZone: count the number of points in a geojson polygon
+    @example poiCountInZone: count the number of points in a geojson polygon
     */
   type: 'poiCountInZone'
 }

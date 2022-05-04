@@ -22,17 +22,17 @@ export interface PolygonGeoJsonOptionsSources extends PolygonRequestOptionsSourc
 
 
 export class PolygonPayloadOptions {
-  minPolygonHoleSize: number = 10000000
-  buffer: number = 50
-  simplify: number = 50
+  minPolygonHoleSize = 10000000
+  buffer = 50
+  simplify = 50
   srid: SRID = SRID.SRID_4326
 
   format?: string
-  quadrantSegments: number = 2
+  quadrantSegments = 2
 
   serializer: 'json' | 'geojson'
   intersectionMode: 'average' | 'union' | 'intersection' | 'none' = 'union'
-  decimalPrecision: number = 6
+  decimalPrecision = 6
 
   values: number[]
 }

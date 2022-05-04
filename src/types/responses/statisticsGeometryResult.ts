@@ -29,7 +29,7 @@ export class StatisticsGeometryResult {
     this.raw = result
     const values: any = this.values
 
-    for (let key in result) {
+    for (const key in result) {
       const row: any = result[key]
       const aggregationKey = (row.aggregation || '').toLowerCase()
       values[aggregationKey] = values[aggregationKey] || {}

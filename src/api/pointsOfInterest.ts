@@ -42,7 +42,7 @@ export class OSMLatLng implements LatLngProperties {
   copy() {
     const result = new OSMLatLng(this.id, this.lat, this.lng, {...this.properties})
 
-    for (let key in this) {
+    for (const key in this) {
       if (key != 'properties') {
         (<any>result)[key] = this[key]
       }

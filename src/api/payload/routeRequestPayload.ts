@@ -52,7 +52,7 @@ export class RouteRequestPayload extends TravelRequestPayload {
     if (Number.isInteger(options.recommendations) && this.sources) {
       this.sources.forEach((source: any) => {
         if (source.tm != null) {
-          for (let mode in source.tm) {
+          for (const mode in source.tm) {
             source.tm[mode].recommendations = options.recommendations
           }
         }

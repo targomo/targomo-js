@@ -78,7 +78,7 @@ describe('TargomoClient time service', () => {
     const sourceGeometries = [
       {
         id: 1,
-        geometry: {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+        geometry: {'type':'Polygon' as const,'coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
       }
     ]
     const targets: LatLngId[] = [
@@ -182,7 +182,7 @@ describe('TargomoClient reachability service', () => {
     const sourceGeometries = [
       {
         id: 1,
-        geometry: {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+        geometry: {'type':'Polygon' as const,'coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
       }
     ]
     const targets: LatLngId[] = [

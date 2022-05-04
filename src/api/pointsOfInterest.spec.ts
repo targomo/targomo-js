@@ -101,7 +101,7 @@ describe.only('TargomoClient poi service', () => {
 
   test('geometry poi request', async () => {
     // tslint:disable-next-line: max-line-length
-    const geometry = {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+    const geometry = {'type':'Polygon' as const,'coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
     const osmTypes = [
       {
         'key': 'amenity',
@@ -119,7 +119,7 @@ describe.only('TargomoClient poi service', () => {
 
   test('geometry poi hash request', async () => {
     // tslint:disable-next-line: max-line-length
-    const geometry = {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+    const geometry = {'type':'Polygon' as const,'coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
     const osmTypes = [
       {
         'key': 'amenity',

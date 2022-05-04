@@ -9,9 +9,9 @@ export const sphericalMercator: Projection = new class {
   private R = 6378137 // constant for Earth's radius
 
   project(latlng: LatLng) {
-    let d = Math.PI / 180
-    let max = 1 - 1E-15
-    let sin = Math.max(Math.min(Math.sin(latlng.lat * d), max), -max)
+    const d = Math.PI / 180
+    const max = 1 - 1E-15
+    const sin = Math.max(Math.min(Math.sin(latlng.lat * d), max), -max)
 
     return {
       x: this.R * latlng.lng * d,
@@ -20,7 +20,7 @@ export const sphericalMercator: Projection = new class {
   }
 
   unproject(point: {x: number, y: number}) {
-    let d = 180 / Math.PI
+    const d = 180 / Math.PI
 
     return {
       lat: (2 * Math.atan(Math.exp(point.y / this.R)) - (Math.PI / 2)) * d,

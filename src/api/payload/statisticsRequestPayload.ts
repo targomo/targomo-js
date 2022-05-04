@@ -14,7 +14,7 @@ export class StatisticsRequestPayload {
   statisticIds: number[]
   statisticGroupId: number
   inactiveSources: { id: string, x: number, y: number }[] = []
-  getClosestSources: boolean = false
+  getClosestSources = false
   serviceKey: string
   serviceUrl: string
   useCache: boolean

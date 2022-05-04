@@ -44,7 +44,7 @@ export class GeocodePhotonClient {
   }
 
   private buildPlaceDescription(properties: any): GeoSearchDescription {
-    const join = (texts: string[], middle: string = ' ') => texts.filter(text => !!text).join(middle).trim()
+    const join = (texts: string[], middle = ' ') => texts.filter(text => !!text).join(middle).trim()
     const parts = (fields: string[], middle: string) => join(fields.map(key => properties[key]), middle)
 
     const address1 = parts(['street', 'housenumber'], ' ')

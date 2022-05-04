@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "npm run clean && webpack --watch",
     "build": "npm run clean && node build.js",
-    "lint": "tslint -p tsconfig.json",
+    "lint": "eslint . --ext .ts",
     "clean": "shx rm -rf dist",
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "jest --config=jest.config.json --env=jsdom",
@@ -36,7 +36,11 @@
   "devDependencies": {
     "@types/jest": "^21.1.5",
     "@types/node": "^6.0.60",
+    "@types/geojson": "^7946.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
     "copy-webpack-plugin": "^4.2.0",
+    "eslint": "^8.14.0",
     "fs-extra": "^7.0.1",
     "gulp": "^3.9.1",
     "jest": "^21.2.1",
@@ -51,13 +55,11 @@
     "shx": "^0.2.2",
     "ts-jest": "^21.1.4",
     "ts-loader": "^3.1.1",
-    "tslint": "^5.8.0",
-    "typescript": "^2.5.0",
+    "typescript": "^4.6.4",
     "webpack": "^3.8.1",
     "webpack-node-externals": "1.6.0"
   },
   "dependencies": {
-    "@types/geojson": "^7946.0.1",
     "isomorphic-fetch": "^2.2.1",
     "whatwg-fetch": "^2.0.3"
   }

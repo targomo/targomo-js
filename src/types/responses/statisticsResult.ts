@@ -10,7 +10,7 @@ export class StatisticsResult {
       const statisticsGroup: StatisticsList = {}
 
       // Convert to map of named statistics, instead of index based ones
-      for (let statistic of statistics) {
+      for (const statistic of statistics) {
         statisticsGroup[statistic.name] = new StatisticValues(values[statistic.id])
       }
 
@@ -19,7 +19,7 @@ export class StatisticsResult {
 
     const individualStatistics: {[id: string]: StatisticsList} = {}
     if (result.individualStatistics) {
-      for (let key in result.individualStatistics) {
+      for (const key in result.individualStatistics) {
         if (result.individualStatistics[key] && result.individualStatistics[key].statistics) {
           individualStatistics[key] = dataToStatisticgroup(result.individualStatistics[key].statistics)
         }

@@ -237,7 +237,7 @@ export function locationsWithinDistanceInclusive<T extends LatLng>(locations: T[
  * @param elevation
  */
 export function webMercatorToLatLng(point: { x: number, y: number }, elevation: number) {
-  let latlng = projection.sphericalMercator.unproject(point)
+  const latlng = projection.sphericalMercator.unproject(point)
 
   if (elevation != undefined) {
     // x,y,z given so we have elevation data

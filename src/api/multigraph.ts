@@ -23,7 +23,7 @@ export class MultigraphClient {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
     options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
       .part('/multigraph')
@@ -45,7 +45,7 @@ export class MultigraphClient {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
     options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
       .part('/multigraph/overview')
@@ -73,7 +73,7 @@ export class MultigraphClient {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
     options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
       .part('/objectcache/add')
