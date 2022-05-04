@@ -1,14 +1,19 @@
-import { FeatureCollection, Geometry } from 'geojson';
+import { FeatureCollection, Geometry } from 'geojson'
 import {
-  BoundingBox, LatLngId,
-  LatLngIdTravelMode, LatLngProperties,
-  OSMType, Poi, PoiHierarchy, PoiOverview
-} from '../types';
-import { POIRequestOptions } from '../types/options/poiRequestOptions';
-import { requests } from '../util/requestUtil';
-import { UrlUtil } from '../util/urlUtil';
-import { POIRequestPayload } from './payload/poiRequestPayload';
-import { TargomoClient } from './targomoClient';
+  BoundingBox,
+  LatLngId,
+  LatLngIdTravelMode,
+  LatLngProperties,
+  OSMType,
+  Poi,
+  PoiHierarchy,
+  PoiOverview,
+} from '../types'
+import { POIRequestOptions } from '../types/options/poiRequestOptions'
+import { requests } from '../util/requestUtil'
+import { UrlUtil } from '../util/urlUtil'
+import { POIRequestPayload } from './payload/poiRequestPayload'
+import { TargomoClient } from './targomoClient'
 
 export interface PoiTileParameters {
   loadAllTags?: boolean
@@ -24,11 +29,12 @@ export interface PoiTileParameters {
  * @deprecated
  */
 export class OSMLatLng implements LatLngProperties {
-  constructor(readonly id: number,
-              readonly lng: number,
-              readonly lat: number,
-              readonly properties: {[index: string]: any}) {
-
+  constructor(
+    readonly id: number,
+    readonly lng: number,
+    readonly lat: number,
+    readonly properties: { [index: string]: any }
+  ) {
     // TODO: think...this is convenient to how we have things in mapbox widget...but maybe should not be done in a public api
     if (this.properties) {
       this.properties['marker-size'] = 1
@@ -40,11 +46,11 @@ export class OSMLatLng implements LatLngProperties {
   }
 
   copy() {
-    const result = new OSMLatLng(this.id, this.lat, this.lng, {...this.properties})
+    const result = new OSMLatLng(this.id, this.lat, this.lng, { ...this.properties })
 
-    for (let key in this) {
+    for (const key in this) {
       if (key != 'properties') {
-        (<any>result)[key] = this[key]
+        ;(<any>result)[key] = this[key]
       }
     }
 
@@ -71,8 +77,7 @@ function parseOSMLocation(item: any): OSMLatLng {
  * @Topic Points of Interest
  */
 export class PointsOfInterestClient {
-  constructor(private client: TargomoClient) {
-  }
+  constructor(private client: TargomoClient) {}
 
   /**
    * Make an overpass query to a given url (full url including the query parameters)
@@ -87,13 +92,13 @@ export class PointsOfInterestClient {
   }
 
   /**
-   * Makes a request to the r360 poi service.
+   * Makes a request to the targomo poi service.
    * Returns a list of OSMLatLng locations of the categories specified by `osmTypes` that are reachable within the given travel options
    */
   async reachable(
     sources: LatLngId | LatLngId[], /// LatLng
-    options: POIRequestOptions,
-  ): Promise<{[index: string]: Poi}> {
+    options: POIRequestOptions
+  ): Promise<{ [index: string]: Poi }> {
     const url = `${this.client.config.poiUrl}/reachability`
 
     return await requests(this.client, options).fetch(url, 'POST', new POIRequestPayload(this.client, sources, options))
@@ -104,9 +109,7 @@ export class PointsOfInterestClient {
    * @param hash
    */
   async reachabilitySummary(hash?: string): Promise<PoiOverview> {
-    const url = new UrlUtil.TargomoUrl(this.client)
-      .host(this.client.config.poiUrl)
-      .part('reachability/summary/')
+    const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl).part('reachability/summary/')
 
     if (hash) {
       url.part(hash)
@@ -121,46 +124,31 @@ export class PointsOfInterestClient {
    *
    * @param hash
    */
-  async register(
-    options: {
-      osmTypes: OSMType[]
-      format?: 'json' | 'geojson'
-    }
-  ) {
-    const url = new UrlUtil.TargomoUrl(this.client)
-    .host(this.client.config.poiUrl)
-    .part('register')
-    .key()
+  async register(options: { osmTypes: OSMType[]; format?: 'json' | 'geojson' }) {
+    const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl).part('register').key()
 
     const payload = {
       osmTypes: options && options.osmTypes,
       serviceKey: this.client.serviceKey,
       serviceUrl: this.client.serviceUrl,
-      format: options && options.format
+      format: options && options.format,
     }
 
     return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
-      'Accept': 'application/json, text/plain, */*'
+      Accept: 'application/json, text/plain, */*',
     })
   }
-
 
   /**
    *
    * @param hash
    */
-  async reachabilityRegister(
-    sources: LatLngIdTravelMode[],
-    options: POIRequestOptions
-  ) {
-    const url = new UrlUtil.TargomoUrl(this.client)
-    .host(this.client.config.poiUrl)
-    .part('reachability/register')
-    .key()
+  async reachabilityRegister(sources: LatLngIdTravelMode[], options: POIRequestOptions) {
+    const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl).part('reachability/register').key()
 
     const payload = new POIRequestPayload(this.client, sources, options)
     return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
-      'Accept': 'application/json, text/plain, */*'
+      Accept: 'application/json, text/plain, */*',
     })
   }
 
@@ -203,13 +191,10 @@ export class PointsOfInterestClient {
     }
 
     if (hash) {
-      url
-      .part(hash + '/')
+      url.part(hash + '/')
     }
 
-    url
-    .part('{z}/{x}/{y}.mvt')
-    .params({layerType: 'node', ...options, apiKey: this.client.serviceKey})
+    url.part('{z}/{x}/{y}.mvt').params({ layerType: 'node', ...options, apiKey: this.client.serviceKey })
 
     return url.toString()
   }
@@ -245,13 +230,13 @@ export class PointsOfInterestClient {
   /**
    * Returns all OSM tag values of the requested tagKey that exist in the POI service database.
    */
-  async osmTagValues(osmType: string, filter?: string, limit?: number): Promise<{name: string, count: number}[]> {
+  async osmTagValues(osmType: string, filter?: string, limit?: number): Promise<{ name: string; count: number }[]> {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.poiUrl)
       .part('osmTagValues/')
       .part(osmType)
       .key('apiKey')
-      .params({text: filter || undefined, limit})
+      .params({ text: filter || undefined, limit })
       .toString()
 
     return requests(this.client).fetch(url)
@@ -282,12 +267,15 @@ export class PointsOfInterestClient {
    *
    * @param options
    */
-  async boundingBox(bounds: BoundingBox, options: {
-    group?: string[],
-    osmType?: {[key: string]: string},
-    exclude?: string[],
-    match?: 'any' | 'all'
-  }): Promise<Poi[]> {
+  async boundingBox(
+    bounds: BoundingBox,
+    options: {
+      group?: string[]
+      osmType?: { [key: string]: string }
+      exclude?: string[]
+      match?: 'any' | 'all'
+    }
+  ): Promise<Poi[]> {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.poiUrl)
       .part('boundingBox')
@@ -306,7 +294,6 @@ export class PointsOfInterestClient {
     return requests(this.client).fetch(url)
   }
 
-
   /**
    * Returns a list of reachable points of interest (POIs) within a given geometry.
    *
@@ -316,35 +303,31 @@ export class PointsOfInterestClient {
    */
   async geometry(
     geometry: Geometry,
-    osmTypes: {key: string, value: string}[],
+    osmTypes: { key: string; value: string }[],
     format: 'json'
-  ): Promise<{[id: string]: Poi}>
+  ): Promise<{ [id: string]: Poi }>
   async geometry(
     geometry: Geometry,
-    osmTypes: {key: string, value: string}[],
+    osmTypes: { key: string; value: string }[],
     format?: 'geojson'
   ): Promise<FeatureCollection>
   async geometry(
     geometry: Geometry,
-    osmTypes: {key: string, value: string}[],
+    osmTypes: { key: string; value: string }[],
     format: 'json' | 'geojson' = 'geojson'
   ) {
-    const url = new UrlUtil.TargomoUrl(this.client)
-      .host(this.client.config.poiUrl)
-      .part('geometry')
-      .key()
-      .toString()
+    const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl).part('geometry').key().toString()
 
     const payload = {
       osmTypes,
       serviceKey: this.client.serviceKey,
       serviceUrl: this.client.serviceUrl,
       filterGeometry: {
-        'crs': 4326,
-        'type': 'geojson',
-        'data': JSON.stringify(geometry)
+        crs: 4326,
+        type: 'geojson',
+        data: JSON.stringify(geometry),
       },
-      format
+      format,
     }
 
     return requests(this.client).fetch(url, 'POST', payload)
@@ -355,9 +338,7 @@ export class PointsOfInterestClient {
    * @param hash
    */
   async geometrySummary(hash?: string): Promise<PoiOverview> {
-    const url = new UrlUtil.TargomoUrl(this.client)
-      .host(this.client.config.poiUrl)
-      .part('geometry/summary/')
+    const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl).part('geometry/summary/')
 
     if (hash) {
       url.part(hash)
@@ -374,30 +355,23 @@ export class PointsOfInterestClient {
    * @param osmTypes
    * @param format
    */
-  async geometryRegister(
-    geometry: Geometry,
-    options: POIRequestOptions
-  ) {
-    const url = new UrlUtil.TargomoUrl(this.client)
-    .host(this.client.config.poiUrl)
-    .part('geometry/register')
-    .key()
+  async geometryRegister(geometry: Geometry, options: POIRequestOptions) {
+    const url = new UrlUtil.TargomoUrl(this.client).host(this.client.config.poiUrl).part('geometry/register').key()
 
     const payload = {
       serviceKey: this.client.serviceKey,
       serviceUrl: this.client.serviceUrl,
       filterGeometry: {
-        'crs': 4326,
-        'type': 'geojson',
-        'data': JSON.stringify(geometry)
+        crs: 4326,
+        type: 'geojson',
+        data: JSON.stringify(geometry),
       },
       osmTypes: options && options.osmTypes,
-      format: options && options.format || 'geojson'
+      format: (options && options.format) || 'geojson',
     }
 
     return await requests(this.client).fetch(url.toString(), 'POST-RAW', JSON.stringify(payload), {
-      'Accept': 'application/json, text/plain, */*'
+      Accept: 'application/json, text/plain, */*',
     })
   }
 }
-

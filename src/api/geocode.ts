@@ -1,11 +1,8 @@
 import { LatLng } from '../index'
-import { requests} from '../util/requestUtil'
+import { requests } from '../util/requestUtil'
 import { UrlUtil } from '../util/urlUtil'
 
 export class GeocodeEsriClient {
-  constructor() {
-  }
-
   /**
    *  Geocoding with esri service
    * @param query
@@ -18,10 +15,10 @@ export class GeocodeEsriClient {
   async geocode(
     query: string,
     center?: LatLng,
-    language?: string,
+    _language?: string, // TODO remove?
     country?: string,
     magicKey?: string
-  ): Promise<{ lat: number, lng: number, description: string }[]> {
+  ): Promise<{ lat: number; lng: number; description: string }[]> {
     const params: any = {
       singleLine: query,
       f: 'json',
@@ -40,21 +37,20 @@ export class GeocodeEsriClient {
     const url = new UrlUtil.TargomoUrl()
       .part('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates')
       .params(params)
-      .toString();
+      .toString()
     const jsonResult = await requests().fetch(url)
 
     const results = jsonResult.candidates.map(function (result: any) {
       const location = {
         lat: result.location.y,
         lng: result.location.x,
-        description: result.address
+        description: result.address,
       }
       return location
     })
 
     return results
   }
-
 
   /**
    *
@@ -65,7 +61,13 @@ export class GeocodeEsriClient {
    * @param suggestionsCount
    * @deprecated
    */
-  async suggest(query: string, center?: LatLng, language?: string, country?: string, suggestionsCount: number = 5): Promise<any[]> {
+  async suggest(
+    query: string,
+    center?: LatLng,
+    _language?: string,
+    country?: string,
+    suggestionsCount = 5
+  ): Promise<any[]> {
     const params: any = {
       // token: '',
       // forStorage: false,
@@ -74,7 +76,7 @@ export class GeocodeEsriClient {
       f: 'json',
       countryCode: country,
       // maxLocations: 5,
-      maxSuggestions: suggestionsCount
+      maxSuggestions: suggestionsCount,
     }
 
     if (center) {
@@ -83,7 +85,7 @@ export class GeocodeEsriClient {
     const url = new UrlUtil.TargomoUrl()
       .part('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest')
       .params(params)
-      .toString();
+      .toString()
     const response = await requests().fetch(url)
 
     return response.suggestions
@@ -96,7 +98,7 @@ export class GeocodeEsriClient {
    * @param language
    * @deprecated
    */
-  async reverseGeocode(location: LatLng, language?: string): Promise<any> {
+  async reverseGeocode(location: LatLng, _language?: string): Promise<any> {
     const params: any = {
       // token: '',
       // forStorage: false,
@@ -108,7 +110,7 @@ export class GeocodeEsriClient {
     const url = new UrlUtil.TargomoUrl()
       .part('https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode')
       .params(params)
-      .toString();
+      .toString()
 
     const response = await requests().fetch(url)
     if (response && response.address) {
@@ -119,7 +121,7 @@ export class GeocodeEsriClient {
         location: response.address.Loc_name,
         region: response.address.Region,
         subregion: response.address.Subregion,
-        zip: response.address.Postal
+        zip: response.address.Postal,
       }
 
       return result

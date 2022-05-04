@@ -1,5 +1,5 @@
 // Taken from lfr-frontend/src/types/quality.ts
-import { LatLngId, Poi } from '..';
+import { LatLngId, Poi } from '..'
 
 /**
  * @general Response from https://api.targomo.com/quality/v1/scores/post

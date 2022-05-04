@@ -1,7 +1,6 @@
-import { BoundingBox } from '..';
+import { BoundingBox } from '..'
 
 export interface MultigraphInfo {
-
   /**
    * id of the multigraph
    */
@@ -44,15 +43,14 @@ export interface MultigraphInfo {
    */
   maxValue?: number
 
-
   /**
    * travelOptions, that were used for this request. (only if detailed flag is used)
-  */
+   */
   travelOptions?: any
 
   /**
    * bbox of mg layer
-  */
+   */
   boundingBox?: BoundingBox
 }
 
@@ -71,5 +69,5 @@ export enum MultigraphStatus {
   MERGING = 'MERGING',
   AGGREGATING = 'AGGREGATING',
   COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED'
+  FAILED = 'FAILED',
 }

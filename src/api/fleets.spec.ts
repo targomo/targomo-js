@@ -1,12 +1,10 @@
-import { TargomoClient } from './index';
-import { FpOrder, FpStore, FpTransport, FpRequestOptions } from '../index';
-
+import { TargomoClient } from './index'
+import { FpOrder, FpStore, FpTransport, FpRequestOptions } from '../index'
 
 describe('Fleetplanner', () => {
   const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
 
   test('basic request', async () => {
-
     const stores: FpStore[] = [
       {
         uuid: '1',
@@ -18,10 +16,10 @@ describe('Fleetplanner', () => {
           street: 'Großbeerenstraße 265A',
           postalCode: '14480',
           city: 'Potsdam',
-          country: 'DE'
+          country: 'DE',
         },
-        name: 'Main store'
-      }
+        name: 'Main store',
+      },
     ]
     const transports: FpTransport[] = [
       {
@@ -34,26 +32,26 @@ describe('Fleetplanner', () => {
               maxSum: 10000,
               minSum: 0,
               minSingle: 0,
-              maxSingle: 1000
+              maxSingle: 1000,
             },
             weight: {
               maxSum: 10000,
               minSum: 0,
               minSingle: 0,
-              maxSingle: 1000
-            }
+              maxSingle: 1000,
+            },
           },
-          uuid: '1'
+          uuid: '1',
         },
         metadata: {
           start: {
             lat: 52.380702,
-            lng: 13.131401
+            lng: 13.131401,
           },
           earliestDepartureTime: '2018-05-30T13:20:02.000Z',
-          endDestinations: []
-        }
-      }
+          endDestinations: [],
+        },
+      },
     ]
 
     const orders: FpOrder[] = [
@@ -67,15 +65,15 @@ describe('Fleetplanner', () => {
           city: 'Potsdam',
           country: 'DE',
           lat: 52.38173599526815,
-          lng: 13.127239986525586
+          lng: 13.127239986525586,
         },
         uuid: '1',
         deadline: '2018-05-30T13:55:55.000Z',
         priority: 10,
         load: {
           weight: 100,
-          volume: 100
-        }
+          volume: 100,
+        },
       },
       {
         storeUuid: '1',
@@ -87,15 +85,15 @@ describe('Fleetplanner', () => {
           city: 'Potsdam',
           country: 'DE',
           lat: 52.38294873105778,
-          lng: 13.129597340556256
+          lng: 13.129597340556256,
         },
         uuid: '2',
         deadline: '2018-05-30T13:55:55.000Z',
         priority: 10,
         load: {
           weight: 100,
-          volume: 100
-        }
+          volume: 100,
+        },
       },
       {
         storeUuid: '1',
@@ -107,15 +105,15 @@ describe('Fleetplanner', () => {
           city: 'Potsdam',
           country: 'DE',
           lat: 52.38181752899767,
-          lng: 13.133685714265114
+          lng: 13.133685714265114,
         },
         uuid: '3',
         deadline: '2018-05-30T13:55:55.000Z',
         priority: 10,
         load: {
           weight: 100,
-          volume: 100
-        }
+          volume: 100,
+        },
       },
       {
         storeUuid: '1',
@@ -127,15 +125,15 @@ describe('Fleetplanner', () => {
           city: 'Potsdam',
           country: 'DE',
           lat: 52.37997912851285,
-          lng: 13.129256602977629
+          lng: 13.129256602977629,
         },
         uuid: '4',
         deadline: '2018-05-30T13:55:55.000Z',
         priority: 10,
         load: {
           weight: 100,
-          volume: 100
-        }
+          volume: 100,
+        },
       },
       {
         storeUuid: '1',
@@ -144,18 +142,18 @@ describe('Fleetplanner', () => {
           avgHandlingTime: 500,
           street: 'Bahnhofstraße 23',
           lat: 52.457838,
-          lng: 13.578980,
+          lng: 13.57898,
           postalCode: '14480',
           city: 'Potsdam',
-          country: 'DE'
+          country: 'DE',
         },
         uuid: '5',
         deadline: '2018-05-30T13:55:55.000Z',
         priority: 10,
         load: {
           weight: 100,
-          volume: 100
-        }
+          volume: 100,
+        },
       },
       {
         storeUuid: '1',
@@ -167,16 +165,16 @@ describe('Fleetplanner', () => {
           city: 'Potsdam',
           country: 'DE',
           lat: 52.3838875387212,
-          lng: 13.125942734375998
+          lng: 13.125942734375998,
         },
         uuid: '6',
         deadline: '2018-05-30T13:55:55.000Z',
         priority: 10,
         load: {
           weight: 100,
-          volume: 100
-        }
-      }
+          volume: 100,
+        },
+      },
     ]
 
     const options: FpRequestOptions = {
@@ -189,9 +187,9 @@ describe('Fleetplanner', () => {
       edgeWeight: 'time',
       maxEdgeWeight: 6000,
       elevation: true,
-      rushHour: true
+      rushHour: true,
     }
-    const result = await testClient.fleets.fetch(stores, orders, transports, options);
+    const result = await testClient.fleets.fetch(stores, orders, transports, options)
     expect(result.resultStatus.overall).toBe('NO_ERRORS_RECORDED')
-  });
+  })
 })

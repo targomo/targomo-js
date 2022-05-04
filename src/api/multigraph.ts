@@ -1,14 +1,20 @@
-import { TargomoClient } from '.';
-import { UrlUtil, LatLngIdTravelMode, LatLngId, requests, MultigraphRequestOptions, MultigraphRequestOptionsSourcesTargets } from '..';
-import { MgResult, MgOverviewResult } from '../types/responses/multigraphResult';
-import { MultigraphRequestPayload } from './payload/multigraphRequestPayload';
+import { TargomoClient } from '.'
+import {
+  UrlUtil,
+  LatLngIdTravelMode,
+  LatLngId,
+  requests,
+  MultigraphRequestOptions,
+  MultigraphRequestOptionsSourcesTargets,
+} from '..'
+import { MgResult, MgOverviewResult } from '../types/responses/multigraphResult'
+import { MultigraphRequestPayload } from './payload/multigraphRequestPayload'
 
 /**
  * @Topic Multigraph
  */
 export class MultigraphClient {
-  constructor(private client: TargomoClient) {
-  }
+  constructor(private client: TargomoClient) {}
 
   /**
 
@@ -23,19 +29,23 @@ export class MultigraphClient {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
     options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
       .part('/multigraph')
       .key()
-      .toString();
+      .toString()
 
-    const cfg = new MultigraphRequestPayload(sources, options, targets);
-    const result = await requests(this.client, options).fetch(url, 'POST', cfg);
-    return result;
+    const cfg = new MultigraphRequestPayload(sources, options, targets)
+    const result = await requests(this.client, options).fetch(url, 'POST', cfg)
+    return result
   }
 
-  async fetchOverview(sources: LatLngIdTravelMode[], options: MultigraphRequestOptions, targets?: LatLngId[]): Promise<MgOverviewResult>
+  async fetchOverview(
+    sources: LatLngIdTravelMode[],
+    options: MultigraphRequestOptions,
+    targets?: LatLngId[]
+  ): Promise<MgOverviewResult>
   async fetchOverview(options: MultigraphRequestOptionsSourcesTargets): Promise<MgOverviewResult>
   async fetchOverview(
     sourcesOrOptions: LatLngIdTravelMode[] | MultigraphRequestOptionsSourcesTargets,
@@ -45,16 +55,16 @@ export class MultigraphClient {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
     options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
       .part('/multigraph/overview')
       .key()
-      .toString();
+      .toString()
 
-    const cfg = new MultigraphRequestPayload(sources, options, targets);
-    const result = await requests(this.client, options).fetch(url, 'POST', cfg);
-    return result;
+    const cfg = new MultigraphRequestPayload(sources, options, targets)
+    const result = await requests(this.client, options).fetch(url, 'POST', cfg)
+    return result
   }
 
   async getTiledMultigraphUrl(
@@ -73,24 +83,27 @@ export class MultigraphClient {
     const sources = options ? <LatLngIdTravelMode[]>sourcesOrOptions : null
     options = options || <MultigraphRequestOptionsSourcesTargets>sourcesOrOptions
 
-    let url = new UrlUtil.TargomoUrl(this.client)
+    const url = new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
       .part('/objectcache/add')
       .key()
-      .toString();
+      .toString()
 
-    const cfg = new MultigraphRequestPayload(sources, options, targets);
-      // TODO ObjectCache should have its own client
-    const objectCache: any = await requests(this.client, options).fetch(url, 'POST', cfg);
+    const cfg = new MultigraphRequestPayload(sources, options, targets)
+    // TODO ObjectCache should have its own client
+    const objectCache: any = await requests(this.client, options).fetch(url, 'POST', cfg)
     return new UrlUtil.TargomoUrl(this.client)
       .part(this.client.serviceUrl)
       .version()
-      .part('/multigraph/{z}/{x}/{y}.' + (format || (<MultigraphRequestOptionsSourcesTargets>sourcesOrOptions).format || 'mvt'))
+      .part(
+        '/multigraph/{z}/{x}/{y}.' +
+          (format || (<MultigraphRequestOptionsSourcesTargets>sourcesOrOptions).format || 'mvt')
+      )
       .key()
       .params({
-        cfgUuid: objectCache.uuid
+        cfgUuid: objectCache.uuid,
       })
-      .toString();
+      .toString()
   }
 }

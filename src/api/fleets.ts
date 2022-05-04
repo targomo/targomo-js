@@ -1,12 +1,11 @@
-import { FpResult } from './../types/responses/FleetResult';
-import { FpRequestOptions } from './../types/options/fleetRequestOptions';
-import { FpTransport } from './../types/types';
+import { FpResult } from './../types/responses/FleetResult'
+import { FpRequestOptions } from './../types/options/fleetRequestOptions'
+import { FpTransport } from './../types/types'
 import { TargomoClient } from './targomoClient'
-import { requests } from '../util/requestUtil';
-import { FpRequestPayload } from './payload/fleetsRequestPayload';
-import { FpStore, FpOrder } from '../types';
-import { UrlUtil } from '../util/urlUtil';
-
+import { requests } from '../util/requestUtil'
+import { FpRequestPayload } from './payload/fleetsRequestPayload'
+import { FpStore, FpOrder } from '../types'
+import { UrlUtil } from '../util/urlUtil'
 
 /**
  * @Topic Fleetplanner
@@ -27,10 +26,9 @@ import { UrlUtil } from '../util/urlUtil';
  * vehicles with a maximum load weight and volume capacity.
  *
  * More in-depth/detailed information about the Fleetplanner service can be found at https://docs.targomo.com/fleetplanner/
-*/
+ */
 export class FleetsClient {
-  constructor(private client: TargomoClient) {
-  }
+  constructor(private client: TargomoClient) {}
 
   /**
    * @General Start a new request to compute optimized routes with the provided information.
@@ -70,29 +68,33 @@ export class FleetsClient {
    * ##### Performance
    * Various different options within this options object can have a significant noticable impact on the request duration.
    */
-  async fetch(stores: FpStore[], orders: FpOrder[], transports: FpTransport[], options: FpRequestOptions): Promise<FpResult> {
-
+  async fetch(
+    stores: FpStore[],
+    orders: FpOrder[],
+    transports: FpTransport[],
+    options: FpRequestOptions
+  ): Promise<FpResult> {
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.fleetsUrl)
       .version()
       .part('/api/key-auth/optimizations')
       .key()
-      .toString();
+      .toString()
 
-    const cfg = this._createPayload(this.client, stores, orders, transports, options);
+    const cfg = this._createPayload(this.client, stores, orders, transports, options)
 
-    const result = await requests(this.client, options).fetch(url, 'POST', cfg);
+    const result = await requests(this.client, options).fetch(url, 'POST', cfg)
 
-    return result;
+    return result
   }
-
 
   private _createPayload(
     client: TargomoClient,
     stores: FpStore[],
     orders: FpOrder[],
     transports: FpTransport[],
-    options: FpRequestOptions) {
+    options: FpRequestOptions
+  ) {
     const payload: FpRequestPayload = {
       optimizationTime: options.optimizationTime,
       optimizationAlgorithm: options.optimizationAlgorithm,
@@ -102,7 +104,8 @@ export class FleetsClient {
         unimprovedWaitingTime: options.unimprovedWaitingTime,
         filterOrdersWithMissedDeadline: options.filterOrdersWithMissedDeadline,
         filterOrdersOutsideOfValidWorkingHours: options.filterOrdersOutsideOfValidWorkingHours,
-        prohibitFilteringOfOrdersWithDeadlinesEarlierEqualsThan: options.prohibitFilteringOfOrdersWithDeadlinesEarlierEqualsThan,
+        prohibitFilteringOfOrdersWithDeadlinesEarlierEqualsThan:
+          options.prohibitFilteringOfOrdersWithDeadlinesEarlierEqualsThan,
         secondsToPenaltyRatioForDeadlineMissed: options.secondsToPenaltyRatioForDeadlineMissed,
         secondsToPenaltyRatioForOutOfWorkingHours: options.secondsToPenaltyRatioForOutOfWorkingHours,
         timeConstraintPenaltyToTravelCostRatio: options.timeConstraintPenaltyToTravelCostRatio,
@@ -117,13 +120,13 @@ export class FleetsClient {
           edgeWeight: options.edgeWeight,
           maxEdgeWeight: options.maxEdgeWeight,
           elevation: options.elevation,
-          rushHour: options.rushHour
-        }
+          rushHour: options.rushHour,
+        },
       },
       stores: stores,
       transports: transports,
-      orders: orders
+      orders: orders,
     }
-    return payload;
+    return payload
   }
 }

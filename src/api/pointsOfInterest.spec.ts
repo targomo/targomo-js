@@ -1,16 +1,16 @@
-import { TargomoClient } from './targomoClient';
-import { BoundingBox } from '../types';
+import { TargomoClient } from './targomoClient'
+import { BoundingBox } from '../types'
 
 describe.only('TargomoClient poi service', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
 
   test('poi service reachable request', async () => {
-    const sources = { lat: 52.5330232, lng: 13.356626, id: 1}
+    const sources = { lat: 52.5330232, lng: 13.356626, id: 1 }
 
     const result = await testClient.pois.reachable(sources, {
-        travelType: 'car',
-        maxEdgeWeight: 600,
-        osmTypes: [{key: 'amenity', value: 'bank'}]
+      travelType: 'car',
+      maxEdgeWeight: 600,
+      osmTypes: [{ key: 'amenity', value: 'bank' }],
     })
 
     expect(result).toBeDefined()
@@ -57,7 +57,6 @@ describe.only('TargomoClient poi service', () => {
     expect(result[0].groupIds).toBeDefined()
   })
 
-
   test('osmTagValues request', async () => {
     const result = await testClient.pois.osmTagValues('amenity', undefined, 10)
 
@@ -77,13 +76,13 @@ describe.only('TargomoClient poi service', () => {
       northEast: {
         lng: 13.4347586,
         lat: 52.4995797,
-      }
+      },
     }
     const result = await testClient.pois.boundingBox(bounds, {
       group: ['g_education'],
       osmType: {
-        'amenity': 'bar',
-        'cuisine': '*'
+        amenity: 'bar',
+        cuisine: '*',
       },
       exclude: ['amenity=kindergarten'],
     })
@@ -101,16 +100,27 @@ describe.only('TargomoClient poi service', () => {
 
   test('geometry poi request', async () => {
     // tslint:disable-next-line: max-line-length
-    const geometry = {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+    const geometry = {
+      type: 'Polygon' as const,
+      coordinates: [
+        [
+          [13.4247584, 52.4895795],
+          [13.4347586, 52.4895795],
+          [13.4347586, 52.4995797],
+          [13.4247584, 52.4995797],
+          [13.4247584, 52.4895795],
+        ],
+      ],
+    }
     const osmTypes = [
       {
-        'key': 'amenity',
-        'value': 'bar'
+        key: 'amenity',
+        value: 'bar',
       },
       {
-        'key': 'group',
-        'value': 'g_shop'
-      }
+        key: 'group',
+        value: 'g_shop',
+      },
     ]
 
     const result = await testClient.pois.geometry(geometry, osmTypes)
@@ -119,19 +129,30 @@ describe.only('TargomoClient poi service', () => {
 
   test('geometry poi hash request', async () => {
     // tslint:disable-next-line: max-line-length
-    const geometry = {'type':'Polygon' as 'Polygon','coordinates':[[[13.4247584,52.4895795],[13.4347586,52.4895795],[13.4347586,52.4995797],[13.4247584,52.4995797],[13.4247584,52.4895795]]]}
+    const geometry = {
+      type: 'Polygon' as const,
+      coordinates: [
+        [
+          [13.4247584, 52.4895795],
+          [13.4347586, 52.4895795],
+          [13.4347586, 52.4995797],
+          [13.4247584, 52.4995797],
+          [13.4247584, 52.4895795],
+        ],
+      ],
+    }
     const osmTypes = [
       {
-        'key': 'amenity',
-        'value': 'bar'
+        key: 'amenity',
+        value: 'bar',
       },
       {
-        'key': 'group',
-        'value': 'g_shop'
-      }
+        key: 'group',
+        value: 'g_shop',
+      },
     ]
 
-    const hashResult = await testClient.pois.geometryRegister(geometry, {osmTypes, format: 'geojson'})
+    const hashResult = await testClient.pois.geometryRegister(geometry, { osmTypes, format: 'geojson' })
     expect(hashResult).toBeDefined()
 
     const result = await testClient.pois.geometrySummary(hashResult)
@@ -143,16 +164,16 @@ describe.only('TargomoClient poi service', () => {
   })
 
   test('reachability poi hash request', async () => {
-    const sources = [{ lat: 52.5330232, lng: 13.356626, id: 1}]
+    const sources = [{ lat: 52.5330232, lng: 13.356626, id: 1 }]
     const osmTypes = [
       {
-        'key': 'amenity',
-        'value': 'bar'
+        key: 'amenity',
+        value: 'bar',
       },
       {
-        'key': 'group',
-        'value': 'g_shop'
-      }
+        key: 'group',
+        value: 'g_shop',
+      },
     ]
 
     const hashResult = await testClient.pois.reachabilityRegister(sources, {
@@ -174,13 +195,13 @@ describe.only('TargomoClient poi service', () => {
   test('general poi hash request', async () => {
     const osmTypes = [
       {
-        'key': 'amenity',
-        'value': 'bar'
+        key: 'amenity',
+        value: 'bar',
       },
       {
-        'key': 'group',
-        'value': 'g_shop'
-      }
+        key: 'group',
+        value: 'g_shop',
+      },
     ]
 
     const hashResult = await testClient.pois.register({
@@ -190,4 +211,3 @@ describe.only('TargomoClient poi service', () => {
     expect(hashResult).toBeDefined()
   })
 })
-

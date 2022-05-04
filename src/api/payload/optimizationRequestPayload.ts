@@ -1,5 +1,5 @@
 import { OptimizationRequestOptions } from '../../types/options/optimizationRequestOptions'
-import { LatLngId, TravelType } from '../../types/types';
+import { LatLngId, TravelType } from '../../types/types'
 
 export class OptimizationRequestPayload {
   description: string
@@ -15,7 +15,7 @@ export class OptimizationRequestPayload {
   travelType: TravelType
   edgeWeight?: 'time' | 'distance'
   maxEdgeWeight: number
-  sources: {[id: string]: { id: string, x: number, y: number }}[]
+  sources: { [id: string]: { id: string; x: number; y: number } }[]
 
   constructor(serviceUrl: string, serviceKey: string, sources: LatLngId[], options: OptimizationRequestOptions) {
     this.description = options.description || ''
@@ -42,16 +42,14 @@ export class OptimizationRequestPayload {
         x: number
         y: number
       }
-    } = {};
-    sources.forEach(source => {
+    } = {}
+    sources.forEach((source) => {
       sourcesObject[source.id] = {
         id: source.id,
         x: source.lng,
-        y: source.lat
+        y: source.lat,
       }
-    });
-    this.sources.push(sourcesObject);
+    })
+    this.sources.push(sourcesObject)
   }
 }
-
-

@@ -5,12 +5,12 @@ const webpack = require('webpack')
 const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin, NamedModulesPlugin } = webpack
 
 const nodeExternals = require('webpack-node-externals')
-const curVersion = JSON.stringify(require("./package.json").version)
+const curVersion = JSON.stringify(require('./package.json').version)
 const curYear = new Date().getFullYear()
-const author = require("./package.json").author || ''
-const contributors = require("./package.json").contributors || []
-const description = require("./package.json").description || ''
-const name = require("./package.json").name || ''
+const author = require('./package.json').author || ''
+const contributors = require('./package.json').contributors || []
+const description = require('./package.json').description || ''
+const name = require('./package.json').name || ''
 
 function getBanner() {
   return `
@@ -21,7 +21,7 @@ function getBanner() {
 }
 
 function getEntry(sourceMain) {
-  const main = require("./package.json").main || 'dist/index.js'
+  const main = require('./package.json').main || 'dist/index.js'
 
   let mainName = main.match(/(.*\/)?(.*)\.js/)[2] || 'index'
   let result = {}
@@ -33,58 +33,53 @@ function getEntry(sourceMain) {
 }
 
 module.exports = {
-  "resolve": {
-    "extensions": [
-      ".ts",
-      ".js"
-    ],
-    "modules": [
-      "./node_modules"
-    ],
+  resolve: {
+    extensions: ['.ts', '.js'],
+    modules: ['./node_modules'],
   },
 
   devtool: 'source-map',
 
-  "entry": getEntry('./src/index.ts'),
+  entry: getEntry('./src/index.ts'),
 
-  "output": {
+  output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
     library: 'tgm',
-    umdNamedDefine: true
+    umdNamedDefine: true,
   },
 
   externals: [nodeExternals()],
 
-  "module": {
-    "rules": [
+  module: {
+    rules: [
       {
         test: /\.ts?$/,
         loader: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
-  "plugins": [
+  plugins: [
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
       sourceMap: true,
       include: /\.min\.js$/,
     }),
     new webpack.BannerPlugin({
-      banner: getBanner()
+      banner: getBanner(),
     }),
     new NoEmitOnErrorsPlugin(),
     new CopyWebpackPlugin([
       {
-        "to": ".",
-        "from": "./package.json",
-      }
+        to: '.',
+        from: './package.json',
+      },
     ]),
     new ProgressPlugin(),
   ],
-  "devServer": {
-    "historyApiFallback": true
-  }
+  devServer: {
+    historyApiFallback: true,
+  },
 }

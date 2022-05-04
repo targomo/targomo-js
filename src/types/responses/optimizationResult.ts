@@ -19,7 +19,7 @@ export interface OptimizationResultSolution {
   /**
    * For each point in the original set show whether it is includes in the simulation subset or not
    */
-  sources: {[id: string]: boolean}
+  sources: { [id: string]: boolean }
 }
 
 /**
@@ -40,7 +40,7 @@ export class OptimizationResult {
     this.maxPossibleValue = raw.maxPossibleValue
 
     this.solutions = raw.simulationResults.map((simulationResult: any) => {
-      const sources: {[id: string]: boolean} = {}
+      const sources: { [id: string]: boolean } = {}
 
       simulationResult.sourcePoints.forEach((point: any) => {
         sources[point.id] = point.optimal
@@ -52,7 +52,7 @@ export class OptimizationResult {
         endTime: simulationResult.endTime,
         maxValue: simulationResult.maxValue,
         numberOfDesiredPoints: simulationResult.numberOfDesiredPoints,
-        sources
+        sources,
       }
     })
   }

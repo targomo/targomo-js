@@ -1,23 +1,18 @@
-import {
-  TravelSpeedValues,
-  TravelType,
-  TravelTimeFactors
-} from './types'
-
+import { TravelSpeedValues, TravelType, TravelTimeFactors } from './types'
 
 export class UseCacheRequestOptions {
-  useClientCache: boolean;
+  useClientCache: boolean
 }
 
 export class BaseRequestOptions {
-  requestTimeout?: number;
+  requestTimeout?: number
 
   /**
    * @General Determines the dimension of the edges' weight, i.e.
    * @Format time (distance in seconds) or distance (distance in meters)
    * @Default `'time'`
    */
-  edgeWeight?: 'time' | 'distance' = 'time';
+  edgeWeight?: 'time' | 'distance' = 'time'
 
   /*
    * @General The maximum distance "depth" of the built network.
@@ -26,13 +21,13 @@ export class BaseRequestOptions {
    * If it is set high the routing/time service will take longer.
    * @Default `1800`
    */
-  maxEdgeWeight?: number;
+  maxEdgeWeight?: number
 
   /**
    * @General Whether or not the an elevetion heuristic will be used (e.g. downhill with bike quicker then uphill).
    * @Default `false`
    */
-  elevation?: boolean;
+  elevation?: boolean
 
   /**
    * @General Specifies factors with which the travel times of the edges are adjusted.
@@ -50,18 +45,15 @@ export class BaseRequestOptions {
    * (on top of a specified one, e.g. for the example above 1.5*0.5=0.75 - the final applied travel time factor for 'motorway' edges)
    * @Nullable All elements are optional
    */
-  travelTimeFactors?: TravelTimeFactors;
-
+  travelTimeFactors?: TravelTimeFactors
 }
 
-
 export class TravelRequestOptions extends BaseRequestOptions {
-
   /**
    * Date and time of a transit request. Should either be a `Date` or a string/number that can be used in the constructor of `Date`.
    * Using this option overrides `transitFrameDate` and `transitFrameTime`.
    */
-  transitFrameDateTime?: string | number | Date;
+  transitFrameDateTime?: string | number | Date
 
   /**
    * Time-frame duration in seconds
@@ -93,14 +85,14 @@ export class TravelRequestOptions extends BaseRequestOptions {
    */
   transitAvoidTransitRouteTypes?: number[] = []
 
-  travelType?: TravelType;
+  travelType?: TravelType
 
   /**
    * @General Enable the rush hour mode to simulate a more crowded street. Warning this is a paid feature so not
    * all plans are allowed to enable it.
    * @Default `false`
    */
-  rushHour?: boolean;
+  rushHour?: boolean
 
   walkSpeed?: TravelSpeedValues = {}
   bikeSpeed?: TravelSpeedValues = {}

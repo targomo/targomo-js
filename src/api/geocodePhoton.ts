@@ -1,22 +1,19 @@
 import { TargomoClient } from './targomoClient'
-import { GeoSearchDescription, LatLng, UrlUtil } from '../index';
-import { requests} from '../util/requestUtil';
+import { GeoSearchDescription, LatLng, UrlUtil } from '../index'
+import { requests } from '../util/requestUtil'
 
 export class GeocodePhotonClient {
-  constructor(private client: TargomoClient) {
-  }
+  constructor(private client: TargomoClient) {}
 
   async geocode(query: string, center?: LatLng, language?: string): Promise<any[]> {
-
-
     let url = new UrlUtil.TargomoUrl()
       .host(this.client.config.photonGeocoderUrl)
       .part('api')
       .params({
         q: encodeURIComponent(query),
-        limit: 5
+        limit: 5,
       })
-      .toString();
+      .toString()
 
     if (center) {
       url += '&lat=' + center.lat + '&lon=' + center.lng
@@ -28,8 +25,8 @@ export class GeocodePhotonClient {
 
     const response = await requests().fetch(url)
 
-    response.features.forEach(function(feature: any, index: any, array: any) {
-      if (feature.properties.osm_key == 'boundary')  {
+    response.features.forEach(function (feature: any, index: any, array: any) {
+      if (feature.properties.osm_key == 'boundary') {
         array.splice(index, 1)
       }
     })
@@ -44,8 +41,16 @@ export class GeocodePhotonClient {
   }
 
   private buildPlaceDescription(properties: any): GeoSearchDescription {
-    const join = (texts: string[], middle: string = ' ') => texts.filter(text => !!text).join(middle).trim()
-    const parts = (fields: string[], middle: string) => join(fields.map(key => properties[key]), middle)
+    const join = (texts: string[], middle = ' ') =>
+      texts
+        .filter((text) => !!text)
+        .join(middle)
+        .trim()
+    const parts = (fields: string[], middle: string) =>
+      join(
+        fields.map((key) => properties[key]),
+        middle
+      )
 
     const address1 = parts(['street', 'housenumber'], ' ')
     const address2 = join([parts(['postcode', 'city'], ' '), properties.country], ', ')
@@ -54,7 +59,7 @@ export class GeocodePhotonClient {
       title: '',
       meta1: '',
       meta2: '',
-      full:  '' // join([parts(['name', 'street', 'housenumber'], ' '), parts(['postcode', 'city'], ', ')])
+      full: '', // join([parts(['name', 'street', 'housenumber'], ' '), parts(['postcode', 'city'], ', ')])
     }
 
     if (properties.name !== undefined) {
@@ -75,7 +80,7 @@ export class GeocodePhotonClient {
     }
 
     if (result.meta1 && properties.name === address1) {
-      result.full +=  result.meta1
+      result.full += result.meta1
     }
 
     result.full = join([result.full, result.meta2], ', ')

@@ -1,7 +1,7 @@
-import { LatLngId, SRID} from '../../types';
-import { TargomoClient } from '../targomoClient';
-import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../../types/options/polygonRequestOptions';
-import {TravelRequestPayload} from './travelRequestPayload'
+import { LatLngId, SRID } from '../../types'
+import { TargomoClient } from '../targomoClient'
+import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../../types/options/polygonRequestOptions'
+import { TravelRequestPayload } from './travelRequestPayload'
 
 export interface PolygonSvgOptions extends PolygonRequestOptions {
   serializer: 'json'
@@ -11,7 +11,6 @@ export interface PolygonGeoJsonOptions extends PolygonRequestOptions {
   serializer: 'geojson'
 }
 
-
 export interface PolygonSvgOptionsSources extends PolygonRequestOptionsSources {
   serializer: 'json'
 }
@@ -20,19 +19,18 @@ export interface PolygonGeoJsonOptionsSources extends PolygonRequestOptionsSourc
   serializer: 'geojson'
 }
 
-
 export class PolygonPayloadOptions {
-  minPolygonHoleSize: number = 10000000
-  buffer: number = 50
-  simplify: number = 50
+  minPolygonHoleSize = 10000000
+  buffer = 50
+  simplify = 50
   srid: SRID = SRID.SRID_4326
 
   format?: string
-  quadrantSegments: number = 2
+  quadrantSegments = 2
 
   serializer: 'json' | 'geojson'
   intersectionMode: 'average' | 'union' | 'intersection' | 'none' = 'union'
-  decimalPrecision: number = 6
+  decimalPrecision = 6
 
   values: number[]
 }

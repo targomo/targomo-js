@@ -1,10 +1,10 @@
-import { TargomoClient } from './index';
+import { TargomoClient } from './index'
 
 describe('TargomoClient geocoding photon', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)
 
   test('geocode photon request', async () => {
-    const result = await testClient.geocoding.photon.geocode('Lehrter Str 57 Berlin');
+    const result = await testClient.geocoding.photon.geocode('Lehrter Str 57 Berlin')
     expect(result.length).toBeDefined()
     // result.forEach( location => {
     //   expect(location.lat).toBeDefined()

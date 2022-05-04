@@ -1,8 +1,7 @@
 // TODO: or rename to ClientDefaults maybe to make it more clear
-// TODO: add more defaults here ...ex same stuff as in r360-js
+// TODO: add more defaults here ...ex same stuff as in targomo-js
 
 import { TargomoEnvironment } from '../constants'
-
 
 export interface ClientOptions {
   serverUrl?: string
@@ -15,26 +14,25 @@ export interface ClientOptions {
   fleetsUrl?: string
   requestTimeout?: number
   version?: number
-  routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
+  routeTypes?: { routeType: string | number; color: string; haloColor: string }[]
   debug?: boolean
   environment?: TargomoEnvironment
 }
 
 export class ClientConfig implements ClientOptions {
-
-  serverUrl: string = 'https://api.targomo.com/'
-  statisticsUrl: string = 'https://api.targomo.com/statistics/'
-  tilesUrl: string = 'https://api.targomo.com/vector-statistics/'
-  poiUrl: string = 'https://api.targomo.com/pointofinterest/'
-  mapTilesUrl: string = 'https://maps.targomo.com/'
-  photonGeocoderUrl: string = 'https://api.targomo.com/geocode/'
-  overpassUrl: string = 'https://api.targomo.com/overpass/'
-  fleetsUrl: string = 'https://api.targomo.com/fleetplanner/'
-  basemapsUrl: string = 'https://maps.targomo.com/styles/'
-  qualityUrl: string = 'https://api.targomo.com/quality/'
+  serverUrl = 'https://api.targomo.com/'
+  statisticsUrl = 'https://api.targomo.com/statistics/'
+  tilesUrl = 'https://api.targomo.com/vector-statistics/'
+  poiUrl = 'https://api.targomo.com/pointofinterest/'
+  mapTilesUrl = 'https://maps.targomo.com/'
+  photonGeocoderUrl = 'https://api.targomo.com/geocode/'
+  overpassUrl = 'https://api.targomo.com/overpass/'
+  fleetsUrl = 'https://api.targomo.com/fleetplanner/'
+  basemapsUrl = 'https://maps.targomo.com/styles/'
+  qualityUrl = 'https://api.targomo.com/quality/'
   requestTimeout: 20000
-  version: number = 1
-  debug: boolean = false
+  version = 1
+  debug = false
   environment: TargomoEnvironment.PROD
 
   // routeTypes  = [
@@ -67,5 +65,4 @@ export class ClientConfig implements ClientOptions {
   constructor(options: ClientOptions) {
     Object.assign(this, options)
   }
-
 }

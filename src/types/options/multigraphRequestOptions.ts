@@ -1,5 +1,5 @@
-import { TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions';
-import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types';
+import { TravelRequestOptions, UseCacheRequestOptions } from '../requestOptions'
+import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types'
 
 export enum MultigraphRequestAggregation {
   NONE = 'none',
@@ -11,14 +11,14 @@ export enum MultigraphRequestAggregation {
   NEAREST = 'nearest',
   UNION = 'routing_union',
   MATH = 'math',
-  GRAVITATION = 'gravitation_huff'
+  GRAVITATION = 'gravitation_huff',
 }
 
 export enum MultigraphRequestLayer {
   IDENTITY = 'identity',
   TILE = 'tile',
   HEXAGON = 'hexagon',
-  CUSTOM_GEOMETRIES = 'custom_geometries'
+  CUSTOM_GEOMETRIES = 'custom_geometries',
 }
 
 export interface MultigraphAggregationOptions {
@@ -42,9 +42,7 @@ export interface MultigraphAggregationOptions {
   }
 }
 
-
 export interface MultigraphSpecificRequestOptions {
-
   preAggregationPipeline?: {
     [pipelineName: string]: MultigraphAggregationOptions
   }
@@ -81,7 +79,7 @@ export interface MultigraphSpecificRequestOptions {
 }
 
 export interface MultigraphRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
-  multigraph: MultigraphSpecificRequestOptions;
+  multigraph: MultigraphSpecificRequestOptions
 }
 
 export interface MultigraphRequestOptionsSourcesTargets extends MultigraphRequestOptions {

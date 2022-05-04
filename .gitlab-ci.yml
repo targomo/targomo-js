@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/docker/debian/node:10_ci_swift-client
+image: $CI_REGISTRY/oci/prod/node:16_bullseye_ci_sentry
 
 variables:
   NODE_ENV: gitlab-ci
@@ -17,7 +17,7 @@ test_and_coverage:
   script:
     - ls
     - npm run test:coverage
-    
+
 build_release:
   stage: build
   script:
@@ -62,7 +62,7 @@ build_pre_release:
     - npm publish --registry https://nexus.apps.k8sdev.targomo.com/repository/targomo/
 
   when: manual
-  only: 
+  only:
     - branches
 
 stages:
