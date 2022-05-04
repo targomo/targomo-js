@@ -28,7 +28,9 @@ interface BaseCriterion {
   type: CriterionType
 
   /**
-   * A magic value i have no idea what it does
+   * Defines how the score is weighted by the distance of each reachable objects.
+   * The more negative it is the more the closest object from the location influences the score.
+   * Default value is '-2': in that case the score is quadratic.
    */
   distanceExponent?: number
 }
