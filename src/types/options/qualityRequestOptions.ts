@@ -168,7 +168,7 @@ export interface StaypointCriterion extends BaseCriterion {
 
 export interface MathCriterion extends BaseCriterion {
   type: 'mathAggregation'
-  criterionParameters: { [key: string]: object }
+  criterionParameters: Record<string, QualityCriterion>
   mathExpression: string
 }
 
