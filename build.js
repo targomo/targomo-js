@@ -1,5 +1,5 @@
 const rollup = require('rollup')
-const uglify = require('rollup-plugin-uglify')
+const uglify = require('@lopatnov/rollup-plugin-uglify')
 const typescript = require('rollup-plugin-typescript2')
 const copy = require('rollup-plugin-copy')
 const resolve = require('rollup-plugin-node-resolve')
@@ -61,28 +61,13 @@ async function buildLibraries() {
     file: paths.join(distFolder, 'targomo-core.umd.js'),
   })
 
-  let bannercomment0 = false
-
   // Minified bundle
   bundle = await rollup.rollup({
     input: './src/index.browser.ts',
     context: 'window',
     plugins: [
       ...defaultPlugins,
-      uglify({
-        output: {
-          comments: function (node, comment) {
-            var text = comment.value
-            var type = comment.type
-            if (type == 'comment2') {
-              // multiline comment
-              const show = !bannercomment0
-              bannercomment0 = true
-              return show
-            }
-          },
-        },
-      }),
+      uglify(),
       copy({
         './package.json': paths.join(distFolder, 'package.json'),
         verbose: true,

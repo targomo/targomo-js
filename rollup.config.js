@@ -1,8 +1,5 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import uglify from 'rollup-plugin-uglify'
-import typescript from 'rollup-plugin-typescript2'
 import copy from 'rollup-plugin-copy'
+import typescript from 'rollup-plugin-typescript2'
 
 const curVersion = JSON.stringify(require('./package.json').version)
 const curYear = new Date().getFullYear()
@@ -42,20 +39,7 @@ export default {
       tsconfig: './tsconfig.json',
       useTsconfigDeclarationDir: true,
     }),
-    // resolve(), // tells Rollup how to find date-fns in node_modules
-    // commonjs(), // converts date-fns to ES modules
-    // uglify({
-    //   output: {
-    //     comments: function(node, comment) {
-    //         var text = comment.value;
-    //         var type = comment.type;
-    //         if (type == "comment2") {
-    //             // multiline comment
-    //             return /@preserve|@license|@cc_on/i.test(text);
-    //         }
-    //     }
-    //   }
-    // }),
+
     copy({
       './package.json': 'dist/package.json',
       verbose: true,
