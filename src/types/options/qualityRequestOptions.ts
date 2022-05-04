@@ -138,11 +138,11 @@ export interface StatisticsReachabilityCriterion extends BaseStatisticsCriterion
   referenceStatisticsIds?: number[]
 }
 
-export interface QualityStatisticsInZoneCriterion extends BaseStatisticsCriterion {
+export interface StatisticsInZoneCriterion extends BaseStatisticsCriterion {
   type: 'statisticsSumInZone'
 }
 
-export interface GravitationalCriterion
+export interface StatisticsGravitationCriterion
   extends BaseStatisticsCriterion,
     BaseReachabilityCriterion,
     BaseGravitationCriterion {
@@ -157,15 +157,15 @@ export interface GravitationalCriterion
 
 export interface StaypointCriterion extends BaseCriterion {
   type: 'staypointCount'
-  dayEnd: number
-  dayOfYearEnd: number
-  dayOfYearStart: number
-  dayStart: number
-  hourEnd: number
-  hourStart: number
-  mobilityServiceUrl: string
   radius: number
-  unique: true
+  dayEnd?: number
+  dayOfYearEnd?: number
+  dayOfYearStart?: number
+  dayStart?: number
+  hourEnd?: number
+  hourStart?: number
+  mobilityServiceUrl?: string
+  unique?: true
 }
 
 export interface MathCriterion extends BaseCriterion {
@@ -174,31 +174,39 @@ export interface MathCriterion extends BaseCriterion {
   mathExpression: string
 }
 
-export interface EdgeStatisticsCriterion extends BaseCriterion {
+interface BaseEdgeStatisticsCriterion extends BaseCriterion {
   type: 'edgeStatistics'
-  edgeStatisticsServiceUrl: string
+  edgeStatisticsServiceUrl?: string
   edgeStatisticGroupId: number
   edgeStatisticId: number
-  radius: number
-  radii: number[]
-  travelType: TravelType
-  direction: 0 | 1 | 2 | 'any' | 'sum' | 'mean'
-  ignoreRoadClasses: number[]
+  travelType?: TravelType
+  direction?: 0 | 1 | 2 | 'any' | 'sum' | 'mean'
+  ignoreRoadClasses?: number[]
 }
+
+interface EdgeStatisticsCriterionRadius extends BaseEdgeStatisticsCriterion {
+  radius: number
+}
+
+interface EdgeStatisticsCriterionRadii extends BaseEdgeStatisticsCriterion {
+  radii: number[]
+}
+
+export type EdgeStatisticsCriterion = EdgeStatisticsCriterionRadius | EdgeStatisticsCriterionRadii
 
 export interface TransitCriterion extends BaseCriterion {
   type: 'transitStopsSum' | 'transitStopsDistance'
   startTime: number
   endTime: number
-  referenceInterval: number
+  referenceInterval?: number
 }
 
 export type QualityCriterion =
   | PointOfInterestReachabilityCriterion
   | PointOfInterestInZoneCriterion
   | StatisticsReachabilityCriterion
-  | QualityStatisticsInZoneCriterion
-  | GravitationalCriterion
+  | StatisticsInZoneCriterion
+  | StatisticsGravitationCriterion
   | StaypointCriterion
   | MathCriterion
   | EdgeStatisticsCriterion
