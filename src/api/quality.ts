@@ -12,6 +12,7 @@ export class QualityClient {
   constructor(private client: TargomoClient) {}
 
   async fetch(locations: Location[], criteria: QualityRequestCriteria): Promise<QualityServiceResponse>
+  async fetch(payload: QualityPayload): Promise<QualityServiceResponse>
   async fetch(
     locations: Location[],
     criteria: QualityRequestCriteria,
@@ -24,8 +25,8 @@ export class QualityClient {
     competitors: Location[]
   ): Promise<QualityServiceResponse>
   async fetch(
-    locations: Location[],
-    criteria: QualityRequestCriteria,
+    locationsOrPayload: Location[] | QualityPayload,
+    criteria?: QualityRequestCriteria,
     showDetails?: boolean,
     competitors?: Location[]
   ): Promise<QualityServiceResponse> {
@@ -39,11 +40,15 @@ export class QualityClient {
       })
       .toString()
 
-    const payload: QualityPayload = {
-      locations,
-      criteria,
-      competitors,
-    }
+    const payload: QualityPayload =
+      locationsOrPayload instanceof Array
+        ? {
+            locations: locationsOrPayload,
+            criteria,
+            competitors,
+          }
+        : locationsOrPayload
+
     const result = await requests(this.client, {}).fetch(url, 'POST', payload, {})
 
     return result
