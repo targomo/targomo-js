@@ -1,4 +1,4 @@
-import { StatisticsItem } from '../types';
+import { StatisticsItem } from '../types'
 
 export interface StatisticsGeometryResultItem {
   value: number
@@ -21,8 +21,8 @@ export class StatisticsGeometryResult {
   } = {}
 
   constructor(result: any[], statistics: StatisticsItem[]) {
-    const statsticsMap: {[index: number]: string} = {}
-    statistics.forEach(statistic => {
+    const statsticsMap: { [index: number]: string } = {}
+    statistics.forEach((statistic) => {
       statsticsMap[statistic.id] = statistic.name
     })
 
@@ -35,7 +35,7 @@ export class StatisticsGeometryResult {
       values[aggregationKey] = values[aggregationKey] || {}
 
       const statistic = statsticsMap[row.statisticId]
-      values[aggregationKey][statistic] = {value: row.value}
+      values[aggregationKey][statistic] = { value: row.value }
     }
   }
 }

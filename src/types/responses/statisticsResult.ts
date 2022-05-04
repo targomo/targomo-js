@@ -1,8 +1,8 @@
-import {StatisticsItem, StatisticsList, StatisticValues} from '../types'
+import { StatisticsItem, StatisticsList, StatisticValues } from '../types'
 
 export class StatisticsResult {
   readonly statistics: StatisticsList
-  readonly individualStatistics: {[id: string]: StatisticsList}
+  readonly individualStatistics: { [id: string]: StatisticsList }
   readonly raw: any
 
   constructor(result: any, statistics: StatisticsItem[]) {
@@ -17,7 +17,7 @@ export class StatisticsResult {
       return statisticsGroup
     }
 
-    const individualStatistics: {[id: string]: StatisticsList} = {}
+    const individualStatistics: { [id: string]: StatisticsList } = {}
     if (result.individualStatistics) {
       for (const key in result.individualStatistics) {
         if (result.individualStatistics[key] && result.individualStatistics[key].statistics) {
@@ -26,8 +26,8 @@ export class StatisticsResult {
       }
     }
 
-    this.statistics = dataToStatisticgroup(result.statistics),
-    this.individualStatistics = individualStatistics,
-    this.raw = result
+    ;(this.statistics = dataToStatisticgroup(result.statistics)),
+      (this.individualStatistics = individualStatistics),
+      (this.raw = result)
   }
 }

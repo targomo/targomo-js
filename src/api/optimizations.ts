@@ -1,17 +1,16 @@
 import { TargomoClient } from './targomoClient'
-import { UrlUtil} from '../util';
-import { requests} from '../util/requestUtil';
-import { OptimizationRequestOptions } from '../types/options/optimizationRequestOptions';
-import { LatLngId } from '../types/types';
-import { OptimizationRequestPayload } from './payload/optimizationRequestPayload';
-import { OptimizationResult } from '../types/responses/optimizationResult';
+import { UrlUtil } from '../util'
+import { requests } from '../util/requestUtil'
+import { OptimizationRequestOptions } from '../types/options/optimizationRequestOptions'
+import { LatLngId } from '../types/types'
+import { OptimizationRequestPayload } from './payload/optimizationRequestPayload'
+import { OptimizationResult } from '../types/responses/optimizationResult'
 
 /**
  * @Topic Optimizations
  */
 export class OptimizationsClient {
-  constructor(private client: TargomoClient) {
-  }
+  constructor(private client: TargomoClient) {}
 
   /**
    * Initiates a an optimimization simulation. Given a list of locations and simulation parameters it tries to
@@ -26,15 +25,14 @@ export class OptimizationsClient {
       return null
     }
 
-
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('simulation/start/')
       .key('apiKey')
       .params({
-        serviceUrl: encodeURIComponent(this.client.serviceUrl)
+        serviceUrl: encodeURIComponent(this.client.serviceUrl),
       })
-      .toString();
+      .toString()
 
     const cfg = new OptimizationRequestPayload(this.client.serviceUrl, this.client.serviceKey, sources, options)
 
@@ -47,7 +45,7 @@ export class OptimizationsClient {
    *
    * @param optimizationId
    */
-  async ready(optimizationId: number | number[]): Promise<{[id: string]: boolean}> {
+  async ready(optimizationId: number | number[]): Promise<{ [id: string]: boolean }> {
     if (!(optimizationId instanceof Array)) {
       optimizationId = [optimizationId]
     }
@@ -58,9 +56,9 @@ export class OptimizationsClient {
       .key('apiKey')
       .params({
         serviceUrl: encodeURIComponent(this.client.serviceUrl),
-        simulationId: optimizationId
+        simulationId: optimizationId,
       })
-      .toString();
+      .toString()
 
     return requests(this.client).fetch(url)
   }
@@ -71,15 +69,14 @@ export class OptimizationsClient {
    * @param optimizationId
    */
   async fetch(optimizationId: number) {
-
     const url = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
       .part('simulation/' + optimizationId + '/')
       .key('apiKey')
       .params({
-        serviceUrl: encodeURIComponent(this.client.serviceUrl)
+        serviceUrl: encodeURIComponent(this.client.serviceUrl),
       })
-      .toString();
+      .toString()
 
     return new OptimizationResult(await requests(this.client).fetch(url))
   }

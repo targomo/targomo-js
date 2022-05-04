@@ -1,5 +1,4 @@
-import { TargomoClient } from './targomoClient';
-
+import { TargomoClient } from './targomoClient'
 
 describe('TargomoClient optimizations', () => {
   const testClient = new TargomoClient('centraleurope', process.env.TGM_TEST_API_KEY)

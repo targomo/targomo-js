@@ -13,10 +13,13 @@ const RADIANS = Math.PI / 180
  * Return whether a lat/lng point is contained within a bounding box
  */
 export function contains(bBox: BoundingBox, point: LatLng) {
-  return point.lat >= bBox.southWest.lat && point.lat <= bBox.northEast.lat &&
-    point.lng >= bBox.southWest.lng && point.lng <= bBox.northEast.lng
+  return (
+    point.lat >= bBox.southWest.lat &&
+    point.lat <= bBox.northEast.lat &&
+    point.lng >= bBox.southWest.lng &&
+    point.lng <= bBox.northEast.lng
+  )
 }
-
 
 /**
  * Returns the distance in kilometers between two lat/lng points
@@ -27,10 +30,10 @@ export function calculateDistance(from: LatLng, to: LatLng) {
   const toLat = RADIANS * to.lat
   const toLng = RADIANS * to.lng
 
-  return Math.acos(
-    Math.sin(fromLat) * Math.sin(toLat) +
-    Math.cos(fromLat) * Math.cos(toLat) *
-    Math.cos(fromLng - toLng)) * EARTH_RADIUS_KM
+  return (
+    Math.acos(Math.sin(fromLat) * Math.sin(toLat) + Math.cos(fromLat) * Math.cos(toLat) * Math.cos(fromLng - toLng)) *
+    EARTH_RADIUS_KM
+  )
 }
 
 /**
@@ -61,11 +64,13 @@ export function boundingBox(from: LatLng, distance: number): BoundingBox {
 
   return {
     northEast: {
-      lat: topLat, lng: rightLng
+      lat: topLat,
+      lng: rightLng,
     },
     southWest: {
-      lat: bottomLat, lng: leftLng
-    }
+      lat: bottomLat,
+      lng: leftLng,
+    },
   }
 }
 
@@ -78,37 +83,47 @@ export function boundingBox(from: LatLng, distance: number): BoundingBox {
  * @param from  results will be in proximity to these
  * @param options traveloptions (affect the distance around the `from` list that will be considered)
  */
-export function locationsWithinTravelOptions<T extends LatLng>(locations: T[], from: LatLng | LatLng[],
+export function locationsWithinTravelOptions<T extends LatLng>(
+  locations: T[],
+  from: LatLng | LatLng[],
   options: {
-    maxEdgeWeight: number,
-    edgeWeight: 'time' | 'distance',
+    maxEdgeWeight: number
+    edgeWeight: 'time' | 'distance'
     travelType: TravelType
-  }) {
+  }
+) {
   const maxEdgeWeight = options.maxEdgeWeight
-  let speed: number;
+  let speed: number
   switch (options.travelType) {
-    case 'walk': speed = 10; break;
-    case 'bike': speed = 25; break;
-    case 'transit': speed = 150; break;
-    default: speed = 120; break;
+    case 'walk':
+      speed = 10
+      break
+    case 'bike':
+      speed = 25
+      break
+    case 'transit':
+      speed = 150
+      break
+    default:
+      speed = 120
+      break
   }
 
-  const distanceKm = (options.edgeWeight === 'distance')
-    ? Math.round(maxEdgeWeight / 1000)
-    : (speed * maxEdgeWeight / 3600)
+  const distanceKm =
+    options.edgeWeight === 'distance' ? Math.round(maxEdgeWeight / 1000) : (speed * maxEdgeWeight) / 3600
   return locationsWithinDistance(locations, from, distanceKm)
 }
 
-function getSpeed(options: {
-  maxEdgeWeight: number,
-  edgeWeight: 'time' | 'distance',
-  travelType: TravelType
-}) {
+function getSpeed(options: { maxEdgeWeight: number; edgeWeight: 'time' | 'distance'; travelType: TravelType }) {
   switch (options.travelType) {
-    case 'walk': return 10
-    case 'bike': return 25
-    case 'transit': return 150
-    default: return 120
+    case 'walk':
+      return 10
+    case 'bike':
+      return 25
+    case 'transit':
+      return 150
+    default:
+      return 120
   }
 }
 
@@ -122,18 +137,17 @@ function getSpeed(options: {
 export function boundingBoxWithinTravelOptions<T extends LatLng>(
   from: T,
   options: {
-    maxEdgeWeight: number,
-    edgeWeight: 'time' | 'distance',
+    maxEdgeWeight: number
+    edgeWeight: 'time' | 'distance'
     travelType: TravelType
-  }) {
+  }
+) {
   const maxEdgeWeight = options.maxEdgeWeight
   const speed: number = getSpeed(options)
-  const distanceKm = (options.edgeWeight === 'distance')
-    ? Math.round(maxEdgeWeight / 1000)
-    : (speed * maxEdgeWeight / 3600)
+  const distanceKm =
+    options.edgeWeight === 'distance' ? Math.round(maxEdgeWeight / 1000) : (speed * maxEdgeWeight) / 3600
   return boundingBox(from, distanceKm)
 }
-
 
 /**
  * Create a bounding box from an Array of latlng locations
@@ -141,23 +155,27 @@ export function boundingBoxWithinTravelOptions<T extends LatLng>(
  * @param locations location array to get the bbox from
  */
 export function boundingBoxFromLocationArray<T extends LatLng>(locations: T[]): BoundingBox {
-  const bbox = locations.reduce((acc, val) => {
-    acc.northEast.lat = (val.lat > acc.northEast.lat) ? val.lat : acc.northEast.lat
-    acc.northEast.lng = (val.lng > acc.northEast.lng) ? val.lng : acc.northEast.lng
-    acc.southWest.lat = (val.lat < acc.southWest.lat) ? val.lat : acc.southWest.lat
-    acc.southWest.lng = (val.lng < acc.southWest.lng) ? val.lng : acc.southWest.lng
-    return acc
-  }, {
+  const bbox = locations.reduce(
+    (acc, val) => {
+      acc.northEast.lat = val.lat > acc.northEast.lat ? val.lat : acc.northEast.lat
+      acc.northEast.lng = val.lng > acc.northEast.lng ? val.lng : acc.northEast.lng
+      acc.southWest.lat = val.lat < acc.southWest.lat ? val.lat : acc.southWest.lat
+      acc.southWest.lng = val.lng < acc.southWest.lng ? val.lng : acc.southWest.lng
+      return acc
+    },
+    {
       northEast: {
-        lat: locations[0].lat, lng: locations[0].lng
+        lat: locations[0].lat,
+        lng: locations[0].lng,
       },
       southWest: {
-        lat: locations[0].lat, lng: locations[0].lng
-      }
-    })
+        lat: locations[0].lat,
+        lng: locations[0].lng,
+      },
+    }
+  )
   return bbox
 }
-
 
 /**
  * Creates a bounding box around a list location, with parameters about the distance calculated * (based on predefined internal logic)
@@ -167,27 +185,31 @@ export function boundingBoxFromLocationArray<T extends LatLng>(locations: T[]): 
  * @param sources
  * @param options
  */
-export function boundingBoxListWithinTravelOptions(sources: LatLng[], options: {
-  maxEdgeWeight: number,
-  edgeWeight: 'time' | 'distance',
-  travelType: TravelType
-}): BoundingBox {
+export function boundingBoxListWithinTravelOptions(
+  sources: LatLng[],
+  options: {
+    maxEdgeWeight: number
+    edgeWeight: 'time' | 'distance'
+    travelType: TravelType
+  }
+): BoundingBox {
   const maxEdgeWeight = options.maxEdgeWeight
   const speed: number = getSpeed(options)
-  const distanceKm = (options.edgeWeight === 'distance')
-    ? Math.round(maxEdgeWeight / 1000)
-    : (speed * maxEdgeWeight / 3600)
+  const distanceKm =
+    options.edgeWeight === 'distance' ? Math.round(maxEdgeWeight / 1000) : (speed * maxEdgeWeight) / 3600
 
   const boundingBoxResult = {
     northEast: {
-      lat: -Infinity, lng: -Infinity
+      lat: -Infinity,
+      lng: -Infinity,
     },
     southWest: {
-      lat: Infinity, lng: Infinity
-    }
+      lat: Infinity,
+      lng: Infinity,
+    },
   }
 
-  sources.forEach(source => {
+  sources.forEach((source) => {
     const box = boundingBox(source, distanceKm)
 
     boundingBoxResult.northEast.lat = Math.max(boundingBoxResult.northEast.lat, box.northEast.lat)
@@ -209,9 +231,11 @@ export function boundingBoxListWithinTravelOptions(sources: LatLng[], options: {
  */
 export function locationsWithinDistance<T extends LatLng>(locations: T[], from: LatLng | LatLng[], distanceKm: number) {
   if (from instanceof Array) {
-    return locationsWithinDistanceInclusive(locations, from, distanceKm).filter(location => !from.some(item => item == location))
+    return locationsWithinDistanceInclusive(locations, from, distanceKm).filter(
+      (location) => !from.some((item) => item == location)
+    )
   } else {
-    return locationsWithinDistanceInclusive(locations, from, distanceKm).filter(location => from != location)
+    return locationsWithinDistanceInclusive(locations, from, distanceKm).filter((location) => from != location)
   }
 }
 
@@ -222,21 +246,24 @@ export function locationsWithinDistance<T extends LatLng>(locations: T[], from: 
  * @param from
  * @param distanceKm
  */
-export function locationsWithinDistanceInclusive<T extends LatLng>(locations: T[], from: LatLng | LatLng[], distanceKm: number) {
+export function locationsWithinDistanceInclusive<T extends LatLng>(
+  locations: T[],
+  from: LatLng | LatLng[],
+  distanceKm: number
+) {
   if (from instanceof Array) {
-    return locations.filter(location => from.some(point => calculateDistance(location, point) <= distanceKm))
+    return locations.filter((location) => from.some((point) => calculateDistance(location, point) <= distanceKm))
   } else {
-    return locations.filter(location => calculateDistance(location, from) <= distanceKm)
+    return locations.filter((location) => calculateDistance(location, from) <= distanceKm)
   }
 }
-
 
 /**
  *
  * @param point
  * @param elevation
  */
-export function webMercatorToLatLng(point: { x: number, y: number }, elevation: number) {
+export function webMercatorToLatLng(point: { x: number; y: number }, elevation: number) {
   const latlng = projection.sphericalMercator.unproject(point)
 
   if (elevation != undefined) {

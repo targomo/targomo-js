@@ -3,7 +3,6 @@
 
 import { TargomoEnvironment } from '../constants'
 
-
 export interface ClientOptions {
   serverUrl?: string
   statisticsUrl?: string
@@ -15,13 +14,12 @@ export interface ClientOptions {
   fleetsUrl?: string
   requestTimeout?: number
   version?: number
-  routeTypes?: {routeType: string | number, color: string, haloColor: string}[]
+  routeTypes?: { routeType: string | number; color: string; haloColor: string }[]
   debug?: boolean
   environment?: TargomoEnvironment
 }
 
 export class ClientConfig implements ClientOptions {
-
   serverUrl = 'https://api.targomo.com/'
   statisticsUrl = 'https://api.targomo.com/statistics/'
   tilesUrl = 'https://api.targomo.com/vector-statistics/'
@@ -67,5 +65,4 @@ export class ClientConfig implements ClientOptions {
   constructor(options: ClientOptions) {
     Object.assign(this, options)
   }
-
 }

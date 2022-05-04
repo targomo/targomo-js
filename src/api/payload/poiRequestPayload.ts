@@ -1,7 +1,7 @@
-import { LatLngId, OSMType} from '../../types'
+import { LatLngId, OSMType } from '../../types'
 import { TargomoClient } from '../targomoClient'
 import { POIRequestOptions } from '../../types/options/poiRequestOptions'
-import {TravelRequestPayload} from './travelRequestPayload'
+import { TravelRequestPayload } from './travelRequestPayload'
 
 export class POIRequestPayload extends TravelRequestPayload {
   osmTypes: OSMType[] = []
@@ -13,7 +13,7 @@ export class POIRequestPayload extends TravelRequestPayload {
     super(options)
     this.sources = this.buildSourcesCfg(sources instanceof Array ? sources : [sources])
     this.osmTypes = options.osmTypes
-    this.format = options.format;
+    this.format = options.format
     this.serviceKey = client.serviceKey
     this.serviceUrl = client.serviceUrl
   }

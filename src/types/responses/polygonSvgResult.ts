@@ -1,11 +1,11 @@
 export interface PolygonData {
-  area: number,
-  travelTime: number,
-  outerBoundary: [number, number][],
+  area: number
+  travelTime: number
+  outerBoundary: [number, number][]
   innerBoundary: [number, number][][]
 }
 
 export interface PolygonSvgResult {
-  area: number,
+  area: number
   polygons: PolygonData[]
 }

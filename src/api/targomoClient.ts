@@ -9,25 +9,21 @@ import { GeocodePhotonClient } from './geocodePhoton'
 import { PolygonsClient } from './polygons'
 import { RoutesClient } from './routes'
 import { ClientConfig, ClientOptions } from './clientConfig'
-import { StatefulMultigraphClient } from './statefulMultigraph';
-import { FleetsClient } from './fleets';
-import { MultigraphClient } from './multigraph';
-import { BasemapsClient } from './basemaps';
-import { UrlUtil } from '..';
+import { StatefulMultigraphClient } from './statefulMultigraph'
+import { FleetsClient } from './fleets'
+import { MultigraphClient } from './multigraph'
+import { BasemapsClient } from './basemaps'
+import { UrlUtil } from '..'
 import { QualityClient } from './quality'
 
 /**
  * @Topic Geocoding
  */
 export class GeocodingClients {
-  constructor(
-    readonly esri: GeocodeEsriClient,
-    readonly photon: GeocodePhotonClient
-  ) { }
+  constructor(readonly esri: GeocodeEsriClient, readonly photon: GeocodePhotonClient) {}
 }
 
 export class TargomoClient {
-
   readonly serviceUrl: string
 
   readonly pois: PointsOfInterestClient
@@ -54,9 +50,8 @@ export class TargomoClient {
    * @param additionalOptions additional options, defaults will be used if not provided
    */
   constructor(region: string, public serviceKey: string, options?: ClientOptions) {
-
     if (!region) {
-      throw new TypeError('Region parameter is missing');
+      throw new TypeError('Region parameter is missing')
     }
 
     this.config = new ClientConfig(options)
@@ -72,40 +67,30 @@ export class TargomoClient {
     this.reachability = new ReachabilityClient(this)
     this.optimizations = new OptimizationsClient(this)
 
-    this.geocoding = new GeocodingClients(
-      new GeocodeEsriClient(),
-      new GeocodePhotonClient(this)
-    )
+    this.geocoding = new GeocodingClients(new GeocodeEsriClient(), new GeocodePhotonClient(this))
 
     this.polygons = new PolygonsClient(this)
     this.routes = new RoutesClient(this)
     this.statefulMultigraph = new StatefulMultigraphClient(this)
     this.multigraph = new MultigraphClient(this)
-    this.basemaps = new BasemapsClient(this);
-    this.fleets = new FleetsClient(this);
-    this.quality = new QualityClient(this);
+    this.basemaps = new BasemapsClient(this)
+    this.fleets = new FleetsClient(this)
+    this.quality = new QualityClient(this)
   }
 
   /**
    * Extracts the endpoint part from the serviceUrl (for example `germany`)
    */
   get endpoint() {
-    const items = this.serviceUrl.split('/').filter(item => !!item)
+    const items = this.serviceUrl.split('/').filter((item) => !!item)
     return items[items.length - 1]
   }
-
 
   /**
    *
    */
   async metadata() {
-
-    const url = new UrlUtil.TargomoUrl(this)
-      .part(this.serviceUrl)
-      .version()
-      .part('/metadata/network')
-      .key()
-      .toString();
+    const url = new UrlUtil.TargomoUrl(this).part(this.serviceUrl).version().part('/metadata/network').key().toString()
 
     return await requests(this).fetch(url)
   }

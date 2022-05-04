@@ -1,6 +1,6 @@
-import { StatisticsGroupId, StatisticsItem } from '../index';
-import { TravelRequestOptions } from '../requestOptions';
-import { GeometryId, LatLngId, TravelType } from '../types';
+import { StatisticsGroupId, StatisticsItem } from '../index'
+import { TravelRequestOptions } from '../requestOptions'
+import { GeometryId, LatLngId, TravelType } from '../types'
 
 export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
   statisticsGroup: StatisticsGroupId
@@ -27,7 +27,7 @@ export interface StatisticsRequestOptionsSources extends StatisticsRequestOption
 }
 
 export interface StatisticsGeometryRequestOptions {
-  requestTimeout?: number;
+  requestTimeout?: number
   statisticsGroup: StatisticsGroupId
   statistics: StatisticsItem[]
   crs?: number

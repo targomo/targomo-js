@@ -17,7 +17,7 @@ test_and_coverage:
   script:
     - ls
     - npm run test:coverage
-    
+
 build_release:
   stage: build
   script:
@@ -62,7 +62,7 @@ build_pre_release:
     - npm publish --registry https://nexus.apps.k8sdev.targomo.com/repository/targomo/
 
   when: manual
-  only: 
+  only:
     - branches
 
 stages:

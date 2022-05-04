@@ -1,7 +1,7 @@
-import { LatLngId, SRID} from '../../types';
-import { TargomoClient } from '../targomoClient';
-import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../../types/options/polygonRequestOptions';
-import {TravelRequestPayload} from './travelRequestPayload'
+import { LatLngId, SRID } from '../../types'
+import { TargomoClient } from '../targomoClient'
+import { PolygonRequestOptions, PolygonRequestOptionsSources } from '../../types/options/polygonRequestOptions'
+import { TravelRequestPayload } from './travelRequestPayload'
 
 export interface PolygonSvgOptions extends PolygonRequestOptions {
   serializer: 'json'
@@ -11,7 +11,6 @@ export interface PolygonGeoJsonOptions extends PolygonRequestOptions {
   serializer: 'geojson'
 }
 
-
 export interface PolygonSvgOptionsSources extends PolygonRequestOptionsSources {
   serializer: 'json'
 }
@@ -19,7 +18,6 @@ export interface PolygonSvgOptionsSources extends PolygonRequestOptionsSources {
 export interface PolygonGeoJsonOptionsSources extends PolygonRequestOptionsSources {
   serializer: 'geojson'
 }
-
 
 export class PolygonPayloadOptions {
   minPolygonHoleSize = 10000000

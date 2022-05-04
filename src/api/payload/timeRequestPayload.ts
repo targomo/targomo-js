@@ -1,11 +1,15 @@
-import { LatLngId} from '../../types'
+import { LatLngId } from '../../types'
 import { TargomoClient } from '../targomoClient'
 import { TimeRequestOptionsSourcesTargets } from '../../types/options'
-import {TravelRequestPayload} from './travelRequestPayload'
+import { TravelRequestPayload } from './travelRequestPayload'
 
 export class TimeRequestPayload extends TravelRequestPayload {
-
-  constructor(client: TargomoClient, sources: LatLngId[], targets: LatLngId[], options: TimeRequestOptionsSourcesTargets) {
+  constructor(
+    client: TargomoClient,
+    sources: LatLngId[],
+    targets: LatLngId[],
+    options: TimeRequestOptionsSourcesTargets
+  ) {
     super(options)
 
     if (sources) {

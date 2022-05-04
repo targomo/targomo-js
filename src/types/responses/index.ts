@@ -6,4 +6,3 @@ export * from './FleetResult'
 export * from './optimizationResult'
 export * from './statisticsGeometryResult'
 export * from './qualityResult'
-

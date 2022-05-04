@@ -1,6 +1,6 @@
-import { StatisticsGroupId,  StatisticsItem} from '../index'
-import { BaseRequestOptions } from '../requestOptions';
-import { TravelType } from '../types';
+import { StatisticsGroupId, StatisticsItem } from '../index'
+import { BaseRequestOptions } from '../requestOptions'
+import { TravelType } from '../types'
 
 /**
  * Parameters for an optimization simulation run. Optimization simulations take a set of locations

@@ -7,20 +7,20 @@ const commonjs = require('rollup-plugin-commonjs')
 const paths = require('path')
 const fsExtra = require('fs-extra')
 
-const curVersionString = require("./package.json").version
-const curVersion = JSON.stringify(require("./package.json").version)
+const curVersionString = require('./package.json').version
+const curVersion = JSON.stringify(require('./package.json').version)
 const curYear = new Date().getFullYear()
-const author = require("./package.json").author || ''
-const contributors = require("./package.json").contributors || []
-const description = require("./package.json").description || ''
-const name = require("./package.json").name || ''
+const author = require('./package.json').author || ''
+const contributors = require('./package.json').contributors || []
+const description = require('./package.json').description || ''
+const name = require('./package.json').name || ''
 
 const which = 'core'
 const distFolder = `./dist/${which}/`
 const targetReleaseFolder = which
 const targetFile = `targomo-${which}`
 
-const production = !process.env.ROLLUP_WATCH;
+const production = !process.env.ROLLUP_WATCH
 
 function getBanner() {
   return `/** 
@@ -33,14 +33,13 @@ function getBanner() {
 const defaultPlugins = [
   typescript({
     tsconfig: './tsconfig.json',
-    useTsconfigDeclarationDir: true
+    useTsconfigDeclarationDir: true,
   }),
   resolve(),
-  commonjs()
+  commonjs(),
 ]
 
 async function buildLibraries() {
-
   fsExtra.ensureDirSync(distFolder)
 
   let bundle = null
@@ -53,16 +52,16 @@ async function buildLibraries() {
     context: 'window',
     plugins: defaultPlugins,
   })
-    
+
   await bundle.write({
     name: 'tgm',
     sourcemap: true,
     format: 'umd',
     banner: getBanner(),
-    file: paths.join(distFolder, 'targomo-core.umd.js')
+    file: paths.join(distFolder, 'targomo-core.umd.js'),
   })
 
-  let bannercomment0 = false;
+  let bannercomment0 = false
 
   // Minified bundle
   bundle = await rollup.rollup({
@@ -75,19 +74,19 @@ async function buildLibraries() {
           comments: function (node, comment) {
             var text = comment.value
             var type = comment.type
-            if (type == "comment2") {
+            if (type == 'comment2') {
               // multiline comment
               const show = !bannercomment0
               bannercomment0 = true
               return show
             }
-          }
-        }
+          },
+        },
       }),
       copy({
-        "./package.json": paths.join(distFolder, "package.json"),
-        verbose: true
-      })
+        './package.json': paths.join(distFolder, 'package.json'),
+        verbose: true,
+      }),
     ],
   })
 
@@ -107,7 +106,7 @@ async function buildLibraries() {
     external: ['isomorphic-fetch'],
     plugins: defaultPlugins,
   })
-    
+
   await bundle.write({
     name: 'tgm',
     sourcemap: true,
@@ -123,13 +122,22 @@ function prepareReleases() {
   fsExtra.ensureDirSync(releaseFolder)
 
   // const postfixes = [['', ''], ['', '.min'], ['-full', ''], ['-full', '.min']]
-  const postfixes = [['', ''], ['', '.min']]
+  const postfixes = [
+    ['', ''],
+    ['', '.min'],
+  ]
   postfixes.forEach((pair) => {
     const prefix = pair[0]
     const postfix = pair[1]
-    fsExtra.copySync(paths.resolve(__dirname, distFolder, targetFile + `${prefix}.umd${postfix}.js`), paths.join(releaseFolder, `latest${prefix}${postfix}.js`))
-    fsExtra.copySync(paths.resolve(__dirname, distFolder, targetFile + `${prefix}.umd${postfix}.js`), paths.join(releaseFolder, `${curVersionString}${prefix}${postfix}.js`))
-  })  
+    fsExtra.copySync(
+      paths.resolve(__dirname, distFolder, targetFile + `${prefix}.umd${postfix}.js`),
+      paths.join(releaseFolder, `latest${prefix}${postfix}.js`)
+    )
+    fsExtra.copySync(
+      paths.resolve(__dirname, distFolder, targetFile + `${prefix}.umd${postfix}.js`),
+      paths.join(releaseFolder, `${curVersionString}${prefix}${postfix}.js`)
+    )
+  })
 }
 
 async function buildAll() {

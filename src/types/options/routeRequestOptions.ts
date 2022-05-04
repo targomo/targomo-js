@@ -1,5 +1,5 @@
-import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOptions';
-import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types';
+import { UseCacheRequestOptions, TravelRequestOptions } from './../requestOptions'
+import { LatLngIdTravelMode, LatLngId, GeometryIdTravelMode } from '../types'
 
 export interface RouteRequestOptions extends TravelRequestOptions, UseCacheRequestOptions {
   recommendations?: number | boolean

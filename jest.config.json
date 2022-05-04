@@ -1,13 +1,7 @@
 {
   "verbose": false,
   "setupTestFrameworkScriptFile": "<rootDir>/setupJest.ts",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json"
-  ],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
   "testMatch": ["**/?(*.)(spec|test).(ts|js)?(x)"],
   "transform": {
     "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
