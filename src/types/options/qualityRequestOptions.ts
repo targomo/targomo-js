@@ -209,6 +209,7 @@ export interface TransitCriterion extends BaseCriterion {
 export type QualityCriterion =
   | PointOfInterestReachabilityCriterion
   | PointOfInterestInZoneCriterion
+  | PointOfInterestGravitationCriterion
   | StatisticsReachabilityCriterion
   | StatisticsInZoneCriterion
   | StatisticsGravitationCriterion
