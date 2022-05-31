@@ -933,7 +933,7 @@ export interface PoiType {
   id: string
   name: string
   description: string
-  source: 'openstreetmap' | 'custom'
+  source: 'OpenStreetMap' | 'Custom'
   type: 'CATEGORY' | 'TAG' | 'COMPOSITE_TAG'
   key?: string
   value?: any
