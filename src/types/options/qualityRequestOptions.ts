@@ -17,11 +17,13 @@ export type CriterionType =
   | 'edgeStatistics'
   | 'transitStopsSum'
   | 'transitStopsDistance'
+  | 'statsOnEnclosingCell'
+  | 'polygonArea'
 
 /**
  * Base inteface with the properties that all criteria share
  */
-interface BaseCriterion {
+export interface BaseCriterion {
   /**
    * Determines what quality criterion we want to supply
    */
@@ -38,7 +40,7 @@ interface BaseCriterion {
 /**
  * Specialization of the Base criteion for all criteria that do reachability
  */
-interface BaseReachabilityCriterion extends BaseCriterion {
+export interface BaseReachabilityCriterion extends BaseCriterion {
   /**
    * URL to targomo core service
    */
@@ -70,9 +72,12 @@ If it is set too low routes between points won't be found */
 /**
  * Specialization of the Base criteion for all criteria that do reachability and request statistics
  */
-interface BaseStatisticsCriterion extends BaseCriterion {
+export interface BaseStatisticsCriterion extends BaseCriterion {
   /** The Statistic Group to be used as data source */
-  statisticGroupId: number
+  statisticGroupId?: number
+
+  /** The Statistic colleciton (== ensemble) to be used as data source */
+  statisticCollectionId?: number
 
   /** List of statistic ids to consider for the reachability calculation.
    * If the list contains several elements, the score will be the sum of the statistics data of each statisticId */
@@ -82,7 +87,7 @@ interface BaseStatisticsCriterion extends BaseCriterion {
   statisticsServiceUrl?: string
 }
 
-interface BasePoiCriterion extends BaseCriterion {
+export interface BasePoiCriterion extends BaseCriterion {
   /** list of Osm Types to consider for this criterion */
   osmTypes: (OSMType | PoiGroup)[]
   /** When referenceOsmTypes are set, the service will also calculate the reachability for the list of types in referenceOsmTypes
@@ -92,7 +97,7 @@ interface BasePoiCriterion extends BaseCriterion {
   poiServiceUrl?: string
 }
 
-interface BaseGravitationCriterion {
+export interface BaseGravitationCriterion {
   /** This attribute specifies the exponential power to be applied on values based on proximity to any source.
    * When customized, it is advised to be a negative value to express correctly the gravitation attraction.
    * @example A high negative lambda, e.g. -4, means that the distance plays a bigger role in the probability to favor a store/location
@@ -160,6 +165,41 @@ export interface StatisticsGravitationCriterion
   type: 'gravitationSum'
 }
 
+export interface StatisticsOnEnclosingCellCriterion extends BaseStatisticsCriterion {
+  type: 'statsOnEnclosingCell'
+}
+
+export interface PolygonAreaCriterion extends BaseStatisticsCriterion, BaseReachabilityCriterion {
+  type: 'polygonArea'
+
+  /**
+   * Srid of the polygon
+   */
+  srid: number
+
+  /**
+   * The simplify (meters) parameter needs to be larger than 0m and smaller or equal to 500m.
+   * If not specified it will be calculated from the buffer size (if it was specified).
+   */
+  simplify: number
+
+  /**
+   * Determines the geometry buffer size of the original polygon edges.
+   * The newly created polygon is wider by that margin.
+   * If specified it has to be greater than 0.0;
+   * If no simplify is specified it will force a simplify value.
+   * If nothing is specified no buffer will be added.
+   */
+  buffer: number
+
+  /**
+   * Due to the buffer the vertices of the polygon are extended in semi-circle way.
+   * This value determines into how many segments a 90 degree angle is translated.
+   * A low value means less polygon points but also less smooth corners. Cannot be higher than 8.
+   */
+  quadrantSegments: number
+}
+
 export interface StaypointCriterion extends BaseCriterion {
   type: 'staypointCount'
   radius: number
@@ -211,12 +251,14 @@ export type QualityCriterion =
   | PointOfInterestInZoneCriterion
   | PointOfInterestGravitationCriterion
   | StatisticsReachabilityCriterion
+  | StatisticsOnEnclosingCellCriterion
   | StatisticsInZoneCriterion
   | StatisticsGravitationCriterion
   | StaypointCriterion
   | MathCriterion
   | EdgeStatisticsCriterion
   | TransitCriterion
+  | PolygonAreaCriterion
 
 /** Criterion definitions
  * For each criterion, a key must be set to be able to identify the different criteria in the response */
