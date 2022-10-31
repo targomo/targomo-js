@@ -178,17 +178,24 @@ export interface PolygonAreaCriterion extends BaseStatisticsCriterion, BaseReach
   srid: number
 
   /**
-   * ???
+   * The simplify (meters) parameter needs to be larger than 0m and smaller or equal to 500m.
+   * If not specified it will be calculated from the buffer size (if it was specified).
    */
   simplify: number
 
   /**
-   * ???
+   * Determines the geometry buffer size of the original polygon edges.
+   * The newly created polygon is wider by that margin.
+   * If specified it has to be greater than 0.0;
+   * If no simplify is specified it will force a simplify value.
+   * If nothing is specified no buffer will be added.
    */
   buffer: number
 
   /**
-   * ???
+   * Due to the buffer the vertices of the polygon are extended in semi-circle way.
+   * This value determines into how many segments a 90 degree angle is translated.
+   * A low value means less polygon points but also less smooth corners. Cannot be higher than 8.
    */
   quadrantSegments: number
 }
