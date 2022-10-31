@@ -1,4 +1,3 @@
-import { StatisticsGroups } from '../index'
 import { TargomoClient } from './targomoClient'
 
 const GERMANY_ZENSUS_500M_STATISTICS = 102
