@@ -8,6 +8,7 @@ import { OptimizationResult } from '../types/responses/optimizationResult'
 
 /**
  * @Topic Optimizations
+ * @deprecated
  */
 export class OptimizationsClient {
   constructor(private client: TargomoClient) {}
