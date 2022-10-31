@@ -17,6 +17,8 @@ export type CriterionType =
   | 'edgeStatistics'
   | 'transitStopsSum'
   | 'transitStopsDistance'
+  | 'statsOnEnclosingCell'
+  | 'polygonArea'
 
 /**
  * Base inteface with the properties that all criteria share
@@ -163,6 +165,34 @@ export interface StatisticsGravitationCriterion
   type: 'gravitationSum'
 }
 
+export interface StatisticsOnEnclosingCellCriterion extends BaseStatisticsCriterion {
+  type: 'statsOnEnclosingCell'
+}
+
+export interface PolygonAreaCriterion extends BaseStatisticsCriterion, BaseReachabilityCriterion {
+  type: 'polygonArea'
+
+  /**
+   * Srid of the polygon
+   */
+  srid: number
+
+  /**
+   * ???
+   */
+  simplify: number
+
+  /**
+   * ???
+   */
+  buffer: number
+
+  /**
+   * ???
+   */
+  quadrantSegments: number
+}
+
 export interface StaypointCriterion extends BaseCriterion {
   type: 'staypointCount'
   radius: number
@@ -214,12 +244,14 @@ export type QualityCriterion =
   | PointOfInterestInZoneCriterion
   | PointOfInterestGravitationCriterion
   | StatisticsReachabilityCriterion
+  | StatisticsOnEnclosingCellCriterion
   | StatisticsInZoneCriterion
   | StatisticsGravitationCriterion
   | StaypointCriterion
   | MathCriterion
   | EdgeStatisticsCriterion
   | TransitCriterion
+  | PolygonAreaCriterion
 
 /** Criterion definitions
  * For each criterion, a key must be set to be able to identify the different criteria in the response */
