@@ -17,7 +17,7 @@ export type CriterionType =
   | 'edgeStatistics'
   | 'transitStopsSum'
   | 'transitStopsDistance'
-  | 'statsOnEnclosingCell'
+  | 'statisticsOnEnclosingCell'
   | 'polygonArea'
 
 /**
@@ -166,7 +166,7 @@ export interface StatisticsGravitationCriterion
 }
 
 export interface StatisticsOnEnclosingCellCriterion extends BaseStatisticsCriterion {
-  type: 'statsOnEnclosingCell'
+  type: 'statisticsOnEnclosingCell'
 }
 
 export interface PolygonAreaCriterion extends BaseStatisticsCriterion, BaseReachabilityCriterion {
