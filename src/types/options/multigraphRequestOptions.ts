@@ -63,6 +63,7 @@ export interface MultigraphSpecificRequestOptions {
     type: 'edge' | 'node' | 'statistic_geometry'
     edgeAggregationType?: 'min' | 'max' | 'mean'
     statisticGroupId?: number
+    statisticCollectionId?: number
   }
 
   layer: {
