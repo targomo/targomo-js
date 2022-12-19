@@ -101,8 +101,13 @@ export class StatisticsRequestPayload {
       })
     }
 
-    this.statisticGroupId = options.statisticsGroup != null ? +options.statisticsGroup : null
-    this.statisticCollectionId = options.statisticCollectionId != null ? +options.statisticCollectionId : null
+    if (options.statisticsGroup != null) {
+      this.statisticGroupId = +options.statisticsGroup
+    }
+    if (options.statisticCollectionId != null) {
+      this.statisticCollectionId = +options.statisticCollectionId
+    }
+
     this.statisticIds = statisticsIndices
 
     if (options.closestSources) {

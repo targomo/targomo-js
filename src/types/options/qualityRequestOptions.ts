@@ -224,10 +224,8 @@ export interface MathCriterion extends BaseCriterion {
 interface BaseEdgeStatisticsCriterion extends BaseCriterion {
   type: 'edgeStatistics'
   edgeStatisticsServiceUrl?: string
-  /** @deprecated use edgeStatisticCollectionId id instead */
-  edgeStatisticGroupId?: number
-  edgeStatisticCollectionId?: number
-  edgeStatisticId: number
+  edgeStatisticCollectionId: number
+  edgeStatisticIds: [number]
   travelType?: TravelType
   direction?: 0 | 1 | 2 | 'any' | 'sum' | 'mean'
   ignoreRoadClasses?: number[]
