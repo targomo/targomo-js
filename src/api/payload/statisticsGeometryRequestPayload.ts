@@ -3,7 +3,8 @@ import { TargomoClient } from '../targomoClient'
 
 export class StatisticsGeometryRequestPayload {
   statisticIds: number[]
-  statisticGroupId: number
+  statisticGroupId?: number
+  statisticCollectionId?: number
   intersectionGeometry: { data: string; crs: number }
 
   constructor(client: TargomoClient, geometry: string, options: StatisticsGeometryRequestOptions) {
@@ -15,7 +16,13 @@ export class StatisticsGeometryRequestPayload {
       }
     })
 
-    this.statisticGroupId = +options.statisticsGroup
+    if (options.statisticsGroup != null) {
+      this.statisticGroupId = +options.statisticsGroup
+    }
+    if (options.statisticCollectionId != null) {
+      this.statisticCollectionId = +options.statisticCollectionId
+    }
+
     this.statisticIds = statisticsIndices
 
     this.intersectionGeometry = {

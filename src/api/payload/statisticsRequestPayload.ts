@@ -15,7 +15,8 @@ function isStatisticsRequestOptions(
 
 export class StatisticsRequestPayload {
   statisticIds: number[]
-  statisticGroupId: number
+  statisticGroupId?: number
+  statisticCollectionId?: number
   inactiveSources: { id: string; x: number; y: number }[] = []
   getClosestSources = false
   serviceKey: string
@@ -100,7 +101,13 @@ export class StatisticsRequestPayload {
       })
     }
 
-    this.statisticGroupId = +options.statisticsGroup
+    if (options.statisticsGroup != null) {
+      this.statisticGroupId = +options.statisticsGroup
+    }
+    if (options.statisticCollectionId != null) {
+      this.statisticCollectionId = +options.statisticCollectionId
+    }
+
     this.statisticIds = statisticsIndices
 
     if (options.closestSources) {

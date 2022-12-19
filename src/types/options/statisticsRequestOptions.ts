@@ -3,7 +3,8 @@ import { TravelRequestOptions } from '../requestOptions'
 import { GeometryId, LatLngId, TravelType } from '../types'
 
 export interface StatisticsTravelRequestOptions extends TravelRequestOptions {
-  statisticsGroup: StatisticsGroupId
+  statisticsGroup?: StatisticsGroupId
+  statisticCollectionId?: number
   inactiveSources?: LatLngId[]
   closestSources?: boolean
   travelType: TravelType
@@ -28,7 +29,8 @@ export interface StatisticsRequestOptionsSources extends StatisticsRequestOption
 
 export interface StatisticsGeometryRequestOptions {
   requestTimeout?: number
-  statisticsGroup: StatisticsGroupId
+  statisticCollectionId?: number
+  statisticsGroup?: StatisticsGroupId
   statistics: StatisticsItem[]
   crs?: number
 }

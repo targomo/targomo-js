@@ -73,7 +73,9 @@ If it is set too low routes between points won't be found */
  * Specialization of the Base criteion for all criteria that do reachability and request statistics
  */
 export interface BaseStatisticsCriterion extends BaseCriterion {
-  /** The Statistic Group to be used as data source */
+  /** @deprecated use statisticCollectionId instead
+   *  The Statistic Group to be used as data source
+   */
   statisticGroupId?: number
 
   /** The Statistic colleciton (== ensemble) to be used as data source */
@@ -222,7 +224,7 @@ export interface MathCriterion extends BaseCriterion {
 interface BaseEdgeStatisticsCriterion extends BaseCriterion {
   type: 'edgeStatistics'
   edgeStatisticsServiceUrl?: string
-  edgeStatisticGroupId: number
+  edgeStatisticCollectionId: number
   edgeStatisticId: number
   travelType?: TravelType
   direction?: 0 | 1 | 2 | 'any' | 'sum' | 'mean'
