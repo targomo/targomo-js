@@ -225,7 +225,7 @@ interface BaseEdgeStatisticsCriterion extends BaseCriterion {
   type: 'edgeStatistics'
   edgeStatisticsServiceUrl?: string
   edgeStatisticCollectionId: number
-  edgeStatisticIds: [number]
+  edgeStatisticId: number
   travelType?: TravelType
   direction?: 0 | 1 | 2 | 'any' | 'sum' | 'mean'
   ignoreRoadClasses?: number[]
