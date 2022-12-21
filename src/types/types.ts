@@ -414,9 +414,15 @@ export interface LatLngIdTravelMode extends LatLngId {
 }
 
 export interface CarModeOptions {
-  /** Enable the rush hour mode to simulate a more crowded street.
+  /** @deprecated use time instead
+   *  Enable the rush hour mode to simulate a more crowded street.
 Warning this is a paid feature so not all plans are allowed to enable it. */
   rushHour?: boolean
+
+  /**
+   * Starting time for the car routing in seconds of the day
+   */
+  time?: number
 }
 
 export interface TransitTravelModeOptions {
