@@ -85,7 +85,7 @@ export type TravelSpeed = 'slow' | 'medium' | 'fast'
 /**
  *
  */
-export type TravelType = 'walk' | 'car' | 'bike' | 'transit'
+export type TravelType = 'walk' | 'car' | 'bike' | 'transit' | 'fly'
 
 export class TravelSpeedValues {
   /** Assumed speed in km/h
@@ -470,6 +470,7 @@ export type TravelMode =
   | { walk: TravelSpeedValues }
   | { bike: TravelSpeedValues }
   | { transit: TransitTravelModeOptions }
+  | { fly: Record<string, unknown> }
 
 /**
  * Osm Type (OSM map feature tags. See: http://wiki.openstreetmap.org/wiki/Map_Features)
