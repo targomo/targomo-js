@@ -470,6 +470,7 @@ export type TravelMode =
   | { walk: TravelSpeedValues }
   | { bike: TravelSpeedValues }
   | { transit: TransitTravelModeOptions }
+  | { fly: unknown }
 
 /**
  * Osm Type (OSM map feature tags. See: http://wiki.openstreetmap.org/wiki/Map_Features)
