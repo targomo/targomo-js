@@ -78,7 +78,11 @@ export class TargomoClient {
     this.quality = new QualityClient(this)
   }
 
-  updateServiceUrl(region: string) {
+  /**
+   * Set the enpoint to be used in API requests
+   * @param region Service region name or full service URL. See: https://www.targomo.com/developers/resources/coverage/
+   */
+  setServiceUrl(region: string) {
     if (!region.includes('http') && !region.includes('localhost') && !region.includes('/')) {
       this.serviceUrl = 'https://api.targomo.com/' + region + '/'
     } else {
