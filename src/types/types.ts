@@ -918,6 +918,7 @@ export interface Poi extends LatLngId {
   }
   type: 'node'
   groupIds?: string[]
+  clusterIds?: string[]
   closestSource?: string
 }
 
