@@ -24,7 +24,7 @@ export class GeocodingClients {
 }
 
 export class TargomoClient {
-  readonly serviceUrl: string
+  serviceUrl: string
 
   readonly pois: PointsOfInterestClient
   readonly statistics: StatisticsClient
@@ -76,6 +76,18 @@ export class TargomoClient {
     this.basemaps = new BasemapsClient(this)
     this.fleets = new FleetsClient(this)
     this.quality = new QualityClient(this)
+  }
+
+  /**
+   * Set the enpoint to be used in API requests
+   * @param region Service region name or full service URL. See: https://www.targomo.com/developers/resources/coverage/
+   */
+  setServiceUrl(region: string) {
+    if (!region.includes('http') && !region.includes('localhost') && !region.includes('/')) {
+      this.serviceUrl = 'https://api.targomo.com/' + region + '/'
+    } else {
+      this.serviceUrl = region
+    }
   }
 
   /**

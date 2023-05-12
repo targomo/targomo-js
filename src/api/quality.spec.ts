@@ -1,5 +1,5 @@
 import { Location } from '../index'
-import { QualityRequestOptions } from '../types/options/qualityRequestOptions'
+import { QualityRequestCriteria } from '../types/options/qualityRequestOptions'
 import { TargomoClient } from './index'
 
 describe('TargomoClient quality service - scores', () => {
@@ -21,7 +21,7 @@ describe('TargomoClient quality service - scores', () => {
 
   test('quality service request criteria', async () => {
     const locations = [{ lat: 52.510801, lng: 13.401207, id: 1 }]
-    const criteria: QualityRequestOptions = {
+    const criteria: QualityRequestCriteria = {
       'poi-shops': {
         type: 'poiCoverageCount',
         osmTypes: [
@@ -49,7 +49,7 @@ describe('TargomoClient quality service - scores', () => {
 
   test('quality service detailed request', async () => {
     const locations = [{ lat: 52.510801, lng: 13.401207, id: 1 }]
-    const criteria: QualityRequestOptions = {
+    const criteria: QualityRequestCriteria = {
       'poi-shops': {
         type: 'closestPoiDistance',
         osmTypes: [
@@ -75,7 +75,7 @@ describe('TargomoClient quality service - scores', () => {
 
   test('quality service request incompatible options', async () => {
     const locations = [{ lat: 52.510801, lng: 13.401207, id: 1 }]
-    const criteria: QualityRequestOptions = {
+    const criteria: QualityRequestCriteria = {
       'poi-shops': {
         type: 'poiCoverageCount',
         osmTypes: [
@@ -104,7 +104,7 @@ describe('TargomoClient quality service - scores', () => {
       { lat: 52.510801, lng: 13.401207, id: 1, properties: { gravitationAttractionStrength: 5 } },
       { lat: 52.510801, lng: 13.401207, id: 2, properties: { gravitationAttractionStrength: 3 } },
     ]
-    const criteria: QualityRequestOptions = {
+    const criteria: QualityRequestCriteria = {
       Population: {
         type: 'gravitationSum',
         statisticGroupId: GERMANY_ZENSUS_500M_STATISTICS,
@@ -124,7 +124,7 @@ describe('TargomoClient quality service - scores', () => {
 
   test('quality service request competitors', async () => {
     const locations: Location[] = [{ lat: 52.510801, lng: 13.401207, id: 1 }]
-    const criteria: QualityRequestOptions = {
+    const criteria: QualityRequestCriteria = {
       Population: {
         type: 'gravitationSum',
         statisticGroupId: GERMANY_ZENSUS_500M_STATISTICS,
