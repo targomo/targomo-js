@@ -86,7 +86,7 @@ export class RequestsUtil {
       logBody(responseBody)
       console.log('[TargomoClient End]')
 
-      throw { status: response.status, error: response.statusText, body: response.body }
+      throw { status: response.status, error: response.statusText, body: response.text() }
     } else {
       let responseValue: any = null
       if (method === 'JSONP') {
