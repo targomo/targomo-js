@@ -1,6 +1,6 @@
-import { Cache, SimpleCache } from '../util/cache'
 import { TargomoClient } from '../api/index'
-import { TargomoEnvironment, TARGOMO_ENVIRONMENT_HEADER } from '../constants'
+import { TARGOMO_ENVIRONMENT_HEADER, TargomoEnvironment } from '../constants'
+import { Cache, SimpleCache } from '../util/cache'
 
 const CACHE = new SimpleCache<any>()
 
@@ -86,7 +86,7 @@ export class RequestsUtil {
       logBody(responseBody)
       console.log('[TargomoClient End]')
 
-      throw new Error(responseBody)
+      throw { status: response.status, error: response.statusText, body: response.body }
     } else {
       let responseValue: any = null
       if (method === 'JSONP') {
