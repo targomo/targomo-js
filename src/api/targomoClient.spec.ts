@@ -14,6 +14,14 @@ describe('TargomoClient client', () => {
   })
 })
 
+describe('TargomoClient client service url', () => {
+  test('should update service url', async () => {
+    const testClient = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
+    testClient.setServiceUrl('westcentraleurope')
+    expect(testClient.serviceUrl).toBe('https://api.targomo.com/westcentraleurope/')
+  })
+})
+
 describe('Targomo Client Interceptor', () => {
   const environments = [TargomoEnvironment.REVIEW, TargomoEnvironment.STAGING, TargomoEnvironment.PROD]
 
