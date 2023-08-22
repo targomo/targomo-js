@@ -1,4 +1,4 @@
-import type { Geometry } from 'geojson'
+import { Geometry } from 'geojson'
 import type { Location, OSMType, PoiGroup, TravelMode, TravelTimeFactors } from '..'
 import type { TravelType } from '../types'
 

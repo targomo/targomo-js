@@ -126,6 +126,9 @@ describe('TargomoClient statistics service', () => {
   test('get metadata', async () => {
     const result = await testClient.statistics.metadata(100)
     expect(result).toBeDefined()
+    expect(result.id).toEqual(100)
+    expect(result.names).toBeDefined()
+    expect(result.stats).toBeDefined()
   })
 
   test('get ensemble metadata', async () => {
@@ -135,5 +138,8 @@ describe('TargomoClient statistics service', () => {
 
     const result = await testClient2.statistics.ensembles()
     expect(result).toBeDefined()
+    expect(result[100]).toBeDefined()
+    expect(result[100].name).toBeDefined()
+    expect(result[100].groups).toBeDefined()
   })
 })

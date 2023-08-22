@@ -159,17 +159,19 @@ export class StatisticsClient {
    * @param group
    */
   async metadata(group: StatisticsGroupMeta | StatisticsGroupId) {
-    const server = this.client.config.tilesUrl
+    const server = this.client.config.statisticsUrl
     const key = typeof group == 'number' ? group : group.id
     const cacheKey = server + '-' + key
 
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
       const url = new UrlUtil.TargomoUrl(this.client)
-        .host(this.client.config.tilesUrl)
-        .part('statistics/meta/')
-        .version()
+        .host(this.client.config.statisticsUrl)
+        .part('collection/meta')
         .part('/' + key + '')
-        .key()
+        .key('apiKey')
+        .params({
+          serviceUrl: this.client.serviceUrl,
+        })
         .toString()
 
       const result = await requests(this.client).fetch(url)
@@ -214,11 +216,13 @@ export class StatisticsClient {
     const key = typeof group == 'number' ? group : group.id
 
     const urlObject = new UrlUtil.TargomoUrl(this.client)
-      .host(this.client.config.tilesUrl)
-      .part('statistics/tiles/')
-      .version()
+      .host(this.client.config.statisticsUrl)
+      .part('collection/tiles')
       .part('/' + key + '/{z}/{x}/{y}.mvt')
-      .key()
+      .params({
+        serviceUrl: this.client.serviceUrl,
+      })
+      .key('apiKey')
 
     return include && include.length > 0
       ? urlObject.params({ columns: encodeURIComponent(include.map((row) => +row.id).join(',')) }).toString()
@@ -231,14 +235,16 @@ export class StatisticsClient {
    * @param options
    */
   async ensembles(): Promise<{ [id: string]: StatisticsGroupEnsemble }> {
-    const cacheKey = this.client.config.tilesUrl
+    const cacheKey = [this.client.config.statisticsUrl, this.client.serviceKey, this.client.serviceUrl].join(',')
 
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
       const url = new UrlUtil.TargomoUrl(this.client)
-        .host(this.client.config.tilesUrl)
-        .part('ensemble/list/')
-        .version()
-        .key()
+        .host(this.client.config.statisticsUrl)
+        .part('collection/list/')
+        .params({
+          serviceUrl: this.client.serviceUrl,
+        })
+        .key('apiKey')
         .toString()
 
       const result = await requests(this.client).fetch(url, 'GET')
