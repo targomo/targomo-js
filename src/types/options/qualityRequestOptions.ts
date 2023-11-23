@@ -35,6 +35,10 @@ export interface BaseCriterion {
    * Default value is '-2': in that case the score is quadratic.
    */
   distanceExponent?: number
+
+  metadata?: {
+    [langCode: string]: { name?: string, description?: string }
+  }
 }
 
 /**
