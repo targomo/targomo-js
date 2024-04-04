@@ -4,6 +4,7 @@ import type { TravelType } from '../types'
 
 export type CriterionType =
   | 'statisticsSum'
+  | 'statisticsMax'
   | 'statisticsSumInZone'
   | 'statisticsDistance'
   | 'poiCoverageCount'
@@ -37,7 +38,7 @@ export interface BaseCriterion {
   distanceExponent?: number
 
   metadata?: {
-    [langCode: string]: { name?: string, description?: string }
+    [langCode: string]: { name?: string; description?: string }
   }
 }
 
