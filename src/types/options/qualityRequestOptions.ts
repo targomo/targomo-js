@@ -148,7 +148,7 @@ export interface StatisticsReachabilityCriterion extends BaseStatisticsCriterion
   @example statisticsDistance: the retrieved score is the sum for each reachable statistics cell of the product of
    * the weighted distance of each statistics cell and its statistics data
     */
-  type: 'statisticsSum' | 'statisticsDistance'
+  type: 'statisticsSum' | 'statisticsDistance' | 'statisticsMax'
 
   /** When referenceStatisticsIds are set, the service will also calculate the reachability for
    * the list of ids in referenceStatisticsIds and the score will be the fraction: score(osmTypes) / score(referenceStatisticsIds) */
