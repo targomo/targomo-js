@@ -132,9 +132,7 @@ describe('TargomoClient statistics service', () => {
   })
 
   test('get ensemble metadata', async () => {
-    const testClient2 = new TargomoClient('germany', process.env.TGM_TEST_API_KEY, {
-      tilesUrl: 'https://api.targomo.com/vector-statistics/',
-    })
+    const testClient2 = new TargomoClient('germany', process.env.TGM_TEST_API_KEY)
 
     const result = await testClient2.statistics.ensembles()
     expect(result).toBeDefined()

@@ -6,7 +6,6 @@ import { TargomoEnvironment } from '../constants'
 export interface ClientOptions {
   serverUrl?: string
   statisticsUrl?: string
-  tilesUrl?: string
   poiUrl?: string
   mapTilesUrl?: string
   photonGeocoderUrl?: string
@@ -22,7 +21,6 @@ export interface ClientOptions {
 export class ClientConfig implements ClientOptions {
   serverUrl = 'https://api.targomo.com/'
   statisticsUrl = 'https://api.targomo.com/statistics/'
-  tilesUrl = 'https://api.targomo.com/vector-statistics/'
   poiUrl = 'https://api.targomo.com/pointofinterest/'
   mapTilesUrl = 'https://maps.targomo.com/'
   photonGeocoderUrl = 'https://api.targomo.com/geocode/'
