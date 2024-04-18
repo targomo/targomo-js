@@ -4,6 +4,7 @@ import type { TravelType } from '../types'
 
 export type CriterionType =
   | 'statisticsSum'
+  | 'statisticsMax'
   | 'statisticsSumInZone'
   | 'statisticsDistance'
   | 'poiCoverageCount'
@@ -35,6 +36,10 @@ export interface BaseCriterion {
    * Default value is '-2': in that case the score is quadratic.
    */
   distanceExponent?: number
+
+  metadata?: {
+    [langCode: string]: { name?: string; description?: string }
+  }
 }
 
 /**
@@ -143,7 +148,7 @@ export interface StatisticsReachabilityCriterion extends BaseStatisticsCriterion
   @example statisticsDistance: the retrieved score is the sum for each reachable statistics cell of the product of
    * the weighted distance of each statistics cell and its statistics data
     */
-  type: 'statisticsSum' | 'statisticsDistance'
+  type: 'statisticsSum' | 'statisticsDistance' | 'statisticsMax'
 
   /** When referenceStatisticsIds are set, the service will also calculate the reachability for
    * the list of ids in referenceStatisticsIds and the score will be the fraction: score(osmTypes) / score(referenceStatisticsIds) */
