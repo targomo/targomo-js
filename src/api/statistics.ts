@@ -166,7 +166,7 @@ export class StatisticsClient {
     return await this.statisticsMetadataCache.get(cacheKey, async () => {
       const url = new UrlUtil.TargomoUrl(this.client)
         .host(this.client.config.statisticsUrl)
-        .part('collection/meta')
+        .part('meta')
         .part('/' + key + '')
         .key('apiKey')
         .params({
@@ -217,7 +217,7 @@ export class StatisticsClient {
 
     const urlObject = new UrlUtil.TargomoUrl(this.client)
       .host(this.client.config.statisticsUrl)
-      .part('collection/tiles')
+      .part('groups/tiles')
       .part('/' + key + '/{z}/{x}/{y}.mvt')
       .params({
         serviceUrl: this.client.serviceUrl,
