@@ -20,6 +20,7 @@ export type CriterionType =
   | 'transitStopsDistance'
   | 'statisticsOnEnclosingCell'
   | 'polygonArea'
+  | 'statisticsDistanceAverage'
 
 /**
  * Base inteface with the properties that all criteria share
@@ -176,6 +177,10 @@ export interface StatisticsOnEnclosingCellCriterion extends BaseStatisticsCriter
   type: 'statisticsOnEnclosingCell'
 }
 
+export interface StatisticsDistanceAverageCriterion extends BaseStatisticsCriterion, BaseReachabilityCriterion {
+  type: 'statisticsDistanceAverage'
+}
+
 export interface PolygonAreaCriterion extends BaseStatisticsCriterion, BaseReachabilityCriterion {
   type: 'polygonArea'
 
@@ -261,6 +266,7 @@ export type QualityCriterion =
   | StatisticsOnEnclosingCellCriterion
   | StatisticsInZoneCriterion
   | StatisticsGravitationCriterion
+  | StatisticsDistanceAverageCriterion
   | StaypointCriterion
   | MathCriterion
   | EdgeStatisticsCriterion
