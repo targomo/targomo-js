@@ -43,6 +43,11 @@ export interface BaseCriterion {
   }
 }
 
+export interface RoutingOptions {
+  routingValueOffset: number
+  routingValueMultiplier: number
+}
+
 /**
  * Specialization of the Base criteion for all criteria that do reachability
  */
@@ -73,6 +78,16 @@ If it is set too low routes between points won't be found */
   elevation?: boolean
 
   travelTimeFactors?: TravelTimeFactors
+
+  competingRoutingOptions?: RoutingOptions[]
+
+  /**
+   * If the reverse flag is set to true, the routing algorithm will invert direction restrictions (one way roads, turning restrictions, ect) to simulate a to the source(s).
+   * For polygon routing this can be used to calculate the polygon/area that could reach the source(s).
+   *
+   * @default false
+   */
+  reverse?: boolean
 }
 
 /**
@@ -103,6 +118,14 @@ export interface BasePoiCriterion extends BaseCriterion {
   referenceOsmTypes?: (OSMType | PoiGroup)[]
   /** default: 'https://api.targomo.com/pointofinterest/' */
   poiServiceUrl?: string
+  /**
+   * Type of match for the combination of tags.
+   * - `match: 'any'` (by default if not specified) means that the service will retrieve all POIs that contain at least one tag of the request.
+   * - `match: 'all'` means that it will retrieve all POIs that contain all tags of the request.
+   *
+   * @default 'any'
+   */
+  match?: 'ALL' | 'ANY' | 'all' | 'any'
 }
 
 export interface BaseGravitationCriterion {
