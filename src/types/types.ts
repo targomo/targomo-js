@@ -87,24 +87,6 @@ export type TravelSpeed = 'slow' | 'medium' | 'fast'
  */
 export type TravelType = 'walk' | 'car' | 'bike' | 'transit' | 'fly'
 
-export class TravelSpeedValues {
-  /** Assumed speed in km/h
-   * @default 5
-   */
-  speed?: number
-
-  /** Uphill penalty specifies by how much a distance is enhanced per one height meter that has to be overcome.
-    @example an uphill penalty of 20 means that per one height meter uphill the distance is increased by 20 meters.
-    @default 5
- */
-  uphill?: number
-
-  /** Same like uphill but for downhill (might be negative because the distance can be closed quicker when downhill
-   * @default 5
-   */
-  downhill?: number
-}
-
 /**
  *
  */
@@ -413,7 +395,41 @@ export interface LatLngIdTravelMode extends LatLngId {
   tm?: TravelMode
 }
 
-export interface CarModeOptions {
+export interface BaseTravelModeOptions {
+  walkSpeed?: number
+  excludeEdgeClassesFromSnapping?: number[]
+  includeSnapDistance?: boolean
+  allowPrivateAndServiceRoads?: boolean
+  snapRadius?: number
+  useAreaSnapping?: boolean
+  /**
+   * This defines the maximum distance allowed (in meters) between a defined source/target and the nearest point in the network it will connect. Any point that has a distance exceeding maxSnapDistance is treated like a point that exceeds maxEdgeWeight.
+   * If set too low points will be unable to snap to any nearby edges, if set too high points set outside the network or where lat/long have been accidentally inverted will be able to snap to the outer edge of the network.
+   *
+   * @default "Endpoint Specific"
+   */
+  maxSnapDistance?: number
+}
+
+export interface TravelSpeedValues extends BaseTravelModeOptions {
+  /** Assumed speed in km/h
+   * @default 5
+   */
+  speed?: number
+
+  /** Uphill penalty specifies by how much a distance is enhanced per one height meter that has to be overcome.
+    @example an uphill penalty of 20 means that per one height meter uphill the distance is increased by 20 meters.
+    @default 5
+ */
+  uphill?: number
+
+  /** Same like uphill but for downhill (might be negative because the distance can be closed quicker when downhill
+   * @default 5
+   */
+  downhill?: number
+}
+
+export interface CarModeOptions extends BaseTravelModeOptions {
   /** @deprecated use time instead
    *  Enable the rush hour mode to simulate a more crowded street.
 Warning this is a paid feature so not all plans are allowed to enable it. */
@@ -425,10 +441,12 @@ Warning this is a paid feature so not all plans are allowed to enable it. */
   time?: number
 }
 
-export interface TransitTravelModeOptions {
+export interface TransitTravelModeOptions extends BaseTravelModeOptions {
   frame?: FramePlaces
   maxTransfers?: number
 }
+
+export type FlyModeOptions = BaseTravelModeOptions & Record<string, unknown>
 
 export interface FramePlaces {
   /** This is the date on which the routing should take place
@@ -470,7 +488,7 @@ export type TravelMode =
   | { walk: TravelSpeedValues }
   | { bike: TravelSpeedValues }
   | { transit: TransitTravelModeOptions }
-  | { fly: Record<string, unknown> }
+  | { fly: FlyModeOptions }
 
 /**
  * Osm Type (OSM map feature tags. See: http://wiki.openstreetmap.org/wiki/Map_Features)
