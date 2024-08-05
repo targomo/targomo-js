@@ -308,6 +308,8 @@ export interface QualityGeometry {
 
 export interface QualityPayload<T extends Location | QualityGeometry = Location> {
   locations: T[]
+  potentialLocations?: T[]
   competitors?: Location[]
   criteria: QualityRequestCriteria
+  showDetails?: boolean
 }

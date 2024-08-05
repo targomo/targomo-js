@@ -3,6 +3,13 @@
 
 import { TargomoEnvironment } from '../constants'
 
+export interface RequestLogEntry {
+  url: string
+  body: unknown
+  response: unknown
+  status: number
+}
+
 export interface ClientOptions {
   serverUrl?: string
   statisticsUrl?: string
@@ -17,6 +24,7 @@ export interface ClientOptions {
   routeTypes?: { routeType: string | number; color: string; haloColor: string }[]
   debug?: boolean
   environment?: TargomoEnvironment
+  requestLogger?: (payload: RequestLogEntry) => void | Promise<void>
 }
 
 export class ClientConfig implements ClientOptions {
