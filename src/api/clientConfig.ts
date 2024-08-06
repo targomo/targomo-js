@@ -42,6 +42,7 @@ export class ClientConfig implements ClientOptions {
   version = 1
   debug = false
   environment: TargomoEnvironment.PROD
+  requestLogger: null
 
   // routeTypes  = [
   //   // non transit

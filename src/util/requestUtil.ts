@@ -209,6 +209,7 @@ export function requests(client?: TargomoClient, _options?: { requestTimeout?: n
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
   return new RequestsUtil({
     debug: client && client.config && client.config.debug,
+    requestLogger: client && client.config && client.config.requestLogger,
     environment:
       !!client && !!client.config && !!client.config.environment ? client.config.environment : TargomoEnvironment.PROD,
   }) // {timeout: requestTimeout})
