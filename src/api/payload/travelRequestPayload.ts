@@ -87,6 +87,10 @@ export class TravelRequestPayload extends TravelRequestOptions {
                 maxTransfers: this.transitMaxTransfers,
               },
             }
+            break
+          case 'fly':
+            source.tm = { fly: {} }
+            break
         }
       }
       return source
