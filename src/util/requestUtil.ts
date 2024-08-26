@@ -92,7 +92,7 @@ export class RequestsUtil {
 
       logBody(responseBody)
 
-      if (this.options && this.options.requestLogger) {
+      if (this.options?.requestLogger) {
         await this.options.requestLogger({
           url,
           body: requestOptions.body,
@@ -128,7 +128,7 @@ export class RequestsUtil {
         console.log('[TargomoClient End]')
       }
 
-      if (this.options && this.options.requestLogger) {
+      if (this.options?.requestLogger) {
         await this.options.requestLogger({
           url,
           body: requestOptions.body,
@@ -209,7 +209,7 @@ export function requests(client?: TargomoClient, _options?: { requestTimeout?: n
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
   return new RequestsUtil({
     debug: client && client.config && client.config.debug,
-    requestLogger: client && client.config && client.config.requestLogger,
+    requestLogger: client?.config?.requestLogger,
     environment:
       !!client && !!client.config && !!client.config.environment ? client.config.environment : TargomoEnvironment.PROD,
   }) // {timeout: requestTimeout})
