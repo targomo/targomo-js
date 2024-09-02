@@ -38,11 +38,11 @@ export class ClientConfig implements ClientOptions {
   fleetsUrl = 'https://api.targomo.com/fleetplanner/'
   basemapsUrl = 'https://maps.targomo.com/styles/'
   qualityUrl = 'https://api.targomo.com/quality/'
-  requestTimeout: 20000
+  requestTimeout = 20000
   version = 1
   debug = false
-  environment: TargomoEnvironment.PROD
-  requestLogger: null
+  environment = TargomoEnvironment.PROD
+  requestLogger: (payload: RequestLogEntry) => void | Promise<void> = null
 
   // routeTypes  = [
   //   // non transit
