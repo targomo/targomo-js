@@ -1,4 +1,4 @@
-import { TargomoClient } from '../api/index'
+import { RequestLogEntry, TargomoClient } from '../api/index'
 import { TARGOMO_ENVIRONMENT_HEADER, TargomoEnvironment } from '../constants'
 import { Cache, SimpleCache } from '../util/cache'
 
@@ -13,7 +13,14 @@ function logBody(body: any) {
 }
 
 export class RequestsUtil {
-  constructor(private options?: { debug?: boolean; timeout?: number; environment?: TargomoEnvironment }) {}
+  constructor(
+    private options?: {
+      debug?: boolean
+      timeout?: number
+      environment?: TargomoEnvironment
+      requestLogger?: (payload: RequestLogEntry) => void | Promise<void>
+    }
+  ) {}
 
   async fetch(url: string, method = 'GET', payload?: any, headers: { [index: string]: string } = {}) {
     if (this.options.environment) {
@@ -84,6 +91,16 @@ export class RequestsUtil {
           : await response.text()
 
       logBody(responseBody)
+
+      if (this.options?.requestLogger) {
+        await this.options.requestLogger({
+          url,
+          body: requestOptions.body,
+          response: responseBody,
+          status: response.status,
+        })
+      }
+
       console.log('[TargomoClient End]')
 
       throw { status: response.status, error: response.statusText, body: responseBody }
@@ -109,6 +126,15 @@ export class RequestsUtil {
         console.log('  [Body]')
         logBody(await responseValue)
         console.log('[TargomoClient End]')
+      }
+
+      if (this.options?.requestLogger) {
+        await this.options.requestLogger({
+          url,
+          body: requestOptions.body,
+          response: await responseValue,
+          status: response.status,
+        })
       }
 
       return responseValue
@@ -183,6 +209,7 @@ export function requests(client?: TargomoClient, _options?: { requestTimeout?: n
   // const requestTimeout = options && options.requestTimeout || client && client.config && client.config.requestTimeout // TODO....problem
   return new RequestsUtil({
     debug: client && client.config && client.config.debug,
+    requestLogger: client?.config?.requestLogger,
     environment:
       !!client && !!client.config && !!client.config.environment ? client.config.environment : TargomoEnvironment.PROD,
   }) // {timeout: requestTimeout})

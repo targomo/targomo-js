@@ -36,7 +36,7 @@ export class QualityClient {
       .part('/scores')
       .key('apiKey')
       .params({
-        showDetails: showDetails,
+        showDetails: locationsOrPayload instanceof Array ? showDetails : locationsOrPayload?.showDetails,
       })
       .toString()
 
