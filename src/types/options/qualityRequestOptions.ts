@@ -38,6 +38,22 @@ export interface BaseCriterion {
    */
   distanceExponent?: number
 
+  /**
+   * 
+   * @default 1/300
+   */
+  scalingFactor?: number
+
+  /**
+   * @default 1
+   */
+  distanceModifier?: number
+
+  /**
+   * @default 0
+   */
+  lowerBound?: number
+
   metadata?: {
     [langCode: string]: { name?: string; description?: string }
   }
