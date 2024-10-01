@@ -39,7 +39,7 @@ export interface BaseCriterion {
   distanceExponent?: number
 
   /**
-   * 
+   *
    * @default 1/300
    */
   scalingFactor?: number
@@ -104,6 +104,13 @@ If it is set too low routes between points won't be found */
    * @default false
    */
   reverse?: boolean
+
+  /**
+   * Under some circumstances, the actual maxEdgeWeight does not represent the actual time/distance we want to model.
+   * In this casse virtualMaxEdgeWeight can be set to indicate what intended maxEdgeWeight was meant.
+   * (Used for ui only currently)
+   */
+  virtualMaxEdgeWeight?: number
 }
 
 /**
