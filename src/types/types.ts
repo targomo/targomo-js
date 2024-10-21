@@ -156,7 +156,7 @@ export interface StatisticsCollection {
   }[]
   statisticGroupId: number
   privacy_level: 'private' | 'public' | 'metadata'
-  stats: StatisticsItemMeta
+  stats: StatisticsItemMeta[]
 }
 
 /**
