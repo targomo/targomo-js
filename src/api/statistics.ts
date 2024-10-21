@@ -227,50 +227,12 @@ export class StatisticsClient {
       : urlObject.toString()
   }
 
-  /**
-   *
-   * @param sources
-   * @param options
-   * @deprecated use collections instead
-   */
-  async ensembles(): Promise<{ [id: string]: StatisticsCollection }> {
-    const cacheKey = this.client.config.tilesUrl
-
-    return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
-      const url = new UrlUtil.TargomoUrl(this.client)
-        .host(this.client.config.tilesUrl)
-        .part('ensemble/list/')
-        .version()
-        .key()
-        .toString()
-
-      const result = await requests(this.client).fetch(url, 'GET')
-
-      // FIXME: workaround for server results
-      for (const id in result) {
-        if (result[id]) {
-          const ensemble = result[id]
-          ensemble.id = +ensemble.id
-          if (ensemble.groups && ensemble.groups.length) {
-            ensemble.groups.forEach((group: any) => {
-              group.hierarchy = +group.hierarchy
-              group.id = +group.id
-            })
-          }
-        }
-      }
-
-      return result
-    })
-  }
-
   async collections(): Promise<Record<number, StatisticsCollection>> {
     const cacheKey = this.client.config.statisticsUrl
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
       const url = new UrlUtil.TargomoUrl(this.client)
         .host(this.client.config.statisticsUrl)
         .part('collection/list/')
-        .version()
         .key('apiKey')
         .params({ endpoint: this.client.endpoint })
         .toString()
