@@ -116,17 +116,47 @@ export interface StatisticsItem {
   groupMeta?: StatisticsGroupMeta
 }
 
-export interface StatisticsGroupEnsemble {
+export interface StatisticsTopic {
+  id: number
+  icon: string
+  names: Record<string, string>
+  descriptions: Record<string, string>
+  chartable: boolean
+  subject_id: number
+  subject_names: Record<string, string>
+  statistic_ids: number[]
+  virtual_statistic_ids: number[]
+}
+
+export interface StatisticsCollection {
   id: string
   name: string
+  /** Localized names */
+  names: Record<string, string>
   region: string
+  version: string
+  license: string
+  attribution: string
+  srid: number
+  type: string
+  deprecated: boolean
+  customGeometryFeatureEnabled: boolean
+  boundingBox: {
+    top_right: LatLng
+    bottom_left: LatLng
+  }
+  topics: StatisticsTopic[]
   countries: string[]
-  endpoints: { [endpoint: string]: string }
+  endpoints: Record<string, string>
   groups: {
     id: number
     hierarchy: number
     minZoomRecommendation: number
+    topic_ids: number[]
   }[]
+  statisticGroupId: number
+  privacy_level: 'private' | 'public' | 'metadata'
+  stats: StatisticsItemMeta[]
 }
 
 /**
@@ -217,6 +247,8 @@ export interface LatLngIdTravelTime extends LatLngId {
 export interface StatisticsItemMeta {
   statistic_id: number
 
+  subject_id: number
+
   /**
    * Minimum cell value for this StatisticsItem
    */
@@ -260,11 +292,30 @@ export interface StatisticsItemMeta {
    */
   descriptions: { [langCode: string]: string }
 
+  description: string
+
   /**
    * Topic of the StatisticsItem in different languages
    */
   topic?: { [langCode: string]: string }
 
+  topic_id: number
+
+  topic_icon: string
+
+  topicTranslation: string
+
+  subject_names: { [langCode: string]: string }
+
+  subjectTranslation: string
+
+  chartLabels: Record<string, string>
+
+  isVirtual: boolean
+
+  reference_ids: number[]
+
+  aggregation_type: string
   /**
    * Breakpoints based on different statistical clustering approaches
    */

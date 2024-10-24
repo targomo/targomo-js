@@ -1,32 +1,34 @@
-import { TargomoClient } from './targomoClient'
 import {
   LatLngId,
-  StatisticsList,
   ReachableTile,
-  StatisticsGroupMeta,
+  StatisticsCollection,
+  StatisticsGeometryRequestOptions,
   StatisticsGroupId,
+  StatisticsGroupMeta,
   StatisticsItem,
   StatisticsItemMeta,
+  StatisticsList,
   StatisticsRequestOptions,
   StatisticsTravelRequestOptions,
-  StatisticsGeometryRequestOptions,
-  StatisticsGroupEnsemble,
   UrlUtil,
 } from '../index'
-import { StatisticsRequestPayload } from './payload/statisticsRequestPayload'
-import { StatisticsResult } from '../types/responses/index'
-import { requests } from '../util/requestUtil'
-import { SimpleLRU } from '../util/cache'
-import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload'
-import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult'
 import { StatisticsRequestOptionsSources, StatisticsTravelRequestOptionsSources } from '../types'
+import { StatisticsResult } from '../types/responses/index'
+import { StatisticsGeometryResult } from '../types/responses/statisticsGeometryResult'
+import { SimpleLRU } from '../util/cache'
+import { requests } from '../util/requestUtil'
+import { StatisticsGeometryRequestPayload } from './payload/statisticsGeometryRequestPayload'
+import { StatisticsRequestPayload } from './payload/statisticsRequestPayload'
+import { TargomoClient } from './targomoClient'
 
 /**
  * @Topic Statistics
  */
 export class StatisticsClient {
   private statisticsMetadataCache = new SimpleLRU<StatisticsGroupMeta>(200)
-  private statisticsEnsemblesCache = new SimpleLRU<{ [id: string]: StatisticsGroupEnsemble }>(200)
+  private statisticsEnsemblesCache = new SimpleLRU<{ [id: string]: StatisticsCollection }>(200)
+
+  private statisticsCollectionsCache = new SimpleLRU<{ [id: string]: StatisticsCollection }>(200)
 
   constructor(private client: TargomoClient) {}
 
@@ -225,39 +227,17 @@ export class StatisticsClient {
       : urlObject.toString()
   }
 
-  /**
-   *
-   * @param sources
-   * @param options
-   */
-  async ensembles(): Promise<{ [id: string]: StatisticsGroupEnsemble }> {
-    const cacheKey = this.client.config.tilesUrl
-
+  async collections(): Promise<Record<number, StatisticsCollection>> {
+    const cacheKey = this.client.config.statisticsUrl
     return await this.statisticsEnsemblesCache.get(cacheKey, async () => {
       const url = new UrlUtil.TargomoUrl(this.client)
-        .host(this.client.config.tilesUrl)
-        .part('ensemble/list/')
-        .version()
-        .key()
+        .host(this.client.config.statisticsUrl)
+        .part('collection/list/')
+        .key('apiKey')
+        .params({ endpoint: this.client.endpoint })
         .toString()
 
-      const result = await requests(this.client).fetch(url, 'GET')
-
-      // FIXME: workaround for server results
-      for (const id in result) {
-        if (result[id]) {
-          const ensemble = result[id]
-          ensemble.id = +ensemble.id
-          if (ensemble.groups && ensemble.groups.length) {
-            ensemble.groups.forEach((group: any) => {
-              group.hierarchy = +group.hierarchy
-              group.id = +group.id
-            })
-          }
-        }
-      }
-
-      return result
+      return requests(this.client).fetch(url, 'GET')
     })
   }
 }

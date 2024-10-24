@@ -128,12 +128,14 @@ describe('TargomoClient statistics service', () => {
     expect(result).toBeDefined()
   })
 
-  test('get ensemble metadata', async () => {
-    const testClient2 = new TargomoClient('germany', process.env.TGM_TEST_API_KEY, {
-      tilesUrl: 'https://api.targomo.com/vector-statistics/',
+  test('get collection metadata', async () => {
+    const testClient2 = new TargomoClient('westcentraleurope', process.env.TGM_TEST_API_KEY, {
+      statisticsUrl: 'https://api.targomo.com/statistics',
     })
 
-    const result = await testClient2.statistics.ensembles()
+    const result = await testClient2.statistics.collections()
     expect(result).toBeDefined()
+    expect(result[41]).toHaveProperty('name', 'Germany: infas360 2023')
+    expect(result[41]).toHaveProperty('privacy_level', 'metadata')
   })
 })
